@@ -2480,8 +2480,94 @@
         .custom-dialog .dialog-cancel-btn:hover:not(:disabled) {
             background-color: var(--bg-button-action-hover);
         }
+        .thought-summary-details {
+            margin-bottom: 10px;
+            font-size: 13px;
+            border: 1px solid var(--border-tertiary);
+            border-radius: 5px;
+            background-color: var(--bg-tertiary);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .thought-summary-details summary {
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-secondary);
+            list-style: none;
+            padding: 6px 10px;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            user-select: none;
+        }
+        .thought-summary-details summary::-webkit-details-marker { display: none; }
+        .thought-summary-details summary::marker { display: none; }
+        .thought-summary-details summary::before {
+            content: '💭';
+            font-size: 14px;
+            display: inline-block;
+        }
+        .thought-summary-details[open] summary {
+            border-bottom: 1px solid var(--border-tertiary);
+        }
+        .thought-summary-content {
+            padding: 8px 10px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-primary);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        .thought-summary-content > *:first-child { margin-top: 0; }
+        .thought-summary-content > *:last-child { margin-bottom: 0; }
+        .thought-summary-content ul,
+        .thought-summary-content ol { margin-left: 1em;}
+        body.dark-mode .thought-summary-details {
+            border-color: var(--border-primary);
+            background-color: var(--bg-secondary);
+        }
+        body.dark-mode .thought-summary-details summary {
+            color: var(--text-secondary);
+        }
+        body.dark-mode .thought-summary-details[open] summary {
+            border-bottom-color: var(--border-primary);
+        }
+        body.dark-mode .thought-summary-content {
+            color: var(--text-primary);
+        }
+        .thought-summary-content pre {
+            background-color: var(--bg-secondary);
+            padding: 8px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 0.8em 0;
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 12px;
+            border: 1px solid var(--border-tertiary);
+            color: var(--text-secondary);
+        }
+        body.dark-mode .thought-summary-content pre {
+            background-color: var(--bg-tertiary);
+            border-color: var(--border-primary);
+            color: var(--text-secondary);
+        }
+        .thought-summary-content code:not(pre > code) {
+            background-color: var(--bg-secondary);
+            padding: 0.1em 0.3em;
+            border-radius: 3px;
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 0.85em;
+            border: 1px solid var(--border-tertiary);
+            color: var(--text-secondary);
+        }
+        body.dark-mode .thought-summary-content code:not(pre > code) {
+            background-color: var(--bg-tertiary);
+            border-color: var(--border-primary);
+            color: var(--text-secondary);
+        }
         .citation-details {
-            margin-top: 15px;
+            margin-top: 10px;
             font-size: 12px;
             border-top: 1px dashed var(--border-secondary);
             padding-top: 8px;
@@ -2963,6 +3049,18 @@
                             <p style="font-size: 11px; color: var(--text-secondary); margin-top: 8px;">
                                 ※ Thinking Budgetは新しいGeminiモデルのみ対応。0明示でthinkingをOFF。<br>
                                 ※ 1～1024指定時は固定で1024になる
+                            </p>
+                            <label class="checkbox-label" style="margin-top: 15px;">
+                                <input type="checkbox" id="include-thoughts-toggle">
+                                Include Thoughts
+                            </label>
+                             <label class="checkbox-label" style="margin-top: -5px;">
+                                <input type="checkbox" id="expand-thoughts-by-default-toggle">
+                                💭思考プロセスを開いて応答
+                            </label>
+                            <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                                ※ チェック時、モデルの思考プロセスの要約が返る。<br>
+                                ※ thinkingConfigが有効なモデルでのみ機能。
                             </p>
                         </details>
                     </div>
@@ -3514,7 +3612,7 @@
         const LIGHT_MODE_PRIMARY_COLOR = '#ffffff';
 
 
-        const APP_VERSION = "0.25ti";
+        const APP_VERSION = "0.26ti";
         const SWIPE_THRESHOLD = 50;
         const ZOOM_THRESHOLD = 1.01;
         const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -3586,6 +3684,8 @@
             presencePenaltyInput: document.getElementById('presence-penalty'),
             frequencyPenaltyInput: document.getElementById('frequency-penalty'),
             thinkingBudgetInput: document.getElementById('thinking-budget'),
+            includeThoughtsToggle: document.getElementById('include-thoughts-toggle'),
+            expandThoughtsByDefaultToggle: document.getElementById('expand-thoughts-by-default-toggle'),
             setThinkingBudgetBtns: document.querySelectorAll('.set-thinking-budget-btn'),
             dummyUserInput: document.getElementById('dummy-user'),
             enableDummyUserCheckbox: document.getElementById('enable-dummy-user'),
@@ -3746,6 +3846,8 @@
                 presencePenalty: null,
                 frequencyPenalty: null,
                 thinkingBudget: null,
+                includeThoughts: true,
+                expandThoughtsByDefault: false,
                 dummyUser: '',
                 enableDummyUser: true,
                 dummyModel: '',
@@ -3829,6 +3931,7 @@
             isSending: false,
             abortController: null,
             partialStreamContent: '',
+            partialThoughtStreamContent: '',
             editingMessageIndex: null,
             isEditingSystemPrompt: false,
             touchStartX: 0,
@@ -3897,7 +4000,6 @@
                             });
                         })
                         .catch(err => {
-                            console.error('ServiceWorker registration failed: ', err);
                         });
                 });
             }
@@ -3914,7 +4016,7 @@
                     request.onerror = (event) => reject(`IndexedDBエラー: ${event.target.error}`);
                     request.onsuccess = (event) => {
                         state.db = event.target.result;
-                        state.db.onerror = (event) => { console.error(`データベースエラー: ${event.target.error}`); };
+                        state.db.onerror = (event) => { };
                         resolve(state.db);
                     };
                     request.onupgradeneeded = (event) => {
@@ -3928,7 +4030,7 @@
                             chatStore = db.createObjectStore(CHATS_STORE, { keyPath: 'id', autoIncrement: true });
                         } else {
                              if (transaction) {
-                                try { chatStore = transaction.objectStore(CHATS_STORE); } catch (e) { console.error("チャットストア取得エラー(upgradeneeded):", e); return; }
+                                try { chatStore = transaction.objectStore(CHATS_STORE); } catch (e) { return; }
                             }
                         }
                         if (chatStore && !chatStore.indexNames.contains(CHAT_UPDATEDAT_INDEX)) {
@@ -4015,7 +4117,8 @@
                                            key === 'concatDummyModel' || key === 'autoScrollOnNewMessage' ||
                                            key === 'showUserNameBubble' || key === 'showAiNameBubble' ||
                                            key === 'userNameBubbleUseThemeColor' || key === 'aiNameBubbleUseThemeColor' ||
-                                           key === 'enableSessionLinking') {
+                                           key === 'enableSessionLinking' || key === 'includeThoughts' || key === 'expandThoughtsByDefault'
+                                           ) {
                                      state.settings[key] = loadedValue === true;
                                 } else if (key === 'toggleButtonTopFontSize' || key === 'toggleButtonBottomFontSize' || key === 'toggleButtonTopWidth' || key === 'toggleButtonTopHeight') {
                                     let num = parseInt(loadedValue, 10);
@@ -4104,6 +4207,7 @@
                     const now = Date.now();
                     const messagesToSave = state.currentMessages.map(msg => ({
                         role: msg.role, content: msg.content, timestamp: msg.timestamp,
+                        thoughtSummary: msg.thoughtSummary || null,
                         ...(msg.finishReason && { finishReason: msg.finishReason }),
                         ...(msg.safetyRatings && { safetyRatings: msg.safetyRatings }),
                         ...(msg.error && { error: msg.error }),
@@ -4164,7 +4268,6 @@
                             }
                         };
                         getRequest.onerror = (event) => {
-                            console.error("チャット取得エラー(保存時):", event.target.error);
                             state.currentChatId = null;
                             determineTitleAndSave(null);
                         };
@@ -4371,6 +4474,35 @@
                     }
                 }
 
+                const messageData = state.currentMessages[index];
+                if (role === 'model' && (messageData?.thoughtSummary || (isStreamingPlaceholder && state.settings.includeThoughts))) {
+                    const thoughtDetails = document.createElement('details');
+                    thoughtDetails.classList.add('thought-summary-details');
+                    if (state.settings.expandThoughtsByDefault) {
+                        thoughtDetails.open = true;
+                    }
+
+                    const thoughtSummaryElem = document.createElement('summary');
+                    thoughtSummaryElem.textContent = '思考プロセス';
+                    thoughtDetails.appendChild(thoughtSummaryElem);
+
+                    const thoughtContentDiv = document.createElement('div');
+                    thoughtContentDiv.classList.add('thought-summary-content');
+                    if (isStreamingPlaceholder) {
+                        thoughtContentDiv.id = `streaming-thought-summary-${index}`;
+                        thoughtContentDiv.innerHTML = '';
+                    } else if (messageData?.thoughtSummary) {
+                        try {
+                            thoughtContentDiv.innerHTML = marked.parse(messageData.thoughtSummary || '');
+                        } catch (e) {
+                            thoughtContentDiv.textContent = messageData.thoughtSummary || '';
+                        }
+                    }
+                    thoughtDetails.appendChild(thoughtContentDiv);
+                    messageDiv.appendChild(thoughtDetails);
+                }
+
+
                 if (state.areAllMessagesHidden && (role === 'user' || role === 'model') && !isStreamingPlaceholder) {
                     messageDiv.classList.add('message-hidden-by-toggle');
                 }
@@ -4441,13 +4573,11 @@
                             const pre = document.createElement('pre'); pre.textContent = content; contentDiv.innerHTML = ''; contentDiv.appendChild(pre);
                         }
                     } catch (e) {
-                         console.error("Markdown parse error:", e);
                          const pre = document.createElement('pre'); pre.textContent = content; contentDiv.innerHTML = ''; contentDiv.appendChild(pre);
                     }
                 }
                 messageDiv.appendChild(contentDiv);
 
-                const messageData = state.currentMessages[index];
                 if (role === 'model' && messageData && messageData.groundingMetadata &&
                     ( (messageData.groundingMetadata.groundingChunks && messageData.groundingMetadata.groundingChunks.length > 0) ||
                       (messageData.groundingMetadata.webSearchQueries && messageData.groundingMetadata.webSearchQueries.length > 0) )
@@ -4563,7 +4693,6 @@
                             contentDiv.appendChild(details);
                         }
                     } catch (e) {
-                        console.error("Error rendering grounding metadata:", e);
                     }
                 }
 
@@ -4709,7 +4838,6 @@
                                     copyButton.disabled = false;
                                 }, 1500);
                             }).catch(err => {
-                                console.error('Code block copy error:', err);
                                 const originalText = copyButton.textContent;
                                 copyButton.textContent = '失敗';
                                 copyButton.disabled = true;
@@ -4723,36 +4851,64 @@
                     }
                 });
             },
-            updateStreamingMessage(index, newChar) {
+            updateStreamingMessage(index, newChar, isThoughtSummary = false) {
                 const messageDiv = document.getElementById(`streaming-message-${index}`);
                 if (messageDiv && typeof marked !== 'undefined') {
-                    const contentDiv = messageDiv.querySelector('.message-content');
-                    if (contentDiv) {
+                    let targetContentDiv;
+                    let streamContent;
+
+                    if (isThoughtSummary) {
+                        targetContentDiv = messageDiv.querySelector(`#streaming-thought-summary-${index}`);
+                        streamContent = state.partialThoughtStreamContent;
+                    } else {
+                        targetContentDiv = messageDiv.querySelector('.message-content');
+                        streamContent = state.partialStreamContent;
+                    }
+
+                    if (targetContentDiv) {
                         try {
-                            contentDiv.innerHTML = marked.parse(state.partialStreamContent || '');
-                            this.addCopyButtonsToCodeBlocks(contentDiv);
+                            targetContentDiv.innerHTML = marked.parse(streamContent || '');
+                            if (!isThoughtSummary) {
+                                this.addCopyButtonsToCodeBlocks(targetContentDiv);
+                            }
                         } catch (e) {
-                            console.error("Streaming markdown parse error:", e);
-                            contentDiv.textContent = state.partialStreamContent;
+                            targetContentDiv.textContent = streamContent;
                         }
                     }
-                }
-                if (state.settings.autoScrollOnNewMessage) {
-                    this.scrollToBottom();
+                    if (!isThoughtSummary && state.settings.autoScrollOnNewMessage) {
+                        this.scrollToBottom();
+                    }
                 }
             },
             finalizeStreamingMessage(index) {
                 const messageDiv = document.getElementById(`streaming-message-${index}`);
                 if (messageDiv) {
+                    const finalMessageData = state.currentMessages[index];
+                    if (!finalMessageData) return;
+
+                    if (finalMessageData.thoughtSummary) {
+                        const thoughtContentDiv = messageDiv.querySelector(`#streaming-thought-summary-${index}`);
+                        if (thoughtContentDiv && typeof marked !== 'undefined') {
+                            try {
+                                thoughtContentDiv.innerHTML = marked.parse(finalMessageData.thoughtSummary || '');
+                            } catch (e) {
+                                thoughtContentDiv.textContent = finalMessageData.thoughtSummary || '';
+                            }
+                            thoughtContentDiv.removeAttribute('id');
+                        } else if (thoughtContentDiv) {
+                            thoughtContentDiv.textContent = finalMessageData.thoughtSummary || '';
+                            thoughtContentDiv.removeAttribute('id');
+                        }
+                    }
+
                     const contentDiv = messageDiv.querySelector('.message-content');
-                    const finalRawContent = state.currentMessages[index]?.content || '';
+                    const finalRawContent = finalMessageData.content || '';
                     if (contentDiv && typeof marked !== 'undefined') {
                          try {
                              contentDiv.innerHTML = marked.parse(finalRawContent);
                              this.processInteractiveTitles(contentDiv);
                              this.addCopyButtonsToCodeBlocks(contentDiv);
                          } catch (e) {
-                             console.error("Final markdown parse error:", e);
                              contentDiv.textContent = finalRawContent;
                          }
                     } else if (contentDiv) {
@@ -4829,7 +4985,6 @@
                 try {
                     return new Intl.DateTimeFormat('ja-JP', { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(timestamp));
                 } catch (e) {
-                    console.warn("Intl.DateTimeFormat error, falling back:", e);
                     const d = new Date(timestamp);
                     return `${String(d.getFullYear()).slice(-2)}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
                 }
@@ -4895,7 +5050,6 @@
                         elements.historyTitle.textContent = '履歴一覧';
                     }
                 } catch (error) {
-                    console.error("Error rendering history list:", error);
                     elements.noHistoryMessage.textContent = "履歴の読み込み中にエラーが発生しました。";
                     elements.noHistoryMessage.classList.remove('hidden');
                     elements.historyTitle.textContent = '履歴一覧';
@@ -4903,17 +5057,17 @@
             },
             revokeExistingObjectUrl() {
                 if (state.backgroundImageUrl) {
-                    try { URL.revokeObjectURL(state.backgroundImageUrl); } catch (e) { console.warn("Error revoking object URL:", e); }
+                    try { URL.revokeObjectURL(state.backgroundImageUrl); } catch (e) { }
                     state.backgroundImageUrl = null;
                 }
             },
             revokeExistingIconUrls() {
                 if (state.userIconUrl) {
-                    try { URL.revokeObjectURL(state.userIconUrl); } catch (e) { console.warn("Error revoking user icon URL:", e); }
+                    try { URL.revokeObjectURL(state.userIconUrl); } catch (e) { }
                     state.userIconUrl = null;
                 }
                 if (state.aiIconUrl) {
-                    try { URL.revokeObjectURL(state.aiIconUrl); } catch (e) { console.warn("Error revoking AI icon URL:", e); }
+                    try { URL.revokeObjectURL(state.aiIconUrl); } catch (e) { }
                     state.aiIconUrl = null;
                 }
             },
@@ -5233,6 +5387,8 @@
                 elements.presencePenaltyInput.value = state.settings.presencePenalty === null ? '' : state.settings.presencePenalty;
                 elements.frequencyPenaltyInput.value = state.settings.frequencyPenalty === null ? '' : state.settings.frequencyPenalty;
                 elements.thinkingBudgetInput.value = state.settings.thinkingBudget === null ? '' : state.settings.thinkingBudget;
+                elements.includeThoughtsToggle.checked = state.settings.includeThoughts;
+                elements.expandThoughtsByDefaultToggle.checked = state.settings.expandThoughtsByDefault;
                 elements.dummyUserInput.value = state.settings.dummyUser || '';
                 elements.enableDummyUserCheckbox.checked = state.settings.enableDummyUser;
                 elements.dummyModelInput.value = state.settings.dummyModel || '';
@@ -5741,7 +5897,12 @@
                     elements.attachFileBtn.disabled = false;
                     elements.pasteToInputBtn.disabled = false;
                     elements.rollDiceBtn.disabled = false;
-                    if (elements.aiToAiChatBtn) elements.aiToAiChatBtn.disabled = false;
+                    if (elements.aiToAiChatBtn) {
+                        const showAiToAiBtn = state.settings.enableSessionLinking &&
+                                          state.linkedSessionIds.length === 2 &&
+                                          state.currentChatId && state.linkedSessionIds.includes(state.currentChatId);
+                        elements.aiToAiChatBtn.disabled = !showAiToAiBtn;
+                    }
                     elements.systemPromptDetails.style.pointerEvents = '';
                     elements.systemPromptDetails.style.opacity = '';
                 }
@@ -5781,17 +5942,16 @@
                              state.backgroundImageUrl = URL.createObjectURL(state.settings.backgroundImageBlob);
                              document.documentElement.style.setProperty('--chat-background-image', `url(${state.backgroundImageUrl})`);
                         } catch (e) {
-                             console.error("Error creating object URL for background:", e);
                              document.documentElement.style.setProperty('--chat-background-image', 'none');
                         }
                     } else {
                         document.documentElement.style.setProperty('--chat-background-image', 'none');
                     }
                     if (state.settings.userIconBlob instanceof Blob) {
-                        try { state.userIconUrl = URL.createObjectURL(state.settings.userIconBlob); } catch (e) { console.error("Error creating user icon URL:", e); }
+                        try { state.userIconUrl = URL.createObjectURL(state.settings.userIconBlob); } catch (e) { }
                     }
                     if (state.settings.aiIconBlob instanceof Blob) {
-                        try { state.aiIconUrl = URL.createObjectURL(state.settings.aiIconBlob); } catch (e) { console.error("Error creating AI icon URL:", e); }
+                        try { state.aiIconUrl = URL.createObjectURL(state.settings.aiIconBlob); } catch (e) { }
                     }
 
                     uiUtils.applySettingsToUI();
@@ -5806,7 +5966,6 @@
                     state.currentScreen = 'chat';
 
                 } catch (error) {
-                    console.error("App initialization error:", error);
                     await uiUtils.showCustomAlert(`アプリの初期化に失敗しました: ${error}`);
                     elements.appContainer.innerHTML = `<p style="padding: 20px; text-align: center; color: red;">アプリの起動に失敗しました。</p>`;
                 } finally {
@@ -6357,7 +6516,6 @@
                     elements.copyMemoBtn.disabled = true;
                     setTimeout(() => { elements.copyMemoBtn.textContent = originalText; elements.copyMemoBtn.disabled = false; }, 1500);
                 } catch (err) {
-                    console.error("Copy memo error:", err);
                     const originalText = elements.copyMemoBtn.textContent;
                     elements.copyMemoBtn.textContent = "コピー失敗";
                     elements.copyMemoBtn.disabled = true;
@@ -6392,7 +6550,6 @@
                         setTimeout(() => { elements.pasteMemoBtn.textContent = originalText; elements.pasteMemoBtn.disabled = false; }, 1500);
                     }
                 } catch (err) {
-                    console.error("Paste memo error:", err);
                     if (err.name === 'NotAllowedError' || err.message.includes('Read permission denied')) {
                          const originalText = elements.pasteMemoBtn.textContent;
                          elements.pasteMemoBtn.textContent = "許可エラー";
@@ -6460,7 +6617,6 @@
                     elements.copyClipboardStackBtn.disabled = true;
                     setTimeout(() => { elements.copyClipboardStackBtn.textContent = originalText; elements.copyClipboardStackBtn.disabled = false; }, 1500);
                 } catch (err) {
-                    console.error("Copy clipboard stack error:", err);
                     const originalText = elements.copyClipboardStackBtn.textContent;
                     elements.copyClipboardStackBtn.textContent = "コピー失敗";
                     elements.copyClipboardStackBtn.disabled = true;
@@ -6495,7 +6651,6 @@
                         setTimeout(() => { elements.pasteClipboardStackBtn.textContent = originalText; elements.pasteClipboardStackBtn.disabled = false; }, 1500);
                     }
                 } catch (err) {
-                    console.error("Paste into clipboard stack error:", err);
                     if (err.name === 'NotAllowedError' || err.message.includes('Read permission denied')) {
                          const originalText = elements.pasteClipboardStackBtn.textContent;
                          elements.pasteClipboardStackBtn.textContent = "許可エラー";
@@ -6585,7 +6740,6 @@
                         }, 1500);
                     }
                 } catch (err) {
-                    console.error("Paste to user input error:", err);
                     if (err.name === 'NotAllowedError' || err.message.includes('Read permission denied')) {
                         button.textContent = "!";
                         button.title = "クリップボードの許可なし";
@@ -6650,7 +6804,6 @@
                     try {
                         await dbUtils.saveChat();
                     } catch (error) {
-                        console.error("Error saving current chat before new chat:", error);
                         const conf = await uiUtils.showCustomConfirm("現在のチャットの保存に失敗しました。新規チャットを開始しますか？");
                         if (!conf) return;
                     }
@@ -6765,7 +6918,6 @@
                         uiUtils.showScreen('chat');
                     }
                 } catch (error) {
-                    console.error("Error loading chat:", error);
                     await uiUtils.showCustomAlert(`チャットの読み込みエラー: ${error}`);
                     this.startNewChat();
                     uiUtils.showScreen('chat');
@@ -6775,7 +6927,7 @@
                 if (state.isSending) { const conf = await uiUtils.showCustomConfirm("送信中です。中断してチャットを複製しますか？"); if (!conf) return; this.abortRequest(); }
                 if (state.editingMessageIndex !== null) { const conf = await uiUtils.showCustomConfirm("編集中です。変更を破棄してチャットを複製しますか？"); if (!conf) return; const msgEl = elements.messageContainer.querySelector(`.message[data-index="${state.editingMessageIndex}"]`); this.cancelEditMessage(state.editingMessageIndex, msgEl); }
                 if (state.isEditingSystemPrompt) { const conf = await uiUtils.showCustomConfirm("システムプロンプト編集中です。変更を破棄してチャットを複製しますか？"); if (!conf) return; this.cancelEditSystemPrompt(); }
-                if ((state.currentMessages.length > 0 || state.currentSystemPrompt) && state.currentChatId && state.currentChatId !== id) { try { await dbUtils.saveChat(); } catch (error) { console.error("Error saving current chat before duplicate:", error); const conf = await uiUtils.showCustomConfirm("現在のチャット保存に失敗しました。複製を続行しますか？"); if (!conf) return; } }
+                if ((state.currentMessages.length > 0 || state.currentSystemPrompt) && state.currentChatId && state.currentChatId !== id) { try { await dbUtils.saveChat(); } catch (error) { const conf = await uiUtils.showCustomConfirm("現在のチャット保存に失敗しました。複製を続行しますか？"); if (!conf) return; } }
                 if (state.pendingAttachments.length > 0) {
                     const confirmedAttach = await uiUtils.showCustomConfirm("添付準備中のファイルがあります。破棄してチャットを複製しますか？");
                     if (!confirmedAttach) return;
@@ -6844,7 +6996,6 @@
                         await uiUtils.showCustomAlert("複製元のチャットが見つかりません。");
                     }
                 } catch (error) {
-                    console.error("Error duplicating chat:", error);
                     await uiUtils.showCustomAlert(`チャット複製エラー: ${error}`);
                 }
             },
@@ -6891,7 +7042,6 @@
                      document.body.removeChild(a);
                      URL.revokeObjectURL(url);
                  } catch (error) {
-                     console.error("Export chat error:", error);
                      await uiUtils.showCustomAlert(`エクスポートエラー: ${error}`);
                  }
             },
@@ -6929,7 +7079,6 @@
                     this.startNewChat();
                     await uiUtils.showCustomAlert("チャットを削除しました。");
                 } catch (error) {
-                    console.error("Error deleting current session:", error);
                     await uiUtils.showCustomAlert(`チャットの削除中にエラーが発生しました: ${error}`);
                 }
             },
@@ -6968,7 +7117,6 @@
                         buttonElement.disabled = false;
                     }, 1500);
                 } catch (err) {
-                    console.error("Copy session text error:", err);
                     await uiUtils.showCustomAlert("クリップボードへのコピーに失敗しました。\nお使いのブラウザが対応していないか、セキュリティ設定が原因の可能性があります。");
                     const buttonElement = elements.copySessionBtn;
                     const originalText = buttonElement.textContent;
@@ -7000,7 +7148,6 @@
                             }
                         }
                     } catch (error) {
-                        console.error("Confirm delete chat error:", error);
                         await uiUtils.showCustomAlert(`チャット削除エラー: ${error}`);
                         uiUtils.setSendingState(false);
                     }
@@ -7024,48 +7171,9 @@
                             uiUtils.updateChatTitle(finalTitle);
                         }
                     } catch (error) {
-                        console.error("Edit history title error:", error);
                         await uiUtils.showCustomAlert(`タイトル更新エラー: ${error}`);
                     }
                 }
-            },
-            async typeCharacterByCharacter(processedChunks, messageIndex, signal, prefix = '') {
-                const speed = state.settings.streamingSpeed;
-                let accumulatedRawContent = prefix;
-                state.partialStreamContent = prefix;
-                if (prefix) {
-                    uiUtils.updateStreamingMessage(messageIndex, '');
-                }
-
-                if (!speed || speed <= 0) {
-                    accumulatedRawContent = prefix + processedChunks.map(chunk => chunk === null ? '\n\n' : chunk).join('');
-                    state.partialStreamContent = accumulatedRawContent;
-                    uiUtils.updateStreamingMessage(messageIndex, '');
-                    return accumulatedRawContent;
-                }
-
-                for (const chunk of processedChunks) {
-                    if (signal.aborted) {
-                        return accumulatedRawContent;
-                    }
-                    if (chunk === null) {
-                        const separator = '\n\n';
-                        accumulatedRawContent += separator;
-                        state.partialStreamContent = accumulatedRawContent;
-                        uiUtils.updateStreamingMessage(messageIndex, '');
-                    } else if (typeof chunk === 'string') {
-                        for (const char of chunk) {
-                            if (signal.aborted) {
-                                return accumulatedRawContent;
-                            }
-                            accumulatedRawContent += char;
-                            state.partialStreamContent = accumulatedRawContent;
-                            uiUtils.updateStreamingMessage(messageIndex, char);
-                            await sleep(speed);
-                        }
-                    }
-                }
-                return accumulatedRawContent;
             },
             async handleSend(isRetry = false, retryUserMessageIndex = -1, sourceSessionContext = null) {
                 const isBackgroundProcess = !!sourceSessionContext;
@@ -7078,7 +7186,7 @@
 
                 if (!isBackgroundProcess) {
                     if (state.editingMessageIndex !== null) { await uiUtils.showCustomAlert("他のメッセージを編集中です。"); return; }
-                    if (state.isEditingSystemPrompt) { await uiUtils.showCustomAlert("システムプロンプトを編集中です。"); return; }
+                    if (state.isEditingSystemPrompt) { await uiUtils.showCustomAlert("システムプロンプト編集中です。"); return; }
                 }
 
                 let text = '';
@@ -7112,7 +7220,8 @@
                 }
 
                 if (!isBackgroundProcess) uiUtils.setSendingState(true);
-                if (!isBackgroundProcess) state.partialStreamContent = '';
+                state.partialStreamContent = '';
+                state.partialThoughtStreamContent = '';
 
 
                 let userMessageIndex = isRetry ? retryUserMessageIndex : -1;
@@ -7201,6 +7310,7 @@
                     const chatToSave = {
                         messages: currentContextMessages.map(msg => ({
                             role: msg.role, content: msg.content, timestamp: msg.timestamp,
+                            thoughtSummary: msg.thoughtSummary || null,
                             ...(msg.finishReason && { finishReason: msg.finishReason }),
                             ...(msg.safetyRatings && { safetyRatings: msg.safetyRatings }),
                             ...(msg.error && { error: msg.error }),
@@ -7250,12 +7360,9 @@
                     }
 
                 } catch (error) {
-                    console.error("Error saving chat before send:", error);
                     if (!isBackgroundProcess) {
                         if(currentContextSessionId){
                              uiUtils.displayError("チャットの保存に失敗しましたが、送信を試みます。", false);
-                        } else {
-                             console.warn("新規チャットの初期保存に失敗しましたが、送信を試みます:", error);
                         }
                     }
                 }
@@ -7300,11 +7407,19 @@
                 if (state.settings.presencePenalty !== null) generationConfig.presencePenalty = state.settings.presencePenalty;
                 if (state.settings.frequencyPenalty !== null) generationConfig.frequencyPenalty = state.settings.frequencyPenalty;
 
-                if (state.settings.thinkingBudget !== null && Number.isInteger(state.settings.thinkingBudget) && state.settings.thinkingBudget >= 0) {
-                    generationConfig.thinkingConfig = {
-                        "thinkingBudget": state.settings.thinkingBudget,
-                    };
+                if (state.settings.thinkingBudget !== null || state.settings.includeThoughts) {
+                    generationConfig.thinkingConfig = generationConfig.thinkingConfig || {};
+                    if (state.settings.thinkingBudget !== null && Number.isInteger(state.settings.thinkingBudget) && state.settings.thinkingBudget >= 0) {
+                        generationConfig.thinkingConfig.thinkingBudget = state.settings.thinkingBudget;
+                    }
+                    if (state.settings.includeThoughts) {
+                        generationConfig.thinkingConfig.includeThoughts = true;
+                    }
+                    if (Object.keys(generationConfig.thinkingConfig).length === 0) {
+                        delete generationConfig.thinkingConfig;
+                    }
                 }
+
 
                 const systemPromptToSend = currentContextEnableSystemPromptDefault && currentContextSystemPrompt?.trim() ? currentContextSystemPrompt.trim() : null;
                 const systemInstruction = systemPromptToSend
@@ -7313,9 +7428,10 @@
 
 
                 let modelResponseRawContent = '';
+                let modelThoughtSummaryContent = '';
                 let modelResponseMetadata = {};
-                let groundingMetadata = null;
-                let usageMetadata = null;
+                let currentGroundingMetadata = null;
+                let finalUsageMetadataFromStream = null;
 
                 let useStreamingForThisCall = state.settings.streamingOutput;
                 let usePseudoForThisCall = state.settings.pseudoStreaming;
@@ -7328,51 +7444,104 @@
                 try {
                     const response = await apiUtils.callGeminiApi(apiMessages, generationConfig, systemInstruction, useStreamingForThisCall, usePseudoForThisCall);
                     const dummyModelPrefix = (state.settings.concatDummyModel && state.settings.dummyModel && currentContextEnableDummyModel) ? state.settings.dummyModel : '';
+                    if (!isBackgroundProcess) {
+                        state.partialStreamContent = dummyModelPrefix;
+                        state.partialThoughtStreamContent = '';
+                    }
 
-                    if (useStreamingForThisCall && !usePseudoForThisCall) {
-                        const tempPlaceholderIndex = state.currentMessages.length;
-                        uiUtils.appendMessage('model', '', tempPlaceholderIndex, true);
-                        const streamResult = await apiUtils.handleStreamingResponse(response);
-                        modelResponseMetadata = { finishReason: streamResult.finishReason, safetyRatings: streamResult.safetyRatings };
-                        groundingMetadata = streamResult.groundingMetadata;
-                        usageMetadata = streamResult.usageMetadata;
 
-                        modelResponseRawContent = await this.typeCharacterByCharacter(streamResult.processedChunks, tempPlaceholderIndex, state.abortController.signal, dummyModelPrefix);
+                    if (useStreamingForThisCall) {
+                        let tempPlaceholderIndex;
+                        if (!isBackgroundProcess) {
+                            tempPlaceholderIndex = state.currentMessages.length;
+                            uiUtils.appendMessage('model', '', tempPlaceholderIndex, true);
+                        }
+
+                        const streamSpeed = state.settings.streamingSpeed;
+
+                        for await (const streamData of apiUtils.handleStreamingResponse(response)) {
+                            if (state.abortController?.signal.aborted) {
+                                modelResponseMetadata.finishReason = 'ABORTED';
+                                throw new Error("リクエストがキャンセルされました。");
+                            }
+
+                            if (streamData.type === 'chunk') {
+                                if (streamData.thoughtText) {
+                                    if (isBackgroundProcess) {
+                                        modelThoughtSummaryContent += streamData.thoughtText;
+                                    } else {
+                                        for (const char of streamData.thoughtText) {
+                                            if (state.abortController?.signal.aborted) break;
+                                            state.partialThoughtStreamContent += char;
+                                            uiUtils.updateStreamingMessage(tempPlaceholderIndex, char, true);
+                                            if (streamSpeed > 0) await sleep(streamSpeed);
+                                        }
+                                    }
+                                }
+                                if (streamData.contentText) {
+                                    if (isBackgroundProcess) {
+                                        modelResponseRawContent += streamData.contentText;
+                                    } else {
+                                        for (const char of streamData.contentText) {
+                                            if (state.abortController?.signal.aborted) break;
+                                            state.partialStreamContent += char;
+                                            uiUtils.updateStreamingMessage(tempPlaceholderIndex, char, false);
+                                            if (streamSpeed > 0) await sleep(streamSpeed);
+                                        }
+                                    }
+                                }
+                                if (state.abortController?.signal.aborted) {
+                                    modelResponseMetadata.finishReason = 'ABORTED';
+                                    throw new Error("リクエストがキャンセルされました。");
+                                }
+                                if (streamData.groundingMetadata) currentGroundingMetadata = streamData.groundingMetadata;
+                                if (streamData.usageMetadata) finalUsageMetadataFromStream = streamData.usageMetadata;
+
+                            } else if (streamData.type === 'metadata') {
+                                modelResponseMetadata = {
+                                    finishReason: streamData.finishReason,
+                                    safetyRatings: streamData.safetyRatings,
+                                };
+                                if (streamData.groundingMetadata) currentGroundingMetadata = streamData.groundingMetadata;
+                                if (streamData.usageMetadata) finalUsageMetadataFromStream = streamData.usageMetadata;
+                                break;
+                            } else if (streamData.type === 'error') {
+                                modelResponseMetadata.finishReason = 'ERROR';
+                                modelResponseMetadata.error = streamData.error;
+                                throw new Error(streamData.message || "ストリーム内でエラーが発生しました。");
+                            }
+                        }
+                        if (!isBackgroundProcess) {
+                           modelThoughtSummaryContent = state.partialThoughtStreamContent;
+                           modelResponseRawContent = state.partialStreamContent;
+                        }
 
                         if (modelResponseMetadata.finishReason === 'ABORTED' || state.abortController?.signal.aborted) {
                             throw new Error("リクエストがキャンセルされました。");
                         }
-                        const placeholderElement = document.getElementById(`streaming-message-${tempPlaceholderIndex}`);
-                        if (placeholderElement) placeholderElement.remove();
 
-                    } else if (useStreamingForThisCall && usePseudoForThisCall) {
-                         const tempPlaceholderIndex = state.currentMessages.length;
-                        uiUtils.appendMessage('model', '', tempPlaceholderIndex, true);
-                        const streamResult = await apiUtils.handleStreamingResponse(response);
-                        modelResponseMetadata = { finishReason: streamResult.finishReason, safetyRatings: streamResult.safetyRatings };
-                        groundingMetadata = streamResult.groundingMetadata;
-                        usageMetadata = streamResult.usageMetadata;
-                        modelResponseRawContent = await this.typeCharacterByCharacter(streamResult.processedChunks, tempPlaceholderIndex, state.abortController.signal, dummyModelPrefix);
-
-                        if (modelResponseMetadata.finishReason === 'ABORTED' || state.abortController?.signal.aborted) {
-                            throw new Error("リクエストがキャンセルされました。");
-                        }
-                        const placeholderElement = document.getElementById(`streaming-message-${tempPlaceholderIndex}`);
-                        if (placeholderElement) placeholderElement.remove();
                     } else {
                         const data = await response.json();
                         const candidate = data.candidates?.[0];
                         let rawContentFromApi = "";
                         if (candidate) {
                             modelResponseMetadata = { finishReason: candidate.finishReason, safetyRatings: candidate.safetyRatings };
-                            rawContentFromApi = candidate.content?.parts?.map(p => p.text || "").join('\n\n') || "";
-                            groundingMetadata = candidate.groundingMetadata || null;
-                            usageMetadata = data.usageMetadata || null;
+                            candidate.content?.parts?.forEach(part => {
+                                if (part.thought === true && state.settings.includeThoughts) {
+                                    modelThoughtSummaryContent += (part.text || "") + "\n\n";
+                                } else if (part.thought !== true){
+                                    rawContentFromApi += (part.text || "") + "\n\n";
+                                }
+                            });
+                            modelThoughtSummaryContent = modelThoughtSummaryContent.trim();
+                            rawContentFromApi = rawContentFromApi.trim();
 
+                            currentGroundingMetadata = candidate.groundingMetadata || null;
+                            finalUsageMetadataFromStream = data.usageMetadata || null;
                             if (candidate.finishReason && candidate.finishReason !== "STOP" && candidate.finishReason !== "MAX_TOKENS") {
                                 rawContentFromApi += `\n\n(理由: ${candidate.finishReason})`;
                             }
-                            if (!rawContentFromApi && candidate.finishReason === "STOP") {
+                            if (!rawContentFromApi && candidate.finishReason === "STOP" && !modelThoughtSummaryContent) {
                                 rawContentFromApi = "(応答が空です)";
                             }
                         } else {
@@ -7384,21 +7553,24 @@
                             } else {
                                 modelResponseMetadata.finishReason = 'ERROR';
                             }
-                            usageMetadata = data.usageMetadata || null;
+                            finalUsageMetadataFromStream = data.usageMetadata || null;
                         }
                         modelResponseRawContent = dummyModelPrefix + rawContentFromApi;
                     }
 
                     if (isBackgroundProcess) {
-                        if (modelResponseRawContent || modelResponseMetadata.finishReason) {
+                        if (modelResponseRawContent || modelThoughtSummaryContent || modelResponseMetadata.finishReason) {
                              const bgModelMessage = {
-                                 role: 'model', content: modelResponseRawContent, timestamp: Date.now(),
-                                 ...modelResponseMetadata, groundingMetadata: groundingMetadata, usageMetadata: usageMetadata
+                                 role: 'model', content: modelResponseRawContent,
+                                 thoughtSummary: modelThoughtSummaryContent || null,
+                                 timestamp: Date.now(),
+                                 ...modelResponseMetadata, groundingMetadata: currentGroundingMetadata, usageMetadata: finalUsageMetadataFromStream
                              };
                              currentContextMessages.push(bgModelMessage);
                              const chatToSaveBg = {
                                 messages: currentContextMessages.map(msg => ({
                                     role: msg.role, content: msg.content, timestamp: msg.timestamp,
+                                    thoughtSummary: msg.thoughtSummary || null,
                                     ...(msg.finishReason && { finishReason: msg.finishReason }),
                                     ...(msg.safetyRatings && { safetyRatings: msg.safetyRatings }),
                                     ...(msg.error && { error: msg.error }),
@@ -7431,10 +7603,12 @@
                     }
 
 
-                    if (modelResponseRawContent || modelResponseMetadata.finishReason) {
+                    if (modelResponseRawContent || modelThoughtSummaryContent || modelResponseMetadata.finishReason) {
                          const newModelMessage = {
-                             role: 'model', content: modelResponseRawContent, timestamp: Date.now(),
-                             ...modelResponseMetadata, groundingMetadata: groundingMetadata, usageMetadata: usageMetadata
+                             role: 'model', content: modelResponseRawContent,
+                             thoughtSummary: modelThoughtSummaryContent || null,
+                             timestamp: Date.now(),
+                             ...modelResponseMetadata, groundingMetadata: currentGroundingMetadata, usageMetadata: finalUsageMetadataFromStream
                          };
 
                          const targetUserIndexForCascade = userMessageIndex;
@@ -7455,25 +7629,43 @@
                          const newModelIndex = state.currentMessages.length;
                          state.currentMessages.push(newModelMessage);
                          state.messageCollapsedStates.set(newModelIndex, false);
-                         uiUtils.renderChatMessages();
+
+                         if (useStreamingForThisCall) {
+                             uiUtils.finalizeStreamingMessage(state.currentMessages.length - 1);
+                         } else {
+                            uiUtils.renderChatMessages();
+                         }
                          await dbUtils.saveChat();
+                    } else {
+                         if (useStreamingForThisCall) {
+                            const tempPlaceholderIndex = state.currentMessages.length;
+                            const placeholderElement = document.getElementById(`streaming-message-${tempPlaceholderIndex}`);
+                            if (placeholderElement) placeholderElement.remove();
+                         }
                     }
                 } catch (error) {
-                    console.error("Error during API call or response handling:", error);
-                    const isAbort = error.message === "リクエストがキャンセルされました。";
+                    const isAbort = error.message === "リクエストがキャンセルされました。" || modelResponseMetadata.finishReason === 'ABORTED';
                     const displayErrorMessage = isAbort ? error.message : (error.message || "不明なエラーが発生しました");
-                    const partialRawContent = state.partialStreamContent || error.cause?.partialChunks?.join('');
+
+                    const partialThoughtContentOnError = state.partialThoughtStreamContent;
+                    const partialContentOnError = state.partialStreamContent;
 
                     if (isBackgroundProcess) {
                          throw error;
                     }
 
-                    if (partialRawContent && state.settings.streamingOutput) {
-                         const finalPartialContent = partialRawContent + `\n\n(${isAbort ? '中断されました' : 'エラーが発生しました'})`;
+                    if ((partialContentOnError || partialThoughtContentOnError) && useStreamingForThisCall) {
+                         const finalPartialContent = partialContentOnError + `\n\n(${isAbort ? '中断されました' : 'エラーが発生しました'})`;
+                         const finalPartialThought = partialThoughtContentOnError ? partialThoughtContentOnError + `\n\n(${isAbort ? '中断されました' : 'エラーが発生しました'})` : null;
+
                          const partialMessage = {
-                             role: 'model', content: finalPartialContent, timestamp: Date.now(), error: true,
+                             role: 'model', content: finalPartialContent,
+                             thoughtSummary: finalPartialThought,
+                             timestamp: Date.now(), error: true,
                              finishReason: isAbort ? 'ABORTED' : (modelResponseMetadata.finishReason || 'ERROR'),
-                             ...(modelResponseMetadata.safetyRatings && { safetyRatings: modelResponseMetadata.safetyRatings })
+                             ...(modelResponseMetadata.safetyRatings && { safetyRatings: modelResponseMetadata.safetyRatings }),
+                             groundingMetadata: currentGroundingMetadata,
+                             usageMetadata: finalUsageMetadataFromStream
                          };
                          if (isRetry && isAbort) {
                              if (siblingGroupIdToUse === null) {
@@ -7492,13 +7684,21 @@
                          state.currentMessages.push(partialMessage);
                          state.messageCollapsedStates.set(newModelIndex, false);
                          try {
+                             if (useStreamingForThisCall) {
+                                 uiUtils.finalizeStreamingMessage(state.currentMessages.length - 1);
+                             } else {
+                                 uiUtils.renderChatMessages();
+                             }
                              await dbUtils.saveChat();
-                             uiUtils.renderChatMessages();
                          } catch (saveError) {
-                             console.error("Error saving chat after partial response:", saveError);
                              uiUtils.displayError(displayErrorMessage, !isAbort);
                          }
                     } else {
+                        if (useStreamingForThisCall && !isAbort) {
+                            const tempPlaceholderIndex = state.currentMessages.length;
+                            const placeholderElement = document.getElementById(`streaming-message-${tempPlaceholderIndex}`);
+                            if (placeholderElement) placeholderElement.remove();
+                        }
                         uiUtils.displayError(displayErrorMessage, !isAbort);
                     }
                 } finally {
@@ -7506,6 +7706,7 @@
                         uiUtils.setSendingState(false);
                         state.abortController = null;
                         state.partialStreamContent = '';
+                        state.partialThoughtStreamContent = '';
                         if (state.settings.autoScrollOnNewMessage) {
                             uiUtils.scrollToBottom();
                         }
@@ -7585,12 +7786,10 @@
                         await uiUtils.showCustomAlert(`履歴「${newChatData.title}」をインポートしました。`);
                         uiUtils.renderHistoryList();
                     } catch (error) {
-                        console.error("History import error:", error);
                         await uiUtils.showCustomAlert(`履歴のインポート中にエラーが発生しました: ${error.message}`);
                     }
                 };
                 reader.onerror = async (event) => {
-                    console.error("File read error:", event.target.error);
                     await uiUtils.showCustomAlert("ファイルの読み込みに失敗しました。");
                 };
                 reader.readAsText(file);
@@ -7691,7 +7890,6 @@
                     await uiUtils.showCustomAlert(`${chats.length}件のセッションをエクスポートしました。`);
                 } catch (error) {
                     await uiUtils.showCustomAlert(`全セッションのエクスポート中にエラーが発生しました: ${error.message || error}`);
-                    console.error("Error exporting all sessions:", error);
                 }
             },
             async handleAllSessionsImport(file) {
@@ -7782,13 +7980,11 @@
                                         resolve();
                                     };
                                     request.onerror = (e) => {
-                                        console.error("Failed to import session:", chatData.title, e.target.error);
                                         skippedCount++;
                                         resolve();
                                     };
                                 });
                             } catch (e) {
-                                console.error("Error during DB operation for session:", chatData.title, e);
                                 skippedCount++;
                             }
                         }
@@ -7804,7 +8000,6 @@
 
                     } catch (error) {
                         await uiUtils.showCustomAlert(`全セッションのインポート中にエラーが発生しました: ${error.message || error}`);
-                        console.error("Error importing all sessions:", error);
                     }
                 };
                 reader.onerror = async () => {
@@ -7832,8 +8027,6 @@
                      document.documentElement.style.setProperty('--chat-background-image', `url(${state.backgroundImageUrl})`);
                      uiUtils.updateBackgroundSettingsUI();
                  } catch (error) {
-                     console.error("Background image upload error:", error);
-                     await uiUtils.showCustomAlert(`背景画像の処理中にエラーが発生しました: ${error}`);
                      uiUtils.revokeExistingObjectUrl();
                      document.documentElement.style.setProperty('--chat-background-image', 'none');
                      state.settings.backgroundImageBlob = null;
@@ -7854,8 +8047,6 @@
                      document.documentElement.style.setProperty('--chat-background-image', 'none');
                      uiUtils.updateBackgroundSettingsUI();
                  } catch (error) {
-                     console.error("Background image delete error:", error);
-                     await uiUtils.showCustomAlert(`背景画像の削除中にエラーが発生しました: ${error}`);
                  }
              },
             async handleIconUpload(type, file) {
@@ -7885,7 +8076,6 @@
                      uiUtils.updateIconSettingsUI();
                      uiUtils.renderChatMessages(true);
                  } catch (error) {
-                     console.error(`${type} icon upload error:`, error);
                      await uiUtils.showCustomAlert(`${type === 'user' ? 'ユーザー' : 'AI'}アイコンの処理エラー: ${error}`);
                  }
             },
@@ -7912,7 +8102,6 @@
                      uiUtils.updateIconSettingsUI();
                      uiUtils.renderChatMessages(true);
                  } catch (error) {
-                     console.error(`${type} icon delete error:`, error);
                      await uiUtils.showCustomAlert(`${type === 'user' ? 'ユーザー' : 'AI'}アイコンの削除エラー: ${error}`);
                  }
             },
@@ -7931,6 +8120,8 @@
                      presencePenalty: elements.presencePenaltyInput.value === '' ? null : parseFloat(elements.presencePenaltyInput.value),
                      frequencyPenalty: elements.frequencyPenaltyInput.value === '' ? null : parseFloat(elements.frequencyPenaltyInput.value),
                      thinkingBudget: elements.thinkingBudgetInput.value === '' ? null : parseInt(elements.thinkingBudgetInput.value, 10),
+                     includeThoughts: elements.includeThoughtsToggle.checked,
+                     expandThoughtsByDefault: elements.expandThoughtsByDefaultToggle.checked,
                      dummyUser: elements.dummyUserInput.value.trim(),
                      enableDummyUser: elements.enableDummyUserCheckbox.checked,
                      dummyModel: elements.dummyModelInput.value.trim(),
@@ -8141,7 +8332,6 @@
                      }
                      uiUtils.renderChatMessages(true);
                  } catch (error) {
-                     console.error("Save settings error:", error);
                      await uiUtils.showCustomAlert(`設定の保存中にエラーが発生しました: ${error}`);
                  }
             },
@@ -8159,7 +8349,6 @@
                             uiUtils.showCustomAlert("アクティブなService Workerが見つかりません。手動でリロードが必要かもしれません。");
                         }
                     }).catch(async err => {
-                        console.error("Service Worker ready error:", err);
                         await uiUtils.showCustomAlert("Service Workerの準備中にエラーが発生しました。");
                     });
                 }
@@ -8191,6 +8380,7 @@
                             enableSystemPromptDefault: true,
                             temperature: null, maxTokens: null, topK: null, topP: null,
                             presencePenalty: null, frequencyPenalty: null, thinkingBudget: null,
+                            includeThoughts: true, expandThoughtsByDefault: false,
                             dummyUser: '', enableDummyUser: true,
                             dummyModel: '', enableDummyModel: true,
                             concatDummyModel: false,
@@ -8272,7 +8462,6 @@
                         this.startNewChat();
                         uiUtils.showScreen('chat', true);
                     } catch (error) {
-                        console.error("Clear all data error:", error);
                         await uiUtils.showCustomAlert(`データ削除中にエラーが発生しました: ${error}`);
                     }
                 }
@@ -8305,7 +8494,6 @@
                         }
 
                     } catch (error) {
-                        console.error("Clear all history error:", error);
                         await uiUtils.showCustomAlert(`チャット履歴の削除中にエラーが発生しました: ${error}`);
                     }
                 }
@@ -8324,7 +8512,6 @@
                     try {
                         await dbUtils.saveChat();
                     } catch (error) {
-                        console.error("Error saving system prompt:", error);
                         await uiUtils.showCustomAlert("システムプロンプトの保存に失敗しました。");
                     }
                 }
@@ -8432,7 +8619,6 @@
                                 }, 1500);
                             }
                         } catch (err) {
-                             console.error("Paste to edit textarea error:", err);
                              if (err.name === 'NotAllowedError' || err.message.includes('Read permission denied')) {
                                 pasteButton.textContent = "!";
                                 pasteButton.title = "クリップボードの許可なし";
@@ -8501,7 +8687,6 @@
                         uiUtils.processInteractiveTitles(contentDiv);
                         uiUtils.addCopyButtonsToCodeBlocks(contentDiv);
                     } catch (e) {
-                        console.error("Markdown parse error on save edit:", e);
                         contentDiv.textContent = newRawContent;
                     }
                 } else if (contentDiv) {
@@ -8531,7 +8716,6 @@
                         this.startNewChat();
                     }
                 } catch (error) {
-                    console.error("Error saving chat after message edit:", error);
                     await uiUtils.showCustomAlert("メッセージ編集後のチャット保存に失敗しました。");
                 }
             },
@@ -8587,7 +8771,6 @@
                         buttonElement.disabled = false;
                     }, 1500);
                 } catch (err) {
-                    console.error("Copy message text to OS clipboard error:", err);
                     await uiUtils.showCustomAlert("OSクリップボードへのコピーに失敗しました。");
                     const originalText = buttonElement.textContent;
                     buttonElement.textContent = 'コピー失敗';
@@ -8686,7 +8869,6 @@
                             this.startNewChat();
                         }
                     } catch (error) {
-                        console.error("Error saving chat after message delete:", error);
                         await uiUtils.showCustomAlert("メッセージ削除後のチャット保存に失敗しました。");
                     }
                 }
@@ -8836,7 +9018,6 @@
                     try {
                         await dbUtils.saveChat();
                     } catch (error) {
-                        console.error("Error saving cascade navigation:", error);
                         await uiUtils.showCustomAlert("応答の切り替え状態の保存に失敗しました。");
                     }
                 }
@@ -8915,7 +9096,6 @@
                     try {
                         await dbUtils.saveChat();
                     } catch (error) {
-                        console.error("Error saving chat after cascade delete:", error);
                         await uiUtils.showCustomAlert("応答削除後のチャット状態の保存に失敗しました。");
                     }
                 }
@@ -9008,7 +9188,6 @@
                             base64Data: base64Data
                         });
                     } catch (error) {
-                        console.error("File encoding error:", error);
                         encodingError = true;
                         await uiUtils.showCustomAlert(`ファイル "${item.file.name}" の処理中にエラーが発生しました。`);
                         break;
@@ -9194,7 +9373,6 @@
                     await this.handleSend();
 
                 } catch (error) {
-                    console.error("AI to AI chat step error:", error);
                     await uiUtils.showCustomAlert(`AI間会話処理中にエラーが発生しました: ${error.message}`);
                     if (state.currentChatId === sessionA_Id && elements.chatScreen.classList.contains('active')) {
                          uiUtils.displayError(`AI間会話エラー: ${error.message}`, false);
@@ -9230,11 +9408,19 @@
                 if (state.settings.presencePenalty !== null) finalGenerationConfig.presencePenalty = state.settings.presencePenalty;
                 if (state.settings.frequencyPenalty !== null) finalGenerationConfig.frequencyPenalty = state.settings.frequencyPenalty;
 
-                if (state.settings.thinkingBudget !== null && Number.isInteger(state.settings.thinkingBudget) && state.settings.thinkingBudget >= 0) {
-                    finalGenerationConfig.thinkingConfig = {
-                        "thinkingBudget": state.settings.thinkingBudget,
-                    };
+                if (state.settings.thinkingBudget !== null || state.settings.includeThoughts) {
+                    finalGenerationConfig.thinkingConfig = finalGenerationConfig.thinkingConfig || {};
+                    if (state.settings.thinkingBudget !== null && Number.isInteger(state.settings.thinkingBudget) && state.settings.thinkingBudget >= 0) {
+                        finalGenerationConfig.thinkingConfig.thinkingBudget = state.settings.thinkingBudget;
+                    }
+                    if (state.settings.includeThoughts) {
+                        finalGenerationConfig.thinkingConfig.includeThoughts = true;
+                    }
+                    if (Object.keys(finalGenerationConfig.thinkingConfig).length === 0) {
+                        delete finalGenerationConfig.thinkingConfig;
+                    }
                 }
+
 
                 const requestBody = {
                     contents: messagesForApi,
@@ -9283,17 +9469,15 @@
                     throw error;
                 }
             },
-            async handleStreamingResponse(response) {
+            async *handleStreamingResponse(response) {
                  if (!response.body) {
                      throw new Error("レスポンスボディがありません。");
                  }
                  const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
                  let buffer = '';
                  let lastCandidateInfo = null;
-                 const processedChunks = [];
                  let isCancelled = false;
                  let groundingMetadata = null;
-                 let currentPartIndex = -1;
                  let finalUsageMetadata = null;
 
                  try {
@@ -9322,92 +9506,108 @@
 
                          if (done) {
                              if (buffer.trim()) {
-                                 processBuffer(buffer, true);
+                                 const finalData = parseSseDataForYield(buffer.trim().substring(6));
+                                 if (finalData) yield finalData;
                              }
                              break;
                          }
 
                          buffer += value;
-                         buffer = processBuffer(buffer, false);
-                     }
+                         let remainingBuffer = buffer;
+                         while (true) {
+                             const newlineIndex = remainingBuffer.indexOf('\n');
+                             if (newlineIndex === -1) {
+                                 buffer = remainingBuffer;
+                                 break;
+                             }
+                             const line = remainingBuffer.substring(0, newlineIndex).trim();
+                             remainingBuffer = remainingBuffer.substring(newlineIndex + 1);
 
+                             if (line.startsWith('data: ')) {
+                                 const chunkData = parseSseDataForYield(line.substring(6));
+                                 if (chunkData) {
+                                     if (chunkData.groundingMetadata) groundingMetadata = chunkData.groundingMetadata;
+                                     if (chunkData.usageMetadata) finalUsageMetadata = chunkData.usageMetadata;
+                                     yield chunkData;
+                                 }
+                             } else if (line !== '') {
+                             }
+                             if (remainingBuffer === '') {
+                                buffer = '';
+                                break;
+                             }
+                         }
+                     }
                      const finishReason = lastCandidateInfo?.finishReason;
                      const safetyRatings = lastCandidateInfo?.safetyRatings;
-                     const finalGroundingMetadata = groundingMetadata;
 
-                     if (!isCancelled && processedChunks.length === 0 && (!finishReason || finishReason === "STOP")) {
-                     }
-
-                     return {
-                         processedChunks: processedChunks,
+                     yield {
+                         type: 'metadata',
                          finishReason: isCancelled ? 'ABORTED' : finishReason,
                          safetyRatings,
-                         groundingMetadata: finalGroundingMetadata,
+                         groundingMetadata: groundingMetadata,
                          usageMetadata: finalUsageMetadata
                      };
+
                  } catch (error) {
-                     const partialChunksOnError = (error.message !== "リクエストがキャンセルされました.") ? processedChunks : [];
-                     throw new Error(`${error.message || error}`, { cause: { originalError: error, partialChunks: partialChunksOnError } });
+                     throw new Error(`${error.message || error}`, { cause: { originalError: error } });
                  } finally {
                      if (!reader.closed && !isCancelled) {
                          try { await reader.cancel("Cleanup cancellation"); } catch(e) {  }
                      }
                  }
 
-                 function processBuffer(currentBuffer, isFinalChunk) {
-                     let remainingBuffer = currentBuffer;
-                     while (true) {
-                         const newlineIndex = remainingBuffer.indexOf('\n');
-                         if (newlineIndex === -1) {
-                             if (isFinalChunk && remainingBuffer.trim().startsWith('data: ')) {
-                                 parseSseData(remainingBuffer.trim().substring(6));
-                                 remainingBuffer = '';
-                             }
-                             break;
-                         }
-                         const line = remainingBuffer.substring(0, newlineIndex).trim();
-                         remainingBuffer = remainingBuffer.substring(newlineIndex + 1);
-
-                         if (line.startsWith('data: ')) {
-                             parseSseData(line.substring(6));
-                         } else if (line !== '') {
-                         }
-                     }
-                                          return remainingBuffer;
-                 }
-
-                 function parseSseData(jsonString) {
+                 function parseSseDataForYield(jsonString) {
                      try {
-                         const chunkData = JSON.parse(jsonString);
-                         if (chunkData.error) {
-                             const errorMsg = `モデルエラー: ${chunkData.error.message || JSON.stringify(chunkData.error)}`;
-                             lastCandidateInfo = { error: chunkData.error, finishReason: 'ERROR' };
-                             throw new Error(errorMsg);
+                         const chunkJson = JSON.parse(jsonString);
+                         if (chunkJson.error) {
+                             const errorMsg = `モデルエラー: ${chunkJson.error.message || JSON.stringify(chunkJson.error)}`;
+                             lastCandidateInfo = { error: chunkJson.error, finishReason: 'ERROR' };
+                             return { type: 'error', error: chunkJson.error, message: errorMsg };
                          }
-                         if (chunkData.candidates && chunkData.candidates.length > 0) {
-                             lastCandidateInfo = chunkData.candidates[0];
+
+                         let contentText = null;
+                         let thoughtText = null;
+                         let currentGroundingMetadata = null;
+                         let currentUsageMetadata = null;
+
+                         if (chunkJson.candidates && chunkJson.candidates.length > 0) {
+                             lastCandidateInfo = chunkJson.candidates[0];
                              if (lastCandidateInfo?.content?.parts) {
-                                 lastCandidateInfo.content.parts.forEach((part, partIndex) => {
-                                     const textChunk = part.text;
-                                     if (typeof textChunk === 'string') {
-                                         if (partIndex > currentPartIndex && currentPartIndex !== -1) {
-                                             processedChunks.push(null);
+                                 lastCandidateInfo.content.parts.forEach(part => {
+                                     if (typeof part.text === 'string') {
+                                         if (part.thought === true) {
+                                             thoughtText = (thoughtText || '') + part.text;
+                                         } else {
+                                             contentText = (contentText || '') + part.text;
                                          }
-                                         processedChunks.push(textChunk);
-                                         currentPartIndex = partIndex;
                                      }
                                  });
                              }
                              if (lastCandidateInfo.groundingMetadata) {
-                                 groundingMetadata = lastCandidateInfo.groundingMetadata;
+                                 currentGroundingMetadata = lastCandidateInfo.groundingMetadata;
                              }
-                         } else if (chunkData.promptFeedback) {
-                             lastCandidateInfo = { finishReason: 'SAFETY', safetyRatings: chunkData.promptFeedback.safetyRatings };
+                         } else if (chunkJson.promptFeedback) {
+                             lastCandidateInfo = { finishReason: 'SAFETY', safetyRatings: chunkJson.promptFeedback.safetyRatings };
+                             return null;
                          }
-                         if (chunkData.usageMetadata) {
-                             finalUsageMetadata = chunkData.usageMetadata;
+
+                         if (chunkJson.usageMetadata) {
+                             currentUsageMetadata = chunkJson.usageMetadata;
                          }
+
+                         if (contentText !== null || thoughtText !== null || currentGroundingMetadata || currentUsageMetadata) {
+                             return {
+                                 type: 'chunk',
+                                 contentText,
+                                 thoughtText,
+                                 groundingMetadata: currentGroundingMetadata,
+                                 usageMetadata: currentUsageMetadata
+                             };
+                         }
+                         return null;
                      } catch (parseError) {
+                         return null;
                      }
                  }
             }
