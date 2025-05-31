@@ -1,11 +1,14 @@
+# 概要
+- 本家Gemini PWA( https://github.com/ona-oni/geminipwa )に関心を持った他の人が、自分用にいじったコードを公開しているリポジトリ
+
 # titan823によるフォーク版 GeminiPWA(ti) の変更点・仕様（2025年5月時点）
 - ⚠️PWAでDeepSeekのAPIを利用できるようにアップデート致しました。本機能は試験的な実装です。
 デバッグは全て便宜的な水準のみにとどまっており、完璧な動作を保証するものではありません。
-不具合が生じた場合、予告なく当該機能全体を除去するという事態も論外ではありません。
+不具合が生じた場合、予告なく当該機能全体を除去するという事態も論外とは言えません。
 - ⚠️DeepSeek APIは2025年5月現在、インターネットから情報を取得する機能を提供していません。API経由での画像やファイルの直接解析も非対応です。
 - サポートされていないパラメータ：temperature、top_p、presence_penalty、frequency_penalty、logprobs。top_logprobs、temperature、top_p、presence_penalty、frequency_penalty を設定してエラーにはなりませんが、効果はありません。logprobs、を設定するとtop_logprobsエラーになります。文字送りの速度を制御する専用のパラメータは提供されていません。
 - ※DeepSeekが提供するAPIは全て有料です。
-- ※“DeepSeek APIエンドポイント機能”はデバッグしておりません。
+- ※“DeepSeek APIエンドポイント機能”は形式的な実装であり、デバッグしておりません。（デバッグ環境が無いため）
 - ⚠️deepseekとGeminiとで、それぞれ固有の“パラメータ
 “アドバンスド”設定を持たせるように改修予定です2025/05/31 15:57
 ### ■ 注意事項
