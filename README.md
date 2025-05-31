@@ -5,6 +5,7 @@
 - ⚠️DeepSeek APIは2025年5月現在、インターネットから情報を取得する機能及び推論の途中経過や思考プロセスを明示的に出力する機能を提供していません。API経由での画像やファイルの直接解析も非対応です。
 - サポートされていないパラメータ：temperature、top_p、presence_penalty、frequency_penalty、logprobs。top_logprobs、temperature、top_p、presence_penalty、frequency_penalty を設定してエラーにはなりませんが、効果はありません。logprobs、を設定するとtop_logprobsエラーになります。文字送りの速度を制御する専用のパラメータは提供されていません。
 - ※DeepSeekのAPIは全て有料です。
+- ※“DeepSeek APIエンドポイント機能”はデバッグしておりません。
 - ⚠️deepseekとGeminiとで、それぞれ固有の“パラメータ
 “アドバンスド”設定を持たせるように改修予定です2025/05/31 15:57
 ### ■ 注意事項
