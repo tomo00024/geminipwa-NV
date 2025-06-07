@@ -2854,7 +2854,7 @@
         }
         #ai-to-ai-chat-btn {
         }
-        .set-thinking-budget-btn, .set-claude-param-btn {
+        .set-thinking-budget-btn {
             flex-grow: 1;
         }
 
@@ -2977,7 +2977,6 @@
                         <select id="api-provider-select" aria-label="APIプロバイダー選択">
                             <option value="gemini">Google Gemini</option>
                             <option value="deepseek">DeepSeek</option>
-                            <option value="claude">Claude (Anthropic API)</option>
                         </select>
                     </div>
                 </details>
@@ -3037,49 +3036,6 @@
                          </p>
                     </div>
                 </details>
-
-                <details id="claude-settings-group" class="settings-group hidden">
-                    <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">Claude API 設定</summary>
-                    <div style="margin-top:15px;">
-                        <label for="claude-api-key">Claude APIキー:</label>
-                        <input type="password" id="claude-api-key" placeholder="APIキーを入力" aria-label="Claude APIキー">
-
-                        <label for="claude-model-name">モデル名:</label>
-                        <select id="claude-model-name" aria-label="Claudeモデル名">
-                            <optgroup label="Claude 4">
-                                <option value="claude-opus-4-20250514">Claude 4 Opus</option>
-                                <option value="claude-sonnet-4-20250514">Claude 4 Sonnet</option>
-                            </optgroup>
-                            <optgroup label="Claude 3.7 & 3.5">
-                                <option value="claude-3-7-sonnet-20250219">Claude 3.7 Sonnet</option>
-                                <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet v2</option>
-                                <option value="claude-3-5-sonnet-20240620">Claude 3.5 Sonnet v1</option>
-                                <option value="claude-3-5-haiku-20241022">Claude 3.5 Haiku</option>
-                            </optgroup>
-                            <optgroup label="Claude 3">
-                                <option value="claude-3-opus-20240229">Claude 3 Opus</option>
-                                <option value="claude-3-sonnet-20240229">Claude 3 Sonnet</option>
-                                <option value="claude-3-haiku-20240307">Claude 3 Haiku</option>
-                            </optgroup>
-                            <optgroup label="旧モデル (v2以前)">
-                                <option value="claude-2.1">Claude 2.1</option>
-                                <option value="claude-2.0">Claude 2.0</option>
-                            </optgroup>
-                            <optgroup label="エイリアス (最新版を指す)">
-                                <option value="claude-opus-4-0">claude-opus-4-0</option>
-                                <option value="claude-sonnet-4-0">claude-sonnet-4-0</option>
-                                <option value="claude-3-7-sonnet-latest">claude-3-7-sonnet-latest</option>
-                                <option value="claude-3-5-sonnet-latest">claude-3-5-sonnet-latest</option>
-                                <option value="claude-3-opus-latest">claude-3-opus-latest</option>
-                            </optgroup>
-                            <optgroup label="ユーザー指定" id="claude-user-defined-models-group">
-                            </optgroup>
-                        </select>
-                        <label for="claude-additional-models" style="margin-top:10px;">追加モデル (カンマ区切り):</label>
-                        <textarea id="claude-additional-models" placeholder="例: my-custom-claude-model" aria-label="Claude 追加モデル"></textarea>
-                    </div>
-                </details>
-
 
                 <details id="gemini-params-group" class="settings-group">
                     <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">パラメータ (Gemini)</summary>
@@ -3213,64 +3169,6 @@
                     </div>
                 </details>
 
-                <details id="claude-params-group" class="settings-group hidden">
-                    <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">パラメータ (Claude)</summary>
-                    <div style="margin-top:15px;">
-                        <label for="claude-system-prompt-default">システムプロンプト (デフォルト):</label>
-                        <textarea id="claude-system-prompt-default" placeholder="例: あなたはClaudeアシスタントです。" aria-label="Claude システムプロンプト (デフォルト)"></textarea>
-                        <label class="checkbox-label" style="margin-top: -5px; margin-bottom: 15px;">
-                            <input type="checkbox" id="claude-enable-system-prompt-default">
-                            このシステムプロンプトを有効にする
-                        </label>
-
-                        <div class="param-grid">
-                            <div>
-                                <label for="claude-max-tokens">Max Tokens:</label>
-                                <input type="number" id="claude-max-tokens" step="1" min="1" placeholder="例:4096" aria-label="Claude Max Tokens">
-                                <div style="display: flex; gap: 8px; margin-top: 5px; margin-bottom: 10px;">
-                                    <button type="button" class="set-claude-param-btn" data-target="claude-max-tokens" data-value="null" style="padding: 4px 8px; font-size: 12px; background-color: var(--bg-button-action); color: var(--text-light); border-radius:3px;">無</button>
-                                    <button type="button" class="set-claude-param-btn" data-target="claude-max-tokens" data-value="32000" style="padding: 4px 8px; font-size: 12px; background-color: var(--bg-button-action); color: var(--text-light); border-radius:3px;">32000</button>
-                                </div>
-                            </div>
-                            <div>
-                                <label for="claude-temperature">Temperature:</label>
-                                <input type="number" id="claude-temperature" step="0.01" min="0" max="1" placeholder="例:0.7 (0.0-1.0)" aria-label="Claude Temperature">
-                                <div style="display: flex; gap: 8px; margin-top: 5px; margin-bottom: 10px;">
-                                    <button type="button" class="set-claude-param-btn" data-target="claude-temperature" data-value="null" style="padding: 4px 8px; font-size: 12px; background-color: var(--bg-button-action); color: var(--text-light); border-radius:3px;">無</button>
-                                    <button type="button" class="set-claude-param-btn" data-target="claude-temperature" data-value="0" style="padding: 4px 8px; font-size: 12px; background-color: var(--bg-button-action); color: var(--text-light); border-radius:3px;">0</button>
-                                    <button type="button" class="set-claude-param-btn" data-target="claude-temperature" data-value="1.0" style="padding: 4px 8px; font-size: 12px; background-color: var(--bg-button-action); color: var(--text-light); border-radius:3px;">1.0</button>
-                                </div>
-                            </div>
-                            <div>
-                                <label for="claude-top-k">Top K:</label>
-                                <input type="number" id="claude-top-k" step="1" min="1" placeholder="例:5" aria-label="Claude Top K">
-                            </div>
-                            <div>
-                                <label for="claude-top-p">Top P:</label>
-                                <input type="number" id="claude-top-p" step="0.01" min="0" max="1" placeholder="例:1.0 (0.0 - 1.0)" aria-label="Claude Top P">
-                            </div>
-                        </div>
-
-                        <div id="claude-thoughts-param" style="margin-top: 15px;">
-                           <h3 style="margin-top:15px; margin-bottom:10px; font-size:14px; border:0; padding:0;">思考プロセス (Extended Thinking)</h3>
-                           <label class="checkbox-label">
-                               <input type="checkbox" id="claude-include-thoughts-toggle">
-                               Include Thoughts
-                           </label>
-                           <label class="checkbox-label">
-                               <input type="checkbox" id="claude-expand-thoughts-by-default-toggle">
-                               💭思考プロセスを開いた状態にする
-                           </label>
-                           <label for="claude-thinking-budget">Thinking Budget (トークン数):</label>
-                           <input type="number" id="claude-thinking-budget" step="1" min="1024" placeholder="例: 2000 (1024以上)">
-                           <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                               ※ 一部のモデルでのみ利用可能。チェック時、モデルは内部思考を生成します。
-                           </p>
-                        </div>
-
-                    </div>
-                </details>
-
                 <details id="gemini-advanced-group" class="settings-group">
                    <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">アドバンスド (Gemini)</summary>
                    <div style="margin-top:15px;">
@@ -3349,40 +3247,6 @@
                     </div>
                 </details>
 
-                <details id="claude-advanced-group" class="settings-group hidden">
-                   <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">アドバンスド (Claude)</summary>
-                   <div style="margin-top:15px;">
-                       <label for="claude-dummy-user">ダミー User プロンプト (送信時のみ追加):</label>
-                       <textarea id="claude-dummy-user" placeholder="API送信直前に user ロールとして履歴末尾に追加されます" aria-label="Claude ダミー User プロンプト"></textarea>
-                       <label class="checkbox-label" style="margin-top: -5px; margin-bottom: 15px;">
-                           <input type="checkbox" id="claude-enable-dummy-user">
-                           このダミーUserプロンプトを有効にする
-                       </label>
-
-                       <label for="claude-dummy-model">ダミー Model プロンプト (送信時のみ追加):</label>
-                       <textarea id="claude-dummy-model" placeholder="API送信直前に model ロールとして履歴最末尾に追加されます" aria-label="Claude ダミー Model プロンプト"></textarea>
-                       <label class="checkbox-label" style="margin-top: -5px;">
-                           <input type="checkbox" id="claude-enable-dummy-model">
-                           このダミーModelプロンプトを有効にする
-                       </label>
-                       <label class="checkbox-label" style="margin-top: -5px; margin-bottom: 15px;">
-                           <input type="checkbox" id="claude-concat-dummy-model">
-                           ダミーモデルと回答を連結
-                       </label>
-                       <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                           ※チェック時、モデル応答の先頭に上記ダミーModelの内容を付与。
-                       </p>
-                       <hr style="margin: 15px 0;">
-                       <label class="checkbox-label">
-                           <input type="checkbox" id="claude-streaming-output">
-                           ストリーミング出力を使用する
-                       </label>
-                       <label for="claude-streaming-speed">文字送り速度 (ミリ秒/文字):</label>
-
-                       <input type="number" id="claude-streaming-speed" min="0" step="1" placeholder="例: 30 (0で無効)" aria-label="Claude 文字送り速度">
-                    </div>
-                </details>
-
 
                 <div id="gemini-grounding-param" class="settings-group">
                     <h3>検索 (Gemini)</h3>
@@ -3406,7 +3270,7 @@
                         <button id="delete-background-btn" class="settings-delete-button hidden" type="button">画像を削除</button>
                     </div>
                      <p style="font-size: 11px; color: var(--text-secondary); margin-top: 8px;">
-                       ※ 画像はブラウザ内のデータベースに保存されます。<br>
+                       ※ 画像はブラウザ内のデータベースに保存。<br>
                        ※ 可読性のため画像の上に半透明のレイヤーを表示。
                      </p>
                 </div>
@@ -3701,7 +3565,7 @@
                            <label for="code-block-font-size-input">コードブロックのフォントサイズ (px):</label>
                            <input type="number" id="code-block-font-size-input" min="1" max="100" step="1" placeholder="例: 13 (デフォルト)" aria-label="コードブロックのフォントサイズ">
                            <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                               ※ 空欄でデフォルト(13px)。1～100pxの範囲で指定可。
+                                ※ 空欄でデフォルト(13px)。1～100pxの範囲で指定可。
                            </p>
                            <label for="thought-summary-font-size">思考プロセス フォントサイズ (px):</label>
                            <input type="number" id="thought-summary-font-size" min="1" max="100" step="1" placeholder="例: 13 (デフォルト)" aria-label="思考プロセス フォントサイズ">
@@ -3834,15 +3698,11 @@
         const CHAT_CREATEDAT_INDEX = 'createdAtIndex';
         const DEFAULT_MODEL = 'gemini-2.0-flash';
         const DEFAULT_DEEPSEEK_MODEL = 'deepseek-chat';
-        const DEFAULT_CLAUDE_MODEL = 'claude-sonnet-4-20250514';
         const DEFAULT_STREAMING_SPEED = 12;
         const DEFAULT_TEMPERATURE = 0.5;
         const DEFAULT_MAX_TOKENS = 4000;
         const DEFAULT_TOP_K = 40;
         const DEFAULT_TOP_P = 0.95;
-        const DEFAULT_CLAUDE_TEMPERATURE = 0.7;
-        const DEFAULT_CLAUDE_MAX_TOKENS = 4096;
-        const DEFAULT_CLAUDE_TOP_P = 1.0;
         const DEFAULT_FONT_FAMILY = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
         const DEFAULT_MESSAGE_BODY_FONT_SIZE = 14;
         const DEFAULT_CODE_BLOCK_FONT_SIZE = 13;
@@ -3862,7 +3722,6 @@
         const TEXTAREA_MAX_HEIGHT = 120;
         const GEMINI_API_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models/';
         const DEEPSEEK_API_DEFAULT_BASE_URL = 'https://api.deepseek.com';
-        const CLAUDE_API_BASE_URL = 'https://api.anthropic.com/v1/messages';
         const DUPLICATE_SUFFIX = ' (コピー)';
         const IMPORT_PREFIX = '(取込) ';
 
@@ -3990,18 +3849,11 @@
             deepSeekUserDefinedModelsGroup: document.getElementById('deepseek-user-defined-models-group'),
             deepSeekAdditionalModelsTextarea: document.getElementById('deepseek-additional-models'),
             deepSeekApiEndpointInput: document.getElementById('deepseek-api-endpoint'),
-            claudeSettingsGroup: document.getElementById('claude-settings-group'),
-            claudeApiKeyInput: document.getElementById('claude-api-key'),
-            claudeModelNameSelect: document.getElementById('claude-model-name'),
-            claudeUserDefinedModelsGroup: document.getElementById('claude-user-defined-models-group'),
-            claudeAdditionalModelsTextarea: document.getElementById('claude-additional-models'),
 
             geminiParamsGroup: document.getElementById('gemini-params-group'),
             deepseekParamsGroup: document.getElementById('deepseek-params-group'),
-            claudeParamsGroup: document.getElementById('claude-params-group'),
             geminiAdvancedGroup: document.getElementById('gemini-advanced-group'),
             deepseekAdvancedGroup: document.getElementById('deepseek-advanced-group'),
-            claudeAdvancedGroup: document.getElementById('claude-advanced-group'),
 
             geminiSystemPromptDefaultTextarea: document.getElementById('gemini-system-prompt-default'),
             geminiEnableSystemPromptDefaultCheckbox: document.getElementById('gemini-enable-system-prompt-default'),
@@ -4041,25 +3893,7 @@
             deepSeekEnableDummyModelCheckbox: document.getElementById('deepseek-enable-dummy-model'),
             deepSeekConcatDummyModelCheckbox: document.getElementById('deepseek-concat-dummy-model'),
 
-            claudeSystemPromptDefaultTextarea: document.getElementById('claude-system-prompt-default'),
-            claudeEnableSystemPromptDefaultCheckbox: document.getElementById('claude-enable-system-prompt-default'),
-            claudeMaxTokensInput: document.getElementById('claude-max-tokens'),
-            claudeTemperatureInput: document.getElementById('claude-temperature'),
-            claudeTopKInput: document.getElementById('claude-top-k'),
-            claudeTopPInput: document.getElementById('claude-top-p'),
-            claudeStreamingOutputCheckbox: document.getElementById('claude-streaming-output'),
-            claudeStreamingSpeedInput: document.getElementById('claude-streaming-speed'),
-            claudeDummyUserInput: document.getElementById('claude-dummy-user'),
-            claudeEnableDummyUserCheckbox: document.getElementById('claude-enable-dummy-user'),
-            claudeDummyModelInput: document.getElementById('claude-dummy-model'),
-            claudeEnableDummyModelCheckbox: document.getElementById('claude-enable-dummy-model'),
-            claudeConcatDummyModelCheckbox: document.getElementById('claude-concat-dummy-model'),
-            claudeIncludeThoughtsToggle: document.getElementById('claude-include-thoughts-toggle'),
-            claudeExpandThoughtsByDefaultToggle: document.getElementById('claude-expand-thoughts-by-default-toggle'),
-            claudeThinkingBudgetInput: document.getElementById('claude-thinking-budget'),
-
             setThinkingBudgetBtns: document.querySelectorAll('.set-thinking-budget-btn'),
-            setClaudeParamBtns: document.querySelectorAll('.set-claude-param-btn'),
             enterToSendCheckbox: document.getElementById('enter-to-send'),
             autoScrollOnNewMessageCheckbox: document.getElementById('auto-scroll-on-new-message'),
             autoScrollOnThoughtCheckbox: document.getElementById('auto-scroll-on-thought'),
@@ -4197,7 +4031,6 @@
             geminiThoughtsParam: document.getElementById('gemini-thoughts-param'),
             geminiPseudoStreamingParam: document.getElementById('gemini-pseudo-streaming-param'),
             deepSeekThoughtsParam: document.getElementById('deepseek-thoughts-param'),
-            claudeThoughtsParam: document.getElementById('claude-thoughts-param'),
             disableSaveSettingsConfirmationToggle: document.getElementById('disable-save-settings-confirmation-toggle'),
         };
 
@@ -4250,25 +4083,6 @@
                 deepSeekDummyModel: '',
                 deepSeekEnableDummyModel: true,
                 deepSeekConcatDummyModel: false,
-                claudeApiKey: '',
-                claudeModelName: DEFAULT_CLAUDE_MODEL,
-                claudeAdditionalModels: '',
-                claudeSystemPrompt: '',
-                claudeEnableSystemPromptDefault: true,
-                claudeTemperature: null,
-                claudeMaxTokens: null,
-                claudeTopK: null,
-                claudeTopP: null,
-                claudeStreamingOutput: true,
-                claudeStreamingSpeed: DEFAULT_STREAMING_SPEED,
-                claudeDummyUser: '',
-                claudeEnableDummyUser: false,
-                claudeDummyModel: '',
-                claudeEnableDummyModel: false,
-                claudeConcatDummyModel: false,
-                claudeIncludeThoughts: false,
-                claudeExpandThoughtsByDefault: false,
-                claudeThinkingBudget: null,
                 enterToSend: true,
                 autoScrollOnNewMessage: DEFAULT_AUTO_SCROLL_ON_NEW_MESSAGE,
                 autoScrollOnThought: false,
@@ -4516,7 +4330,7 @@
 
                         const oldGlobalParams = ['temperature', 'maxTokens', 'topP', 'presencePenalty', 'frequencyPenalty', 'systemPrompt', 'enableSystemPromptDefault'];
                         const oldGlobalAdvanced = ['streamingOutput', 'streamingSpeed', 'dummyUser', 'enableDummyUser', 'dummyModel', 'enableDummyModel', 'concatDummyModel'];
-                        const providerPrefixes = ['gemini', 'deepSeek', 'claude'];
+                        const providerPrefixes = ['gemini', 'deepSeek'];
 
                         oldGlobalParams.forEach(param => {
                             if (loadedSettings.hasOwnProperty(param)) {
@@ -4580,7 +4394,7 @@
                                         state.settings[key] = defaultValue;
                                     }
                                 } else if (key === 'apiProvider') {
-                                    if (['gemini', 'deepseek', 'claude'].includes(loadedValue)) {
+                                    if (['gemini', 'deepseek'].includes(loadedValue)) {
                                         state.settings.apiProvider = loadedValue;
                                     } else {
                                         state.settings.apiProvider = defaultValue;
@@ -4949,8 +4763,7 @@
                 const messageData = state.currentMessages[index];
                 const messageApiProvider = messageData?.generatedByApiProvider || state.settings.apiProvider;
                 const includeThoughtsForProvider = (messageApiProvider === 'gemini' && state.settings.geminiIncludeThoughts) ||
-                                                 (messageApiProvider === 'deepseek' && state.settings.deepSeekIncludeDeepSeekThoughts) ||
-                                                 (messageApiProvider === 'claude' && state.settings.claudeIncludeThoughts);
+                                                 (messageApiProvider === 'deepseek' && state.settings.deepSeekIncludeDeepSeekThoughts);
 
                 let initialThoughtOpenState = false;
                 if (isStreamingPlaceholder) {
@@ -4959,8 +4772,7 @@
                     initialThoughtOpenState = messageData.thoughtSummaryOpen;
                 } else if (includeThoughtsForProvider) {
                      initialThoughtOpenState = (messageApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) ||
-                                               (messageApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault) ||
-                                               (messageApiProvider === 'claude' && state.settings.claudeExpandThoughtsByDefault);
+                                               (messageApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault);
                 }
 
 
@@ -4990,14 +4802,14 @@
 
                     if (isStreamingPlaceholder) {
                         thoughtContentDiv.id = `streaming-thought-summary-${index}`;
-                        if (messageApiProvider === 'deepseek' || messageApiProvider === 'claude') {
+                        if (messageApiProvider === 'deepseek') {
                             const pre = document.createElement('pre');
-                            pre.id = `thought-pre-${index}`;
+                            pre.id = `deepseek-thought-pre-${index}`;
                             thoughtContentDiv.appendChild(pre);
                         } else {
                             thoughtContentDiv.innerHTML = '';
                         }
-                    } else if ((messageApiProvider === 'gemini' || messageApiProvider === 'claude') && messageData?.thoughtSummary) {
+                    } else if (messageApiProvider === 'gemini' && messageData?.thoughtSummary) {
                         try {
                             thoughtContentDiv.innerHTML = marked.parse(messageData.thoughtSummary || '');
                         } catch (e) {
@@ -5381,14 +5193,11 @@
                 let accumulatedContentForDisplay;
 
                 const selectedApiProvider = state.settings.apiProvider;
-                const streamSpeed = selectedApiProvider === 'gemini' ? state.settings.geminiStreamingSpeed : 
-                                  selectedApiProvider === 'deepseek' ? state.settings.deepSeekStreamingSpeed :
-                                  state.settings.claudeStreamingSpeed;
+                const streamSpeed = selectedApiProvider === 'gemini' ? state.settings.geminiStreamingSpeed : state.settings.deepSeekStreamingSpeed;
 
 
                 if (isThoughtSummary) {
-                    if ((selectedApiProvider === 'gemini' && state.settings.geminiIncludeThoughts) ||
-                        (selectedApiProvider === 'claude' && state.settings.claudeIncludeThoughts)) {
+                    if (selectedApiProvider === 'gemini' && state.settings.geminiIncludeThoughts) {
                         targetContentDiv = messageDiv.querySelector(`#streaming-thought-summary-${index}`);
                         accumulatedContentForDisplay = state.partialThoughtStreamContent;
                     } else if (selectedApiProvider === 'deepseek' && state.settings.deepSeekIncludeDeepSeekThoughts) {
@@ -5398,7 +5207,7 @@
                     }
                 } else {
                     targetContentDiv = messageDiv.querySelector(`#streaming-content-${index}`);
-                    if (selectedApiProvider === 'gemini' || selectedApiProvider === 'claude') {
+                    if (selectedApiProvider === 'gemini') {
                         accumulatedContentForDisplay = state.partialStreamContent;
                     } else {
                         return;
@@ -5445,7 +5254,7 @@
                     if (!finalMessageData) return;
                     const messageApiProvider = finalMessageData.generatedByApiProvider || state.settings.apiProvider;
 
-                    if (finalMessageData.thoughtSummary && (messageApiProvider === 'gemini' || messageApiProvider === 'claude')) {
+                    if (finalMessageData.thoughtSummary && messageApiProvider === 'gemini' && state.settings.geminiIncludeThoughts) {
                         const thoughtContentDiv = messageDiv.querySelector(`#streaming-thought-summary-${index}`);
                         if (thoughtContentDiv && typeof marked !== 'undefined') {
                             try {
@@ -5984,9 +5793,6 @@
                 elements.deepSeekModelNameSelect.value = state.settings.deepSeekModelName || DEFAULT_DEEPSEEK_MODEL;
                 elements.deepSeekAdditionalModelsTextarea.value = state.settings.deepSeekAdditionalModels || '';
                 elements.deepSeekApiEndpointInput.value = state.settings.deepSeekApiEndpoint || '';
-                elements.claudeApiKeyInput.value = state.settings.claudeApiKey || '';
-                elements.claudeModelNameSelect.value = state.settings.claudeModelName || DEFAULT_CLAUDE_MODEL;
-                elements.claudeAdditionalModelsTextarea.value = state.settings.claudeAdditionalModels || '';
 
                 elements.geminiSystemPromptDefaultTextarea.value = state.settings.geminiSystemPrompt || '';
                 elements.geminiEnableSystemPromptDefaultCheckbox.checked = state.settings.geminiEnableSystemPromptDefault;
@@ -6025,23 +5831,6 @@
                 elements.deepSeekDummyModelInput.value = state.settings.deepSeekDummyModel || '';
                 elements.deepSeekEnableDummyModelCheckbox.checked = state.settings.deepSeekEnableDummyModel;
                 elements.deepSeekConcatDummyModelCheckbox.checked = state.settings.deepSeekConcatDummyModel;
-
-                elements.claudeSystemPromptDefaultTextarea.value = state.settings.claudeSystemPrompt || '';
-                elements.claudeEnableSystemPromptDefaultCheckbox.checked = state.settings.claudeEnableSystemPromptDefault;
-                elements.claudeTemperatureInput.value = state.settings.claudeTemperature === null ? '' : state.settings.claudeTemperature;
-                elements.claudeMaxTokensInput.value = state.settings.claudeMaxTokens === null ? '' : state.settings.claudeMaxTokens;
-                elements.claudeTopKInput.value = state.settings.claudeTopK === null ? '' : state.settings.claudeTopK;
-                elements.claudeTopPInput.value = state.settings.claudeTopP === null ? '' : state.settings.claudeTopP;
-                elements.claudeStreamingOutputCheckbox.checked = state.settings.claudeStreamingOutput;
-                elements.claudeStreamingSpeedInput.value = state.settings.claudeStreamingSpeed ?? DEFAULT_STREAMING_SPEED;
-                elements.claudeDummyUserInput.value = state.settings.claudeDummyUser || '';
-                elements.claudeEnableDummyUserCheckbox.checked = state.settings.claudeEnableDummyUser;
-                elements.claudeDummyModelInput.value = state.settings.claudeDummyModel || '';
-                elements.claudeEnableDummyModelCheckbox.checked = state.settings.claudeEnableDummyModel;
-                elements.claudeConcatDummyModelCheckbox.checked = state.settings.claudeConcatDummyModel;
-                elements.claudeIncludeThoughtsToggle.checked = state.settings.claudeIncludeThoughts;
-                elements.claudeExpandThoughtsByDefaultToggle.checked = state.settings.claudeExpandThoughtsByDefault;
-                elements.claudeThinkingBudgetInput.value = state.settings.claudeThinkingBudget === null ? '' : state.settings.claudeThinkingBudget;
 
 
                 elements.enterToSendCheckbox.checked = state.settings.enterToSend;
@@ -6133,7 +5922,6 @@
                 this.updateHistoryHeaderButtonVisibility();
                 this.updateUserModelOptions();
                 this.updateDeepSeekUserModelOptions();
-                this.updateClaudeUserModelOptions();
                 this.updateBackgroundSettingsUI();
                 this.updateIconSettingsUI();
                 this.applyTheme();
@@ -6154,21 +5942,15 @@
             },
             toggleApiSettingsVisibility(provider) {
                 const showGemini = provider === 'gemini';
-                const showDeepSeek = provider === 'deepseek';
-                const showClaude = provider === 'claude';
-
                 elements.geminiSettingsGroup.classList.toggle('hidden', !showGemini);
+                elements.deepSeekSettingsGroup.classList.toggle('hidden', showGemini);
+
                 elements.geminiParamsGroup.classList.toggle('hidden', !showGemini);
+                elements.deepseekParamsGroup.classList.toggle('hidden', showGemini);
                 elements.geminiAdvancedGroup.classList.toggle('hidden', !showGemini);
+                elements.deepseekAdvancedGroup.classList.toggle('hidden', showGemini);
+
                 elements.geminiGroundingParam.classList.toggle('hidden', !showGemini);
-
-                elements.deepSeekSettingsGroup.classList.toggle('hidden', !showDeepSeek);
-                elements.deepseekParamsGroup.classList.toggle('hidden', !showDeepSeek);
-                elements.deepseekAdvancedGroup.classList.toggle('hidden', !showDeepSeek);
-
-                elements.claudeSettingsGroup.classList.toggle('hidden', !showClaude);
-                elements.claudeParamsGroup.classList.toggle('hidden', !showClaude);
-                elements.claudeAdvancedGroup.classList.toggle('hidden', !showClaude);
             },
             updateChatScreenElementVisibility() {
                 if (elements.chatTitle) {
@@ -6284,29 +6066,6 @@
                 } else if (select.options.length > 0) {
                     select.value = defaultDeepSeekModels[0];
                     state.settings.deepSeekModelName = select.value;
-                }
-            },
-            updateClaudeUserModelOptions() {
-                const group = elements.claudeUserDefinedModelsGroup;
-                group.innerHTML = '';
-                const models = (state.settings.claudeAdditionalModels || '')
-                    .split(',')
-                    .map(m => m.trim())
-                    .filter(m => m !== '');
-
-                if (models.length > 0) {
-                    group.disabled = false;
-                    models.forEach(modelId => {
-                        const option = document.createElement('option');
-                        option.value = modelId;
-                        option.textContent = modelId;
-                        group.appendChild(option);
-                    });
-                    if (models.includes(state.settings.claudeModelName)) {
-                        elements.claudeModelNameSelect.value = state.settings.claudeModelName;
-                    }
-                } else {
-                    group.disabled = true;
                 }
             },
             applyFontFamily() {
@@ -6769,7 +6528,7 @@
                     let preElement = thoughtContentDiv.querySelector('pre');
                     if (!preElement) {
                         preElement = document.createElement('pre');
-                        preElement.id = `thought-pre-${index}`;
+                        preElement.id = `deepseek-thought-pre-${messageIndex}`;
                         thoughtContentDiv.innerHTML = '';
                         thoughtContentDiv.appendChild(preElement);
                     }
@@ -7114,20 +6873,6 @@
                             targetInput.value = '';
                         } else {
                             targetInput.value = value;
-                        }
-                    });
-                });
-                elements.setClaudeParamBtns.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const targetId = button.dataset.target;
-                        const value = button.dataset.value;
-                        const targetInput = document.getElementById(targetId);
-                        if (targetInput) {
-                            if (value === 'null') {
-                                targetInput.value = '';
-                            } else {
-                                targetInput.value = value;
-                            }
                         }
                     });
                 });
@@ -7891,8 +7636,6 @@
                     state.currentSystemPrompt = state.settings.geminiSystemPrompt || '';
                 } else if (currentProvider === 'deepseek' && state.settings.deepSeekEnableSystemPromptDefault) {
                     state.currentSystemPrompt = state.settings.deepSeekSystemPrompt || '';
-                } else if (currentProvider === 'claude' && state.settings.claudeEnableSystemPromptDefault) {
-                    state.currentSystemPrompt = state.settings.claudeSystemPrompt || '';
                 } else {
                     state.currentSystemPrompt = '';
                 }
@@ -8296,8 +8039,6 @@
 
                 let contextDeepSeekIncludeThoughts;
 
-                let contextClaudeTopK, contextClaudeIncludeThoughts, contextClaudeThinkingBudget, contextClaudeExpandThoughtsByDefault;
-
 
                 if (isBackgroundProcess) {
                     const providerForBgSettings = sourceSessionContext.apiProvider || state.settings.apiProvider;
@@ -8319,7 +8060,7 @@
                         contextConcatDummyModel = sourceSessionContext.concatDummyModel ?? state.settings.geminiConcatDummyModel;
                         contextGeminiPseudoStreaming = sourceSessionContext.pseudoStreaming ?? state.settings.geminiPseudoStreaming;
                         contextGeminiEnableGrounding = sourceSessionContext.enableGrounding ?? state.settings.geminiEnableGrounding;
-                    } else if (providerForBgSettings === 'deepseek') {
+                    } else {
                         contextTemperature = sourceSessionContext.temperature ?? state.settings.deepSeekTemperature;
                         contextMaxTokens = sourceSessionContext.maxTokens ?? state.settings.deepSeekMaxTokens;
                         contextTopP = sourceSessionContext.topP ?? state.settings.deepSeekTopP;
@@ -8333,21 +8074,6 @@
                         contextDummyModel = sourceSessionContext.dummyModel ?? state.settings.deepSeekDummyModel;
                         contextEnableDummyModel = sourceSessionContext.enableDummyModel ?? state.settings.deepSeekEnableDummyModel;
                         contextConcatDummyModel = sourceSessionContext.concatDummyModel ?? state.settings.deepSeekConcatDummyModel;
-                    } else if (providerForBgSettings === 'claude') {
-                        contextTemperature = sourceSessionContext.temperature ?? state.settings.claudeTemperature;
-                        contextMaxTokens = sourceSessionContext.maxTokens ?? state.settings.claudeMaxTokens;
-                        contextClaudeTopK = sourceSessionContext.topK ?? state.settings.claudeTopK;
-                        contextTopP = sourceSessionContext.topP ?? state.settings.claudeTopP;
-                        contextStreamingOutput = sourceSessionContext.streamingOutput ?? state.settings.claudeStreamingOutput;
-                        contextStreamingSpeed = sourceSessionContext.streamingSpeed ?? state.settings.claudeStreamingSpeed;
-                        contextDummyUser = sourceSessionContext.dummyUser ?? state.settings.claudeDummyUser;
-                        contextEnableDummyUser = sourceSessionContext.enableDummyUser ?? state.settings.claudeEnableDummyUser;
-                        contextDummyModel = sourceSessionContext.dummyModel ?? state.settings.claudeDummyModel;
-                        contextEnableDummyModel = sourceSessionContext.enableDummyModel ?? state.settings.claudeEnableDummyModel;
-                        contextConcatDummyModel = sourceSessionContext.concatDummyModel ?? state.settings.claudeConcatDummyModel;
-                        contextClaudeIncludeThoughts = sourceSessionContext.includeThoughts ?? state.settings.claudeIncludeThoughts;
-                        contextClaudeThinkingBudget = sourceSessionContext.thinkingBudget ?? state.settings.claudeThinkingBudget;
-                        contextClaudeExpandThoughtsByDefault = sourceSessionContext.expandThoughtsByDefault ?? state.settings.claudeExpandThoughtsByDefault;
                     }
                 } else {
                     if (selectedApiProvider === 'gemini') {
@@ -8368,7 +8094,7 @@
                         contextConcatDummyModel = state.settings.geminiConcatDummyModel;
                         contextGeminiPseudoStreaming = state.settings.geminiPseudoStreaming;
                         contextGeminiEnableGrounding = state.settings.geminiEnableGrounding;
-                    } else if (selectedApiProvider === 'deepseek') {
+                    } else {
                         contextTemperature = state.settings.deepSeekTemperature;
                         contextMaxTokens = state.settings.deepSeekMaxTokens;
                         contextTopP = state.settings.deepSeekTopP;
@@ -8382,21 +8108,6 @@
                         contextDummyModel = state.settings.deepSeekDummyModel;
                         contextEnableDummyModel = state.settings.deepSeekEnableDummyModel;
                         contextConcatDummyModel = state.settings.deepSeekConcatDummyModel;
-                    } else if (selectedApiProvider === 'claude') {
-                        contextTemperature = state.settings.claudeTemperature;
-                        contextMaxTokens = state.settings.claudeMaxTokens;
-                        contextClaudeTopK = state.settings.claudeTopK;
-                        contextTopP = state.settings.claudeTopP;
-                        contextStreamingOutput = state.settings.claudeStreamingOutput;
-                        contextStreamingSpeed = state.settings.claudeStreamingSpeed;
-                        contextDummyUser = state.settings.claudeDummyUser;
-                        contextEnableDummyUser = state.settings.claudeEnableDummyUser;
-                        contextDummyModel = state.settings.claudeDummyModel;
-                        contextEnableDummyModel = state.settings.claudeEnableDummyModel;
-                        contextConcatDummyModel = state.settings.claudeConcatDummyModel;
-                        contextClaudeIncludeThoughts = state.settings.claudeIncludeThoughts;
-                        contextClaudeThinkingBudget = state.settings.claudeThinkingBudget;
-                        contextClaudeExpandThoughtsByDefault = state.settings.claudeExpandThoughtsByDefault;
                     }
                 }
 
@@ -8434,9 +8145,6 @@
                     return "APIキー未設定";
                 } else if (selectedApiProvider === 'deepseek' && !state.settings.deepSeekApiKey) {
                     if (!isBackgroundProcess) { await uiUtils.showCustomAlert("DeepSeek APIキーが設定されていません。設定画面を開きます。"); uiUtils.showScreen('settings'); }
-                    return "APIキー未設定";
-                } else if (selectedApiProvider === 'claude' && !state.settings.claudeApiKey) {
-                    if (!isBackgroundProcess) { await uiUtils.showCustomAlert("Claude APIキーが設定されていません。設定画面を開きます。"); uiUtils.showScreen('settings'); }
                     return "APIキー未設定";
                 }
 
@@ -8663,14 +8371,6 @@
                         }
                          if (Object.keys(commonGenerationConfig.thinkingConfig).length === 0) delete commonGenerationConfig.thinkingConfig;
                     }
-                } else if (selectedApiProvider === 'claude') {
-                    if (contextClaudeTopK !== null) commonGenerationConfig.topK = contextClaudeTopK;
-                    if(contextClaudeIncludeThoughts) {
-                        commonGenerationConfig.thinkingConfig = { "type": "enabled" };
-                        if (contextClaudeThinkingBudget !== null && Number.isInteger(contextClaudeThinkingBudget) && contextClaudeThinkingBudget >= 1024) {
-                            commonGenerationConfig.thinkingConfig.budget_tokens = contextClaudeThinkingBudget;
-                        }
-                    }
                 }
 
 
@@ -8681,8 +8381,8 @@
                 if (systemPromptTextToUseForApi) {
                     if (selectedApiProvider === 'gemini') {
                         systemInstructionForProvider = { role: "system", parts: [{ text: systemPromptTextToUseForApi }] };
-                    } else if (selectedApiProvider === 'deepseek' || selectedApiProvider === 'claude') {
-                        systemInstructionForProvider = { content: systemPromptTextToUseForApi, parts: [{ text: systemPromptTextToUseForApi }] };
+                    } else if (selectedApiProvider === 'deepseek') {
+                        systemInstructionForProvider = { content: systemPromptTextToUseForApi };
                     }
                 }
 
@@ -8704,15 +8404,13 @@
                         apiResponseObject = await apiUtils.callGeminiApi(apiMessages, commonGenerationConfig, systemInstructionForProvider, useStreamingForThisCall, usePseudoForThisCall, contextGeminiEnableGrounding);
                     } else if (selectedApiProvider === 'deepseek') {
                         apiResponseObject = await apiUtils.callDeepSeekApi(apiMessages, commonGenerationConfig, systemInstructionForProvider, useStreamingForThisCall);
-                    } else if (selectedApiProvider === 'claude') {
-                        apiResponseObject = await apiUtils.callClaudeApi(apiMessages, commonGenerationConfig, systemInstructionForProvider, useStreamingForThisCall);
                     } else {
                         throw new Error("不明なAPIプロバイダーが選択されています。");
                     }
 
                     const dummyModelPrefix = (contextConcatDummyModel && dummyModelTextToUse) ? dummyModelTextToUse : '';
                      if (!isBackgroundProcess) {
-                        if (selectedApiProvider === 'gemini' || selectedApiProvider === 'claude') {
+                        if (selectedApiProvider === 'gemini') {
                             state.partialStreamContent = dummyModelPrefix;
                             state.partialThoughtStreamContent = '';
                         } else if (selectedApiProvider === 'deepseek') {
@@ -8733,8 +8431,7 @@
                             timestamp: Date.now(),
                             generatedByApiProvider: selectedApiProvider,
                             thoughtSummaryOpen: (selectedApiProvider === 'gemini' && contextGeminiIncludeThoughts && state.settings.geminiExpandThoughtsByDefault) ||
-                                                (selectedApiProvider === 'deepseek' && contextDeepSeekIncludeThoughts && state.settings.deepSeekExpandDeepSeekThoughtsByDefault) ||
-                                                (selectedApiProvider === 'claude' && contextClaudeIncludeThoughts && state.settings.claudeExpandThoughtsByDefault),
+                                                (selectedApiProvider === 'deepseek' && contextDeepSeekIncludeThoughts && state.settings.deepSeekExpandDeepSeekThoughtsByDefault),
                         };
 
                         if (isRetry && firstResponseIndexForRetry !== -1) {
@@ -8761,18 +8458,12 @@
                     if (useStreamingForThisCall) {
                         let responseStreamIterator;
                         if (selectedApiProvider === 'gemini') {
-                            responseStreamIterator = apiUtils.handleGeminiStreamingResponse(apiResponseObject);
+                            responseStreamIterator = apiUtils.handleStreamingResponse(apiResponseObject);
                         } else if (selectedApiProvider === 'deepseek') {
                             responseStreamIterator = apiUtils.handleDeepSeekStreamingResponse(apiResponseObject);
-                        } else if (selectedApiProvider === 'claude') {
-                            responseStreamIterator = apiUtils.handleClaudeStreamingResponse(apiResponseObject);
                         }
 
-
-                        const currentContextStreamSpeed = selectedApiProvider === 'gemini' ? contextStreamingSpeed : 
-                                                          selectedApiProvider === 'deepseek' ? state.settings.deepSeekStreamingSpeed :
-                                                          state.settings.claudeStreamingSpeed;
-
+                        const currentContextStreamSpeed = selectedApiProvider === 'gemini' ? contextStreamingSpeed : state.settings.deepSeekStreamingSpeed;
                         const messageIndexForDisplay = isBackgroundProcess ? -1 : (modelMessageObjectForStream ? state.currentMessages.indexOf(modelMessageObjectForStream) : -1);
 
 
@@ -8799,13 +8490,6 @@
                                             if (!state.deepSeekIsProcessingThoughtQueue) {
                                                 uiUtils.processDeepSeekThoughtQueue(messageIndexForDisplay);
                                             }
-                                        } else if (selectedApiProvider === 'claude' && contextClaudeIncludeThoughts) {
-                                            for (const char of streamData.thoughtText) {
-                                                if (state.abortController?.signal.aborted) break;
-                                                state.partialThoughtStreamContent += char;
-                                                uiUtils.updateStreamingMessage(messageIndexForDisplay, char, true);
-                                                if (currentContextStreamSpeed > 0) await sleep(currentContextStreamSpeed);
-                                            }
                                         }
                                     }
                                 }
@@ -8814,7 +8498,7 @@
                                     if (isBackgroundProcess) {
                                         modelResponseRawContent += streamData.contentText;
                                     } else {
-                                        if (selectedApiProvider === 'gemini' || selectedApiProvider === 'claude') {
+                                        if (selectedApiProvider === 'gemini') {
                                             for (const char of streamData.contentText) {
                                                 if (state.abortController?.signal.aborted) break;
                                                 state.partialStreamContent += char;
@@ -8856,22 +8540,19 @@
                                     uiUtils.processDeepSeekContentQueue(messageIndexForDisplay);
                                 }
                             } else if (streamData.type === 'metadata') {
-                                if (selectedApiProvider === 'deepseek') {
-                                    state.deepSeekStreamEnded = true;
-                                    if (!state.deepSeekIsProcessingThoughtQueue && state.deepSeekThoughtChunkQueue.length > 0) {
-                                        await uiUtils.processDeepSeekThoughtQueue(messageIndexForDisplay);
-                                    }
-                                    while (state.deepSeekIsProcessingThoughtQueue) {
-                                        await sleep(50);
-                                    }
-                                    if (!state.deepSeekIsProcessingContentQueue && state.deepSeekContentChunkQueue.length > 0) {
-                                        await uiUtils.processDeepSeekContentQueue(messageIndexForDisplay);
-                                    }
-                                    while (state.deepSeekIsProcessingContentQueue) {
-                                        await sleep(50);
-                                    }
+                                state.deepSeekStreamEnded = true;
+                                if (!state.deepSeekIsProcessingThoughtQueue && state.deepSeekThoughtChunkQueue.length > 0) {
+                                    await uiUtils.processDeepSeekThoughtQueue(messageIndexForDisplay);
                                 }
-
+                                while (state.deepSeekIsProcessingThoughtQueue) {
+                                     await sleep(50);
+                                }
+                                if (!state.deepSeekIsProcessingContentQueue && state.deepSeekContentChunkQueue.length > 0) {
+                                    await uiUtils.processDeepSeekContentQueue(messageIndexForDisplay);
+                                }
+                                while (state.deepSeekIsProcessingContentQueue) {
+                                     await sleep(50);
+                                }
                                 modelResponseMetadata = {
                                     finishReason: streamData.finishReason,
                                     safetyRatings: streamData.safetyRatings,
@@ -8886,8 +8567,6 @@
                                         modelThoughtSummaryContent = streamData.fullReasoningContent;
                                     }
                                     if (streamData.usageMetadata) finalUsageMetadataFromStream = streamData.usageMetadata;
-                                } else if (selectedApiProvider === 'claude') {
-                                    if (streamData.usageMetadata) finalUsageMetadataFromStream = streamData.usageMetadata;
                                 }
                                 break;
                             } else if (streamData.type === 'error') {
@@ -8898,7 +8577,7 @@
                         }
 
                         if (!isBackgroundProcess) {
-                           if (selectedApiProvider === 'gemini' || selectedApiProvider === 'claude') {
+                           if (selectedApiProvider === 'gemini') {
                                modelThoughtSummaryContent = state.partialThoughtStreamContent;
                                modelResponseRawContent = state.partialStreamContent;
                            } else if (selectedApiProvider === 'deepseek') {
@@ -8969,29 +8648,6 @@
                                 if (data.error) rawContentFromApi += ` (エラー: ${data.error.message})`;
                             }
                             modelResponseRawContent = dummyModelPrefix + rawContentFromApi;
-                        } else if (selectedApiProvider === 'claude') {
-                            let rawContentFromApi = "";
-                            if (data.content && data.content.length > 0) {
-                                data.content.forEach(block => {
-                                    if (block.type === 'text') {
-                                        rawContentFromApi += block.text;
-                                    } else if (block.type === 'thinking' && contextClaudeIncludeThoughts) {
-                                        modelThoughtSummaryContent += (block.thinking || "") + "\n\n";
-                                    }
-                                });
-                                modelThoughtSummaryContent = modelThoughtSummaryContent.trim();
-                            }
-                            modelResponseMetadata = { finishReason: data.stop_reason || 'stop' };
-                            if (data.usage) {
-                                finalUsageMetadataFromStream = {
-                                    candidatesTokenCount: data.usage.output_tokens,
-                                    totalTokenCount: data.usage.input_tokens + data.usage.output_tokens,
-                                };
-                            }
-                            if (!rawContentFromApi && data.stop_reason === 'end_turn') {
-                                rawContentFromApi = "(応答が空です)";
-                            }
-                            modelResponseRawContent = dummyModelPrefix + rawContentFromApi;
                         }
                     }
 
@@ -9009,13 +8665,8 @@
                                  bgModelMessage.groundingMetadata = currentGroundingMetadata;
                              } else if (selectedApiProvider === 'deepseek' && contextDeepSeekIncludeThoughts) {
                                  bgModelMessage.deepSeekThoughtSummary = modelThoughtSummaryContent || null;
-                             } else if (selectedApiProvider === 'claude' && contextClaudeIncludeThoughts) {
-                                 bgModelMessage.thoughtSummary = modelThoughtSummaryContent || null;
                              }
-
-                              bgModelMessage.thoughtSummaryOpen = (selectedApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) || 
-                                                                  (selectedApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault) ||
-                                                                  (selectedApiProvider === 'claude' && state.settings.claudeExpandThoughtsByDefault);
+                              bgModelMessage.thoughtSummaryOpen = (selectedApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) || (selectedApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault);
 
 
                              currentContextMessages.push(bgModelMessage);
@@ -9073,10 +8724,8 @@
                                     msgToUpdate.groundingMetadata = currentGroundingMetadata;
                                 } else if (selectedApiProvider === 'deepseek' && contextDeepSeekIncludeThoughts && modelThoughtSummaryContent) {
                                     msgToUpdate.deepSeekThoughtSummary = modelThoughtSummaryContent || null;
-                                } else if (selectedApiProvider === 'claude' && contextClaudeIncludeThoughts && modelThoughtSummaryContent) {
-                                    msgToUpdate.thoughtSummary = modelThoughtSummaryContent || null;
                                 }
-                                if (selectedApiProvider === 'gemini' || selectedApiProvider === 'claude') {
+                                if (selectedApiProvider === 'gemini') {
                                     uiUtils.finalizeStreamingMessage(finalModelMessageIndex);
                                 } else if (selectedApiProvider === 'deepseek') {
                                     uiUtils.finalizeDeepSeekDisplay(finalModelMessageIndex);
@@ -9096,12 +8745,8 @@
                                  newModelMessage.groundingMetadata = currentGroundingMetadata;
                             } else if (selectedApiProvider === 'deepseek' && contextDeepSeekIncludeThoughts && modelThoughtSummaryContent) {
                                  newModelMessage.deepSeekThoughtSummary = modelThoughtSummaryContent || null;
-                            } else if (selectedApiProvider === 'claude' && contextClaudeIncludeThoughts && modelThoughtSummaryContent) {
-                                 newModelMessage.thoughtSummary = modelThoughtSummaryContent || null;
                             }
-                            newModelMessage.thoughtSummaryOpen = (selectedApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) || 
-                                                                 (selectedApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault) ||
-                                                                 (selectedApiProvider === 'claude' && state.settings.claudeExpandThoughtsByDefault);
+                            newModelMessage.thoughtSummaryOpen = (selectedApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) || (selectedApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault);
 
                              const targetUserIndexForCascade = userMessageIndex;
                              if (targetUserIndexForCascade !== -1 && !isBackgroundProcess) {
@@ -9131,14 +8776,15 @@
                             const placeholderElement = document.getElementById(`streaming-message-${tempPlaceholderIndex}`);
                             if (placeholderElement) placeholderElement.remove();
                             if(tempPlaceholderIndex !== -1) state.currentMessages.splice(tempPlaceholderIndex, 1);
-                        }
+                            state.messageCollapsedStates.delete(tempPlaceholderIndex);
+                         }
                     }
                 } catch (error) {
                     const isAbort = error.message === "リクエストがキャンセルされました。" || modelResponseMetadata.finishReason === 'ABORTED';
                     const displayErrorMessage = isAbort ? error.message : (error.message || "不明なエラーが発生しました");
 
                     let partialThoughtContentOnError, partialContentOnError;
-                    if (selectedApiProvider === 'gemini' || selectedApiProvider === 'claude') {
+                    if (selectedApiProvider === 'gemini') {
                         partialThoughtContentOnError = state.partialThoughtStreamContent;
                         partialContentOnError = state.partialStreamContent;
                     } else if (selectedApiProvider === 'deepseek') {
@@ -9158,8 +8804,6 @@
                              finalPartialThoughtValue = partialThoughtContentOnError + `\n\n(${isAbort ? '中断されました' : 'エラーが発生しました'})`;
                          } else if (selectedApiProvider === 'deepseek' && partialThoughtContentOnError && contextDeepSeekIncludeThoughts) {
                              finalPartialThoughtValue = partialThoughtContentOnError + `\n\n(${isAbort ? '中断されました' : 'エラーが発生しました'})`;
-                         } else if (selectedApiProvider === 'claude' && partialThoughtContentOnError && contextClaudeIncludeThoughts) {
-                             finalPartialThoughtValue = partialThoughtContentOnError + `\n\n(${isAbort ? '中断されました' : 'エラーが発生しました'})`;
                          }
 
                         const streamingMessageIndex = state.currentMessages.indexOf(modelMessageObjectForStream);
@@ -9178,12 +8822,10 @@
                                 msgToUpdate.groundingMetadata = currentGroundingMetadata;
                             } else if (selectedApiProvider === 'deepseek') {
                                 msgToUpdate.deepSeekThoughtSummary = finalPartialThoughtValue;
-                            } else if (selectedApiProvider === 'claude') {
-                                msgToUpdate.thoughtSummary = finalPartialThoughtValue;
                             }
 
                              try {
-                                 if (selectedApiProvider === 'gemini' || selectedApiProvider === 'claude') {
+                                 if (selectedApiProvider === 'gemini') {
                                      uiUtils.finalizeStreamingMessage(streamingMessageIndex);
                                  } else if (selectedApiProvider === 'deepseek') {
                                      uiUtils.finalizeDeepSeekDisplay(streamingMessageIndex);
@@ -9662,9 +9304,6 @@
                  newSettings.deepSeekModelName = elements.deepSeekModelNameSelect.value;
                  newSettings.deepSeekAdditionalModels = elements.deepSeekAdditionalModelsTextarea.value.trim();
                  newSettings.deepSeekApiEndpoint = elements.deepSeekApiEndpointInput.value.trim();
-                 newSettings.claudeApiKey = elements.claudeApiKeyInput.value.trim();
-                 newSettings.claudeModelName = elements.claudeModelNameSelect.value;
-                 newSettings.claudeAdditionalModels = elements.claudeAdditionalModelsTextarea.value.trim();
 
                 newSettings.geminiSystemPrompt = elements.geminiSystemPromptDefaultTextarea.value.trim();
                 newSettings.geminiEnableSystemPromptDefault = elements.geminiEnableSystemPromptDefaultCheckbox.checked;
@@ -9703,23 +9342,6 @@
                 newSettings.deepSeekDummyModel = elements.deepSeekDummyModelInput.value.trim();
                 newSettings.deepSeekEnableDummyModel = elements.deepSeekEnableDummyModelCheckbox.checked;
                 newSettings.deepSeekConcatDummyModel = elements.deepSeekConcatDummyModelCheckbox.checked;
-
-                newSettings.claudeSystemPrompt = elements.claudeSystemPromptDefaultTextarea.value.trim();
-                newSettings.claudeEnableSystemPromptDefault = elements.claudeEnableSystemPromptDefaultCheckbox.checked;
-                newSettings.claudeTemperature = elements.claudeTemperatureInput.value === '' ? null : parseFloat(elements.claudeTemperatureInput.value);
-                newSettings.claudeMaxTokens = elements.claudeMaxTokensInput.value === '' ? null : parseInt(elements.claudeMaxTokensInput.value);
-                newSettings.claudeTopK = elements.claudeTopKInput.value === '' ? null : parseInt(elements.claudeTopKInput.value);
-                newSettings.claudeTopP = elements.claudeTopPInput.value === '' ? null : parseFloat(elements.claudeTopPInput.value);
-                newSettings.claudeStreamingOutput = elements.claudeStreamingOutputCheckbox.checked;
-                newSettings.claudeStreamingSpeed = elements.claudeStreamingSpeedInput.value === '' ? DEFAULT_STREAMING_SPEED : parseInt(elements.claudeStreamingSpeedInput.value);
-                newSettings.claudeDummyUser = elements.claudeDummyUserInput.value.trim();
-                newSettings.claudeEnableDummyUser = elements.claudeEnableDummyUserCheckbox.checked;
-                newSettings.claudeDummyModel = elements.claudeDummyModelInput.value.trim();
-                newSettings.claudeEnableDummyModel = elements.claudeEnableDummyModelCheckbox.checked;
-                newSettings.claudeConcatDummyModel = elements.claudeConcatDummyModelCheckbox.checked;
-                newSettings.claudeIncludeThoughts = elements.claudeIncludeThoughtsToggle.checked;
-                newSettings.claudeExpandThoughtsByDefault = elements.claudeExpandThoughtsByDefaultToggle.checked;
-                newSettings.claudeThinkingBudget = elements.claudeThinkingBudgetInput.value === '' ? null : parseInt(elements.claudeThinkingBudgetInput.value, 10);
 
 
                  newSettings.enterToSend = elements.enterToSendCheckbox.checked;
@@ -9817,13 +9439,6 @@
                     newSettings.deepSeekTopP = validateNumeric(newSettings.deepSeekTopP, null, 0, 1);
                     newSettings.deepSeekPresencePenalty = validateNumeric(newSettings.deepSeekPresencePenalty, null, -2.0, 2.0);
                     newSettings.deepSeekFrequencyPenalty = validateNumeric(newSettings.deepSeekFrequencyPenalty, null, -2.0, 2.0);
-                } else if (currentProvider === 'claude') {
-                    newSettings.claudeStreamingSpeed = validateNumeric(newSettings.claudeStreamingSpeed, DEFAULT_STREAMING_SPEED, 0, Infinity, true);
-                    newSettings.claudeTemperature = validateNumeric(newSettings.claudeTemperature, null, 0, 1);
-                    newSettings.claudeMaxTokens = validateNumeric(newSettings.claudeMaxTokens, null, 1, Infinity, true);
-                    newSettings.claudeTopK = validateNumeric(newSettings.claudeTopK, null, 1, Infinity, true);
-                    newSettings.claudeTopP = validateNumeric(newSettings.claudeTopP, null, 0, 1);
-                    newSettings.claudeThinkingBudget = validateNumeric(newSettings.claudeThinkingBudget, null, 1024, Infinity, true);
                 }
 
 
@@ -9965,7 +9580,7 @@
 
                         const defaultSettingsCopy = JSON.parse(JSON.stringify(state.settings));
                         Object.keys(defaultSettingsCopy).forEach(key => {
-                            if (key.startsWith('gemini') || key.startsWith('deepSeek') || key.startsWith('claude')) {
+                            if (key.startsWith('gemini') || key.startsWith('deepSeek')) {
                                 if(key.toLowerCase().includes('systemprompt')) defaultSettingsCopy[key] = '';
                                 else if(key.toLowerCase().includes('enablesystempromptdefault')) defaultSettingsCopy[key] = true;
                                 else if(key.toLowerCase().includes('temperature') || key.toLowerCase().includes('maxtokens') || key.toLowerCase().includes('topk') || key.toLowerCase().includes('topp') || key.toLowerCase().includes('penalty') || key.toLowerCase().includes('budget')) defaultSettingsCopy[key] = null;
@@ -9980,9 +9595,6 @@
                                 else if(key === 'geminiEnableGrounding') defaultSettingsCopy[key] = false;
                                 else if(key === 'deepSeekIncludeDeepSeekThoughts') defaultSettingsCopy[key] = false;
                                 else if(key === 'deepSeekExpandDeepSeekThoughtsByDefault') defaultSettingsCopy[key] = false;
-                                else if(key === 'claudeIncludeThoughts') defaultSettingsCopy[key] = false;
-                                else if(key === 'claudeExpandThoughtsByDefault') defaultSettingsCopy[key] = false;
-                                else if(key === 'claudeThinkingBudget') defaultSettingsCopy[key] = null;
                             }
                         });
                         defaultSettingsCopy.apiKey = '';
@@ -9992,9 +9604,6 @@
                         defaultSettingsCopy.deepSeekModelName = DEFAULT_DEEPSEEK_MODEL;
                         defaultSettingsCopy.deepSeekAdditionalModels = '';
                         defaultSettingsCopy.deepSeekApiEndpoint = '';
-                        defaultSettingsCopy.claudeApiKey = '';
-                        defaultSettingsCopy.claudeModelName = DEFAULT_CLAUDE_MODEL;
-                        defaultSettingsCopy.claudeAdditionalModels = '';
                         defaultSettingsCopy.apiProvider = 'gemini';
                         defaultSettingsCopy.enterToSend = true;
                         defaultSettingsCopy.autoScrollOnNewMessage = DEFAULT_AUTO_SCROLL_ON_NEW_MESSAGE;
@@ -10477,9 +10086,7 @@
                             state.thoughtSummaryOpenStates.set(newIdx, oldThoughtOpenStates.get(oldIdxEquivalent));
                         } else {
                             const messageApiProvider = msg?.generatedByApiProvider || state.settings.apiProvider;
-                            state.thoughtSummaryOpenStates.set(newIdx, (messageApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) || 
-                                                                       (messageApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault) ||
-                                                                       (messageApiProvider === 'claude' && state.settings.claudeExpandThoughtsByDefault));
+                            state.thoughtSummaryOpenStates.set(newIdx, (messageApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) || (messageApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault));
                         }
                     });
 
@@ -10709,9 +10316,7 @@
                             state.thoughtSummaryOpenStates.set(newIdx, oldThoughtOpenStates.get(oldIdxEquivalent));
                         } else {
                             const messageApiProvider = msg?.generatedByApiProvider || state.settings.apiProvider;
-                            state.thoughtSummaryOpenStates.set(newIdx, (messageApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) || 
-                                                                       (messageApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault) ||
-                                                                       (messageApiProvider === 'claude' && state.settings.claudeExpandThoughtsByDefault));
+                            state.thoughtSummaryOpenStates.set(newIdx, (messageApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) || (messageApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault));
                         }
                     });
 
@@ -10988,10 +10593,7 @@
                     return;
                 }
                 const selectedApiProvider = state.settings.apiProvider;
-                 if ((selectedApiProvider === 'gemini' && !state.settings.apiKey) || 
-                     (selectedApiProvider === 'deepseek' && !state.settings.deepSeekApiKey) ||
-                     (selectedApiProvider === 'claude' && !state.settings.claudeApiKey)
-                    ) {
+                 if ((selectedApiProvider === 'gemini' && !state.settings.apiKey) || (selectedApiProvider === 'deepseek' && !state.settings.deepSeekApiKey)) {
                     await uiUtils.showCustomAlert("選択中のAPIプロバイダーのAPIキーが設定されていません。");
                     uiUtils.showScreen('settings');
                     return;
@@ -11024,8 +10626,7 @@
                         temperatureB, maxTokensB, topPB, presencePenaltyB, frequencyPenaltyB,
                         streamingOutputB, streamingSpeedB, concatDummyModelB,
                         geminiTopKB, geminiThinkingBudgetB, geminiIncludeThoughtsB, geminiPseudoStreamingB, geminiEnableGroundingB,
-                        deepSeekIncludeThoughtsB,
-                        claudeTopKB, claudeIncludeThoughtsB, claudeThinkingBudgetB, claudeExpandThoughtsByDefaultB;
+                        deepSeekIncludeThoughtsB;
 
                     if (providerForSettingsB === 'gemini') {
                         systemPromptB = sessionB_Data.systemPrompt !== undefined ? sessionB_Data.systemPrompt : state.settings.geminiSystemPrompt;
@@ -11047,7 +10648,7 @@
                         concatDummyModelB = state.settings.geminiConcatDummyModel;
                         geminiPseudoStreamingB = state.settings.geminiPseudoStreaming;
                         geminiEnableGroundingB = state.settings.geminiEnableGrounding;
-                    } else if (providerForSettingsB === 'deepseek') {
+                    } else {
                         systemPromptB = sessionB_Data.systemPrompt !== undefined ? sessionB_Data.systemPrompt : state.settings.deepSeekSystemPrompt;
                         enableSystemPromptDefaultB = state.settings.deepSeekEnableSystemPromptDefault;
                         temperatureB = state.settings.deepSeekTemperature;
@@ -11063,23 +10664,6 @@
                         dummyModelB = state.settings.deepSeekDummyModel;
                         enableDummyModelB = state.settings.deepSeekEnableDummyModel;
                         concatDummyModelB = state.settings.deepSeekConcatDummyModel;
-                    } else if (providerForSettingsB === 'claude') {
-                        systemPromptB = sessionB_Data.systemPrompt !== undefined ? sessionB_Data.systemPrompt : state.settings.claudeSystemPrompt;
-                        enableSystemPromptDefaultB = state.settings.claudeEnableSystemPromptDefault;
-                        temperatureB = state.settings.claudeTemperature;
-                        maxTokensB = state.settings.claudeMaxTokens;
-                        claudeTopKB = state.settings.claudeTopK;
-                        topPB = state.settings.claudeTopP;
-                        streamingOutputB = state.settings.claudeStreamingOutput;
-                        streamingSpeedB = state.settings.claudeStreamingSpeed;
-                        dummyUserB = state.settings.claudeDummyUser;
-                        enableDummyUserB = state.settings.claudeEnableDummyUser;
-                        dummyModelB = state.settings.claudeDummyModel;
-                        enableDummyModelB = state.settings.claudeEnableDummyModel;
-                        concatDummyModelB = state.settings.claudeConcatDummyModel;
-                        claudeIncludeThoughtsB = state.settings.claudeIncludeThoughts;
-                        claudeThinkingBudgetB = state.settings.claudeThinkingBudget;
-                        claudeExpandThoughtsByDefaultB = state.settings.claudeExpandThoughtsByDefault;
                     }
 
 
@@ -11093,14 +10677,9 @@
                         streamingOutput: streamingOutputB, streamingSpeed: streamingSpeedB,
                         dummyUser: dummyUserB, enableDummyUser: enableDummyUserB,
                         dummyModel: dummyModelB, enableDummyModel: enableDummyModelB, concatDummyModel: concatDummyModelB,
-                        topK: providerForSettingsB === 'gemini' ? geminiTopKB :
-                              providerForSettingsB === 'claude' ? claudeTopKB : undefined,
-                        thinkingBudget: providerForSettingsB === 'gemini' ? geminiThinkingBudgetB : 
-                                        providerForSettingsB === 'claude' ? claudeThinkingBudgetB : undefined,
-                        includeThoughts: providerForSettingsB === 'gemini' ? geminiIncludeThoughtsB : 
-                                         providerForSettingsB === 'deepseek' ? deepSeekIncludeThoughtsB : 
-                                         providerForSettingsB === 'claude' ? claudeIncludeThoughtsB : undefined,
-                        expandThoughtsByDefault: providerForSettingsB === 'claude' ? claudeExpandThoughtsByDefaultB : undefined,
+                        topK: providerForSettingsB === 'gemini' ? geminiTopKB : undefined,
+                        thinkingBudget: providerForSettingsB === 'gemini' ? geminiThinkingBudgetB : undefined,
+                        includeThoughts: providerForSettingsB === 'gemini' ? geminiIncludeThoughtsB : deepSeekIncludeThoughtsB,
                         pseudoStreaming: providerForSettingsB === 'gemini' ? geminiPseudoStreamingB : undefined,
                         enableGrounding: providerForSettingsB === 'gemini' ? geminiEnableGroundingB : undefined,
                         inputText: inputForB,
@@ -11215,7 +10794,7 @@
                     throw error;
                 }
             },
-            async *handleGeminiStreamingResponse(response) {
+            async *handleStreamingResponse(response) {
                  if (!response.body) {
                      throw new Error("レスポンスボディがありません。");
                  }
@@ -11537,202 +11116,6 @@
                     };
                 } catch (error) {
                     yield { type: 'error', error: { message: error.message }, message: error.message };
-                } finally {
-                    if (!reader.closed && !isCancelled) {
-                        try { await reader.cancel("Stream processing ended."); } catch (e) { }
-                    }
-                }
-            },
-            async callClaudeApi(messagesForApi, generationConfig, systemInstruction, useStreaming) {
-                if (!state.settings.claudeApiKey) {
-                    throw new Error("Claude APIキーが設定されていません。");
-                }
-                state.abortController = new AbortController();
-                const { signal } = state.abortController;
-
-                const model = state.settings.claudeModelName || DEFAULT_CLAUDE_MODEL;
-                const apiKey = state.settings.claudeApiKey;
-
-                const anthropicRequest = this.convertToClaudeRequest(messagesForApi, systemInstruction);
-
-                const requestBody = {
-                    model: model,
-                    messages: anthropicRequest.messages,
-                    stream: useStreaming,
-                    max_tokens: generationConfig.maxOutputTokens || state.settings.claudeMaxTokens || DEFAULT_CLAUDE_MAX_TOKENS
-                };
-                if(anthropicRequest.system) requestBody.system = anthropicRequest.system;
-                if (generationConfig.temperature !== undefined && generationConfig.temperature !== null) {
-                    requestBody.temperature = generationConfig.temperature;
-                } else if (state.settings.claudeTemperature !== null) {
-                    requestBody.temperature = state.settings.claudeTemperature;
-                } else {
-                    requestBody.temperature = DEFAULT_CLAUDE_TEMPERATURE;
-                }
-
-                if (generationConfig.topK !== undefined && generationConfig.topK !== null) {
-                    requestBody.top_k = generationConfig.topK;
-                } else if (state.settings.claudeTopK !== null) {
-                    requestBody.top_k = state.settings.claudeTopK;
-                }
-
-                if (generationConfig.topP !== undefined && generationConfig.topP !== null) {
-                    requestBody.top_p = generationConfig.topP;
-                } else if (state.settings.claudeTopP !== null) {
-                    requestBody.top_p = state.settings.claudeTopP;
-                } else {
-                    requestBody.top_p = DEFAULT_CLAUDE_TOP_P;
-                }
-                
-                if (state.settings.claudeIncludeThoughts) {
-                    requestBody.thinking = { "type": "enabled" };
-                    const budget = state.settings.claudeThinkingBudget;
-                    if (budget !== null && Number.isInteger(budget) && budget >= 1024) {
-                        requestBody.thinking.budget_tokens = budget;
-                    }
-                }
-
-                try {
-                    const response = await fetch(CLAUDE_API_BASE_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-api-key': apiKey,
-                            'anthropic-version': '2023-06-01',
-                            'anthropic-dangerous-direct-browser-access': 'true'
-                        },
-                        body: JSON.stringify(requestBody),
-                        signal
-                    });
-
-                    if (!response.ok) {
-                        let errorMsg = `Claude APIエラー (${response.status}): ${response.statusText}`;
-                        try {
-                            const errorData = await response.json();
-                            if (errorData.error && errorData.error.message) {
-                                errorMsg = `Claude APIエラー (${response.status}): ${errorData.error.message} (Type: ${errorData.error.type || 'N/A'})`;
-                            }
-                        } catch (e) {}
-                        throw new Error(errorMsg);
-                    }
-                    return response;
-                } catch (error) {
-                    if (error.name === 'AbortError') {
-                        throw new Error("リクエストがキャンセルされました。");
-                    }
-                    throw error;
-                }
-            },
-            convertToClaudeRequest(messagesForApi, systemInstruction) {
-                const claudeMessages = [];
-                let systemContent = '';
-
-                if (systemInstruction && systemInstruction.content) {
-                    systemContent = systemInstruction.content;
-                } else if (systemInstruction && systemInstruction.parts && systemInstruction.parts.length > 0 && systemInstruction.parts[0].text) {
-                    systemContent = systemInstruction.parts[0].text;
-                }
-
-                for (const msg of messagesForApi) {
-                    const claudeRole = msg.role === 'model' ? 'assistant' : 'user';
-                    const contentParts = [];
-                    msg.parts.forEach(part => {
-                        if (part.text) {
-                            contentParts.push({ type: 'text', text: part.text });
-                        } else if (part.inlineData && part.inlineData.mimeType && part.inlineData.data && part.inlineData.mimeType.startsWith('image/')) {
-                             contentParts.push({
-                                type: 'image',
-                                source: {
-                                    type: 'base64',
-                                    media_type: part.inlineData.mimeType,
-                                    data: part.inlineData.data
-                                }
-                            });
-                        }
-                    });
-
-                    if (contentParts.length > 0) {
-                        claudeMessages.push({
-                            role: claudeRole,
-                            content: contentParts
-                        });
-                    }
-                }
-                return {
-                    messages: claudeMessages,
-                    system: systemContent || undefined
-                };
-            },
-            async *handleClaudeStreamingResponse(response) {
-                if (!response.body) {
-                    throw new Error("Claudeレスポンスボディがありません。");
-                }
-                const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
-                let buffer = '';
-                let finalUsage = null;
-                let finalFinishReason = null;
-                let isCancelled = false;
-
-                try {
-                    while (true) {
-                        if (state.abortController?.signal.aborted && !isCancelled) {
-                            isCancelled = true;
-                            await reader.cancel("User aborted");
-                            throw new Error("リクエストがキャンセルされました。");
-                        }
-
-                        const { value, done } = await reader.read();
-                        if (done) break;
-
-                        buffer += value;
-                        let eolIndex;
-                        while ((eolIndex = buffer.indexOf('\n')) >= 0) {
-                            const line = buffer.substring(0, eolIndex).trim();
-                            buffer = buffer.substring(eolIndex + 1);
-
-                            if (line.startsWith('data: ')) {
-                                const jsonData = line.substring(6);
-                                if (jsonData.trim() === '[DONE]') {
-                                    break;
-                                }
-                                try {
-                                    const chunk = JSON.parse(jsonData);
-                                    if (chunk.type === 'content_block_delta' && chunk.delta && chunk.delta.type === 'text_delta') {
-                                        yield { type: 'chunk', contentText: chunk.delta.text || '', thoughtText: null };
-                                    } else if (chunk.type === 'content_block_start' && chunk.content_block && chunk.content_block.type === 'thinking') {
-                                    } else if (chunk.type === 'content_block_delta' && chunk.delta && chunk.delta.type === 'thinking_delta') {
-                                        yield { type: 'chunk', contentText: null, thoughtText: chunk.delta.thinking || '' };
-                                    } else if (chunk.type === 'message_stop') {
-                                        finalFinishReason = chunk.message?.stop_reason || 'stop';
-                                        if (chunk["amazon-bedrock-invocationMetrics"]) {
-                                            finalUsage = {
-                                                input_tokens: chunk["amazon-bedrock-invocationMetrics"].inputTokenCount,
-                                                output_tokens: chunk["amazon-bedrock-invocationMetrics"].outputTokenCount
-                                            };
-                                        } else if (chunk.usage) {
-                                            finalUsage = chunk.usage;
-                                        }
-                                    } else if (chunk.type === 'message_delta' && chunk.usage) {
-                                        finalUsage = chunk.usage;
-                                    }
-                                } catch (e) {
-                                }
-                            }
-                        }
-                        if (finalFinishReason && finalFinishReason !== 'null') break;
-                    }
-                    yield {
-                        type: 'metadata',
-                        finishReason: isCancelled ? 'ABORTED' : finalFinishReason || 'stop',
-                        safetyRatings: null,
-                        groundingMetadata: null,
-                        usageMetadata: finalUsage ? {
-                            candidatesTokenCount: finalUsage.output_tokens,
-                            totalTokenCount: finalUsage.input_tokens + finalUsage.output_tokens
-                        } : null
-                    };
-                } catch (error) {
-                     yield { type: 'error', error: { message: error.message }, message: error.message };
                 } finally {
                     if (!reader.closed && !isCancelled) {
                         try { await reader.cancel("Stream processing ended."); } catch (e) { }
