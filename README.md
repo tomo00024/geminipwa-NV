@@ -6,7 +6,7 @@
 * ⚠️ Claudeのインターネットから情報を取得する機能は未実装です。チャット以外の機能に対応する予定もございません
 * ※ Anthropic APIが提供するAPIは全て有料です。
 * Claudeの推論機能とダミーModelプロンプトは現在併用できません（推論を使わない場合は大丈夫です）
--  自分用メモ:OpusはSonnetの5倍のコスト。SonnetはHaikuのおよそ4倍のコスト。DeepSeekはR1ですらHaikuよりも大幅に安い。Command AはSonnetより若干安い程度で、使う旨味はあまり無い。
+-  自分用メモ:OpusはSonnetの5倍のコスト。SonnetはHaikuのおよそ4倍のコスト。DeepSeekはR1ですらHaikuよりも大幅に安い。Command AはSonnetより若干安い程度で、使う意味は薄い。
 -  Claudeの最新の料金表は　https://www.anthropic.com/pricing
 -  Gemini用API課金管理
 -  https://console.cloud.google.com/welcome/new?hl=ja&inv=1&invt=AbzdRA&project=gen-lang-client-0937440006
