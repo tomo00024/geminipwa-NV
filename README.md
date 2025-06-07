@@ -32,6 +32,7 @@ https://titan823.github.io/geminipwa/#chat
 ## ■ 更新履歴
 ### 【2025/06/07】
 - Claude(Anthropic API)のAPIを利用できるようにアップデート
+- ワンタッチでAPIを切り替えられるボタンをヘッダー/フッターに追加可能にするオプション実装
 ### 【2025/06/06】
 - Anthropic API対応前の最後の版（予定）をログとしてブランチ化
 - gemini-2.5-pro-preview-06-05をモデルオプションに追加
