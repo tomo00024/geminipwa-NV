@@ -2,7 +2,15 @@
 - 本家Gemini PWA( https://github.com/ona-oni/geminipwa )に関心を持った他の人が、自分用にいじったコードを公開しているリポジトリ
 
 # titan823によるフォーク版 GeminiPWA(ti) の変更点・仕様（2025年6月時点）
+
 -  自分用メモ:OpusはSonnetの5倍のコスト。SonnetはHaikuのおよそ4倍のコスト。最新の料金表は　https://www.anthropic.com/pricing
+-  Gemini用API課金管理
+-  ttps://console.cloud.google.com/welcome/new?hl=ja&inv=1&invt=AbzdRA&project=gen-lang-client-0937440006
+-  DeepSeek用API管理
+-  https://platform.deepseek.com/api_keys
+-  Anthropic用API管理
+-  https://console.anthropic.com/settings/keys
+
 ### ■ 注意事項
 -  本PWAを初めてのデバイスから使用する場合は、必ず無料モデルを用いて必要最低限の機能構成からテストしてください。
 -  当フォークは私用目的のため、性質上、サポートは行われません。本コードの編集・仕様変更のプロセスにおいて予告・告知などは行いません。また、本コードの更新は予告なく終了致します。
