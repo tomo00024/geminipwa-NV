@@ -854,7 +854,8 @@
         .app-header #toggle-clipboard-stack-btn,
         .app-header #toggle-memo-btn,
         .app-header .scroll-jump-button,
-        .app-header #toggle-all-content-btn {
+        .app-header #toggle-all-content-btn,
+        .app-header .api-provider-toggle-btn {
             background-color: transparent !important;
             color: var(--text-light);
             box-shadow: none !important;
@@ -864,27 +865,31 @@
         .app-header #toggle-clipboard-stack-btn:hover,
         .app-header #toggle-memo-btn:hover,
         .app-header .scroll-jump-button:hover,
-        .app-header #toggle-all-content-btn:hover {
+        .app-header #toggle-all-content-btn:hover,
+        .app-header .api-provider-toggle-btn:hover {
             background-color: rgba(255, 255, 255, 0.1) !important;
             border-color: rgba(255, 255, 255, 0.3) !important;
         }
         body.pastel-yellow-mode .app-header #toggle-clipboard-stack-btn,
         body.pastel-yellow-mode .app-header #toggle-memo-btn,
         body.pastel-yellow-mode .app-header .scroll-jump-button,
-        body.pastel-yellow-mode .app-header #toggle-all-content-btn {
+        body.pastel-yellow-mode .app-header #toggle-all-content-btn,
+        body.pastel-yellow-mode .app-header .api-provider-toggle-btn {
             color: #424242;
         }
         body.pastel-yellow-mode .app-header #toggle-clipboard-stack-btn:hover,
         body.pastel-yellow-mode .app-header #toggle-memo-btn:hover,
         body.pastel-yellow-mode .app-header .scroll-jump-button:hover,
-        body.pastel-yellow-mode .app-header #toggle-all-content-btn:hover {
+        body.pastel-yellow-mode .app-header #toggle-all-content-btn:hover,
+        body.pastel-yellow-mode .app-header .api-provider-toggle-btn:hover {
             background-color: rgba(0, 0, 0, 0.05) !important;
             border-color: rgba(0, 0, 0, 0.1) !important;
         }
         body.dark-mode .app-header #toggle-clipboard-stack-btn:hover,
         body.dark-mode .app-header #toggle-memo-btn:hover,
         body.dark-mode .app-header .scroll-jump-button:hover,
-        body.dark-mode .app-header #toggle-all-content-btn:hover {
+        body.dark-mode .app-header #toggle-all-content-btn:hover,
+        body.dark-mode .app-header .api-provider-toggle-btn:hover {
             background-color: rgba(255, 255, 255, 0.08) !important;
             border-color: rgba(255, 255, 255, 0.2) !important;
         }
@@ -1838,6 +1843,32 @@
             font-size: 16px;
         }
 
+        .api-provider-toggle-btn {
+            font-weight: 900;
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            font-size: 16px;
+            min-width: 30px;
+            padding: 5px;
+        }
+        .app-header .api-provider-toggle-btn {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        .app-header .api-provider-toggle-btn:hover {
+            background-color: rgba(255, 255, 255, 0.4) !important;
+        }
+        body.pastel-yellow-mode .app-header .api-provider-toggle-btn {
+            color: #424242;
+            background-color: rgba(0, 0, 0, 0.1) !important;
+        }
+        body.pastel-yellow-mode .app-header .api-provider-toggle-btn:hover {
+            background-color: rgba(0, 0, 0, 0.2) !important;
+        }
+
+        .api-provider-toggle-btn.gemini { background-color: #ffffff !important; color: #8A75D2 !important; }
+        .api-provider-toggle-btn.deepseek { background-color: #4D6BFF !important; color: #ffffff !important; }
+        .api-provider-toggle-btn.claude { background-color: #D97757 !important; color: #EFEDE5 !important; }
+
+
         .attachment-badge {
             position: absolute;
             top: -4px;
@@ -2210,7 +2241,7 @@
             border-radius: 5px;
             overflow-x: auto;
             margin: 1em 0;
-            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-family: var(--font-family);
             font-size: var(--code-block-font-size);
             border: 1px solid var(--border-tertiary);
             color: var(--text-secondary);
@@ -2556,7 +2587,7 @@
             border-radius: 4px;
             overflow-x: auto;
             margin: 0.8em 0;
-            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-family: var(--font-family);
             font-size: var(--thought-summary-font-size);
             border: 1px solid var(--border-tertiary);
             color: var(--text-secondary);
@@ -2871,6 +2902,7 @@
                 <button id="new-chat-btn" class="new-chat-button" title="新規チャットを開始">新</button>
                 <button id="delete-session-btn" class="action-button-in-header" title="現在のチャットを削除">削</button>
                 <button id="copy-session-btn" class="action-button-in-header" title="チャット全体をコピー">コ</button>
+                <button id="header-api-provider-toggle-btn" class="header-button api-provider-toggle-btn" title="APIプロバイダー切替"></button>
                 <button id="scroll-to-top-btn" class="header-button scroll-jump-button" aria-label="最上部へスクロール" title="最上部へ">🔼</button>
                 <button id="scroll-to-bottom-btn" class="header-button scroll-jump-button" aria-label="最下部へスクロール" title="最下部へ">🔽</button>
                 <button id="toggle-all-content-btn" class="header-button" aria-label="全メッセージ表示切替" title="全メッセージの表示/非表示を切り替え">🖼️</button>
@@ -2915,6 +2947,7 @@
                 <div id="loading-indicator" class="loading-indicator hidden" aria-live="polite">応答中</div>
             </main>
             <footer class="chat-input-area">
+                <button id="footer-api-provider-toggle-btn" class="footer-action-button api-provider-toggle-btn" title="APIプロバイダー切替"></button>
                 <button id="roll-dice-btn" title="ランダム数値を入力" class="footer-action-button hidden">🎲</button>
                 <button id="ai-to-ai-chat-btn" title="AI間会話ステップ実行" class="footer-action-button hidden">👥</button>
                 <button id="paste-to-input-btn" title="入力欄に貼り付け" class="footer-action-button">貼</button>
@@ -2982,7 +3015,7 @@
                     </div>
                 </details>
 
-                <details id="gemini-settings-group" class="settings-group">
+                <details id="gemini-settings-group" class="settings-group" open>
                     <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">Gemini API 設定</summary>
                     <div style="margin-top:15px;">
                         <label for="gemini-api-key">Gemini APIキー:</label>
@@ -3011,7 +3044,7 @@
                     </div>
                 </details>
 
-                <details id="deepseek-settings-group" class="settings-group hidden">
+                <details id="deepseek-settings-group" class="settings-group hidden" open>
                     <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">DeepSeek API 設定</summary>
                     <div style="margin-top:15px;">
                         <label for="deepseek-api-key">DeepSeek APIキー:</label>
@@ -3038,7 +3071,7 @@
                     </div>
                 </details>
 
-                <details id="claude-settings-group" class="settings-group hidden">
+                <details id="claude-settings-group" class="settings-group hidden" open>
                     <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">Claude API 設定</summary>
                     <div style="margin-top:15px;">
                         <label for="claude-api-key">Claude APIキー:</label>
@@ -3081,7 +3114,7 @@
                 </details>
 
 
-                <details id="gemini-params-group" class="settings-group">
+                <details id="gemini-params-group" class="settings-group" open>
                     <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">パラメータ (Gemini)</summary>
                     <div style="margin-top:15px;">
                         <label for="gemini-system-prompt-default">システムプロンプト (デフォルト):</label>
@@ -3159,7 +3192,7 @@
                     </div>
                 </details>
 
-                <details id="deepseek-params-group" class="settings-group hidden">
+                <details id="deepseek-params-group" class="settings-group hidden" open>
                     <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">パラメータ (DeepSeek)</summary>
                     <div style="margin-top:15px;">
                         <label for="deepseek-system-prompt-default">システムプロンプト (デフォルト):</label>
@@ -3213,7 +3246,7 @@
                     </div>
                 </details>
 
-                <details id="claude-params-group" class="settings-group hidden">
+                <details id="claude-params-group" class="settings-group hidden" open>
                     <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">パラメータ (Claude)</summary>
                     <div style="margin-top:15px;">
                         <label for="claude-system-prompt-default">システムプロンプト (デフォルト):</label>
@@ -3271,7 +3304,7 @@
                     </div>
                 </details>
 
-                <details id="gemini-advanced-group" class="settings-group">
+                <details id="gemini-advanced-group" class="settings-group" open>
                    <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">アドバンスド (Gemini)</summary>
                    <div style="margin-top:15px;">
                        <label for="gemini-dummy-user">ダミー User プロンプト (送信時のみ追加):</label>
@@ -3315,7 +3348,7 @@
                     </div>
                 </details>
 
-                <details id="deepseek-advanced-group" class="settings-group hidden">
+                <details id="deepseek-advanced-group" class="settings-group hidden" open>
                    <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">アドバンスド (DeepSeek)</summary>
                    <div style="margin-top:15px;">
                        <label for="deepseek-dummy-user">ダミー User プロンプト (送信時のみ追加):</label>
@@ -3349,7 +3382,7 @@
                     </div>
                 </details>
 
-                <details id="claude-advanced-group" class="settings-group hidden">
+                <details id="claude-advanced-group" class="settings-group hidden" open>
                    <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">アドバンスド (Claude)</summary>
                    <div style="margin-top:15px;">
                        <label for="claude-dummy-user">ダミー User プロンプト (送信時のみ追加):</label>
@@ -3567,6 +3600,10 @@
                                 <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">ヘッダー/フッターボタン表示設定</summary>
                                 <div style="padding-top:10px; padding-left:15px;">
                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-bulk-history-actions-toggle">
+                                        履歴画面に「全出力」「全取込」ボタンを表示する
+                                   </label>
+                                   <label class="checkbox-label">
                                        <input type="checkbox" id="show-chat-title-toggle">
                                        ヘッダーにチャットタイトルを表示する
                                    </label>
@@ -3609,10 +3646,34 @@
                                     <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom:10px;">
                                         ※ 各エリアは縦方向にリサイズ可能です。
                                     </p>
-                                   <label class="checkbox-label">
-                                        <input type="checkbox" id="show-bulk-history-actions-toggle">
-                                        履歴画面に「全出力」「全取込」ボタンを表示する
-                                    </label>
+                                    <details id="settings-group-api-provider-toggle" style="margin-top:10px; margin-bottom: 5px;">
+                                       <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">API切替ボタン設定</summary>
+                                       <div style="padding-left: 15px;">
+                                           <label class="checkbox-label">
+                                               <input type="checkbox" id="show-api-provider-toggle-header">
+                                               ヘッダーにAPI切替ボタンを表示する
+                                           </label>
+                                           <label class="checkbox-label">
+                                               <input type="checkbox" id="show-api-provider-toggle-footer">
+                                               フッターにAPI切替ボタンを表示する
+                                           </label>
+                                           <div id="api-provider-cycle-settings" style="margin-left: 20px; border-left: 1px solid var(--border-secondary); padding-left: 15px; margin-top: 5px;">
+                                               <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 5px;">切替対象のAPI:</p>
+                                               <label class="checkbox-label" style="font-size: 12px;">
+                                                   <input type="checkbox" id="api-provider-cycle-gemini">
+                                                   Google Gemini
+                                               </label>
+                                               <label class="checkbox-label" style="font-size: 12px;">
+                                                   <input type="checkbox" id="api-provider-cycle-deepseek">
+                                                   DeepSeek
+                                               </label>
+                                               <label class="checkbox-label" style="font-size: 12px;">
+                                                   <input type="checkbox" id="api-provider-cycle-claude">
+                                                   Claude (Anthropic API)
+                                               </label>
+                                           </div>
+                                       </div>
+                                   </details>
                                    <label class="checkbox-label">
                                        <input type="checkbox" id="show-paste-button-in-footer-toggle">
                                        フッターに「貼付け」ボタンを表示する
@@ -3688,26 +3749,31 @@
                                <option value="updatedAt">更新日時 (新しい順)</option>
                                <option value="createdAt">作成日時 (新しい順)</option>
                            </select>
-                           <label for="font-family-input">アプリのフォント:</label>
-                           <input type="text" id="font-family-input" placeholder="例: 'Meiryo', sans-serif" aria-label="アプリ全体のフォント">
-                           <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 5px;">
-                               ※ 端末またはPCにインストールされているフォント名を指定。
-                           </p>
-                           <label for="message-body-font-size-input">メッセージ本文のフォントサイズ (px):</label>
-                           <input type="number" id="message-body-font-size-input" min="1" max="100" step="1" placeholder="例: 14 (デフォルト)" aria-label="メッセージ本文のフォントサイズ">
-                            <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                                ※ 空欄でデフォルト(14px)。1～100pxの範囲で指定可。
-                            </p>
-                           <label for="code-block-font-size-input">コードブロックのフォントサイズ (px):</label>
-                           <input type="number" id="code-block-font-size-input" min="1" max="100" step="1" placeholder="例: 13 (デフォルト)" aria-label="コードブロックのフォントサイズ">
-                           <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                               ※ 空欄でデフォルト(13px)。1～100pxの範囲で指定可。
-                           </p>
-                           <label for="thought-summary-font-size">思考プロセス フォントサイズ (px):</label>
-                           <input type="number" id="thought-summary-font-size" min="1" max="100" step="1" placeholder="例: 13 (デフォルト)" aria-label="思考プロセス フォントサイズ">
-                           <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                               ※ 空欄でデフォルト(13px)。1～100pxの範囲で指定可。
-                           </p>
+                           <details id="settings-group-font">
+                                <summary style="cursor: pointer; font-weight: normal; font-size: 14px; color: var(--text-link); list-style: revert; margin-top:10px;">フォント設定</summary>
+                                <div style="padding-left: 15px; margin-top: 10px;">
+                                   <label for="font-family-input">アプリのフォント:</label>
+                                   <input type="text" id="font-family-input" placeholder="例: 'Meiryo', sans-serif" aria-label="アプリ全体のフォント">
+                                   <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 5px;">
+                                       ※ 端末またはPCにインストールされているフォント名を指定。
+                                   </p>
+                                   <label for="message-body-font-size-input">メッセージ本文のフォントサイズ (px):</label>
+                                   <input type="number" id="message-body-font-size-input" min="1" max="100" step="1" placeholder="例: 14 (デフォルト)" aria-label="メッセージ本文のフォントサイズ">
+                                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                                        ※ 空欄でデフォルト(14px)。1～100pxの範囲で指定可。
+                                    </p>
+                                   <label for="code-block-font-size-input">コードブロックのフォントサイズ (px):</label>
+                                   <input type="number" id="code-block-font-size-input" min="1" max="100" step="1" placeholder="例: 13 (デフォルト)" aria-label="コードブロックのフォントサイズ">
+                                   <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                                       ※ 空欄でデフォルト(13px)。1～100pxの範囲で指定可。
+                                   </p>
+                                   <label for="thought-summary-font-size">思考プロセス フォントサイズ (px):</label>
+                                   <input type="number" id="thought-summary-font-size" min="1" max="100" step="1" placeholder="例: 13 (デフォルト)" aria-label="思考プロセス フォントサイズ">
+                                   <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                                       ※ 空欄でデフォルト(13px)。1～100pxの範囲で指定可。
+                                   </p>
+                                </div>
+                           </details>
                            <details id="settings-group-opacity">
                                 <summary style="cursor: pointer; font-weight: normal; font-size: 14px; color: var(--text-link); list-style: revert;">各種透明度設定</summary>
                                 <div style="padding-left: 15px; margin-top: 10px;">
@@ -3832,8 +3898,8 @@
         const CHATS_STORE = 'chats';
         const CHAT_UPDATEDAT_INDEX = 'updatedAtIndex';
         const CHAT_CREATEDAT_INDEX = 'createdAtIndex';
-        const DEFAULT_MODEL = 'gemini-2.0-flash';
-        const DEFAULT_DEEPSEEK_MODEL = 'deepseek-chat';
+        const DEFAULT_MODEL = 'gemini-2.5-flash-preview-05-20';
+        const DEFAULT_DEEPSEEK_MODEL = 'deepseek-reasoner';
         const DEFAULT_CLAUDE_MODEL = 'claude-sonnet-4-20250514';
         const DEFAULT_STREAMING_SPEED = 12;
         const DEFAULT_TEMPERATURE = 0.5;
@@ -4199,6 +4265,13 @@
             deepSeekThoughtsParam: document.getElementById('deepseek-thoughts-param'),
             claudeThoughtsParam: document.getElementById('claude-thoughts-param'),
             disableSaveSettingsConfirmationToggle: document.getElementById('disable-save-settings-confirmation-toggle'),
+            headerApiProviderToggleBtn: document.getElementById('header-api-provider-toggle-btn'),
+            footerApiProviderToggleBtn: document.getElementById('footer-api-provider-toggle-btn'),
+            showApiProviderToggleHeaderCheckbox: document.getElementById('show-api-provider-toggle-header'),
+            showApiProviderToggleFooterCheckbox: document.getElementById('show-api-provider-toggle-footer'),
+            apiProviderCycleGeminiCheckbox: document.getElementById('api-provider-cycle-gemini'),
+            apiProviderCycleDeepSeekCheckbox: document.getElementById('api-provider-cycle-deepseek'),
+            apiProviderCycleClaudeCheckbox: document.getElementById('api-provider-cycle-claude'),
         };
 
         const state = {
@@ -4343,6 +4416,13 @@
                 thoughtSummaryOpacity: DEFAULT_THOUGHT_SUMMARY_OPACITY,
                 settingsUIDetailsOpenStates: {},
                 disableSaveSettingsConfirmation: false,
+                showApiProviderToggleHeader: false,
+                showApiProviderToggleFooter: false,
+                apiProviderCycle: {
+                    gemini: true,
+                    deepseek: true,
+                    claude: true,
+                },
             },
             backgroundImageUrl: null,
             userIconUrl: null,
@@ -4600,6 +4680,10 @@
                                 } else if (key === 'toggleButtonTopTextCollapse' || key === 'toggleButtonTopTextExpand' ||
                                            key === 'toggleButtonBottomTextCollapse' || key === 'toggleButtonBottomTextExpand') {
                                     state.settings[key] = typeof loadedValue === 'string' && loadedValue.trim() !== '' ? loadedValue : defaultValue;
+                                } else if (key === 'apiProviderCycle' && typeof loadedValue === 'object' && loadedValue !== null) {
+                                    state.settings.apiProviderCycle.gemini = loadedValue.gemini === true;
+                                    state.settings.apiProviderCycle.deepseek = loadedValue.deepseek === true;
+                                    state.settings.apiProviderCycle.claude = loadedValue.claude === true;
                                 } else if (typeof defaultValue === 'number' || defaultValue === null) {
                                      let num;
                                      if (key.toLowerCase().includes('temperature') || key.toLowerCase().includes('topp') || key.toLowerCase().includes('penalty') ||
@@ -4653,13 +4737,20 @@
                         if (state.settings.thoughtSummaryOpacity === undefined || state.settings.thoughtSummaryOpacity === null || isNaN(parseFloat(state.settings.thoughtSummaryOpacity))) {
                             state.settings.thoughtSummaryOpacity = DEFAULT_THOUGHT_SUMMARY_OPACITY;
                         }
-                        if (state.settings.thoughtSummaryFontSize === undefined || state.settings.thoughtSummaryFontSize === null || isNaN(parseInt(state.settings.thoughtSummaryFontSize))) {
-                            state.settings.thoughtSummaryFontSize = DEFAULT_THOUGHT_SUMMARY_FONT_SIZE;
-                        }
                         if (typeof loadedSettings.settingsUIDetailsOpenStates === 'object' && loadedSettings.settingsUIDetailsOpenStates !== null) {
                             state.settings.settingsUIDetailsOpenStates = loadedSettings.settingsUIDetailsOpenStates;
                         } else {
-                            state.settings.settingsUIDetailsOpenStates = {};
+                            state.settings.settingsUIDetailsOpenStates = {
+                                'gemini-settings-group': true,
+                                'gemini-params-group': true,
+                                'gemini-advanced-group': true,
+                                'deepseek-settings-group': true,
+                                'deepseek-params-group': true,
+                                'deepseek-advanced-group': true,
+                                'claude-settings-group': true,
+                                'claude-params-group': true,
+                                'claude-advanced-group': true,
+                            };
                         }
                         resolve(state.settings);
                     };
@@ -6044,38 +6135,43 @@
                 elements.claudeThinkingBudgetInput.value = state.settings.claudeThinkingBudget === null ? '' : state.settings.claudeThinkingBudget;
 
 
-                elements.enterToSendCheckbox.checked = state.settings.enterToSend;
-                elements.autoScrollOnNewMessageCheckbox.checked = state.settings.autoScrollOnNewMessage;
-                elements.autoScrollOnThoughtCheckbox.checked = state.settings.autoScrollOnThought;
-                elements.historySortOrderSelect.value = state.settings.historySortOrder || 'updatedAt';
-                if (elements.themeSelect) elements.themeSelect.value = state.settings.theme || 'light';
-                elements.enableSessionLinkingCheckbox.checked = state.settings.enableSessionLinking;
-                elements.fontFamilyInput.value = state.settings.fontFamily || '';
-                elements.messageBodyFontSizeInput.value = state.settings.messageBodyFontSize ?? '';
-                elements.codeBlockFontSizeInput.value = state.settings.codeBlockFontSize ?? '';
-                elements.thoughtSummaryFontSizeInput.value = state.settings.thoughtSummaryFontSize ?? '';
-                elements.hideSystemPromptToggle.checked = state.settings.hideSystemPromptInChat;
-                elements.swipeNavigationToggle.checked = state.settings.enableSwipeNavigation;
-                elements.preventZoomToggle.checked = state.settings.preventZoom;
-                elements.showChatTitleToggle.checked = state.settings.showChatTitle;
-                elements.showNewChatButtonToggle.checked = state.settings.showNewChatButton;
-                elements.showDeleteSessionButtonToggle.checked = state.settings.showDeleteSessionButton;
-                elements.showCopySessionButtonToggle.checked = state.settings.showCopySessionButton;
-                elements.showScrollToTopButtonToggle.checked = state.settings.showScrollToTopButton;
-                elements.showScrollToBottomButtonToggle.checked = state.settings.showScrollToBottomButton;
-                elements.showToggleAllContentButtonToggle.checked = state.settings.showToggleAllContentButton;
-                elements.showBulkHistoryActionsToggle.checked = state.settings.showBulkHistoryActions;
-                elements.showPasteButtonInFooterToggle.checked = state.settings.showPasteButtonInFooter;
-                elements.showPasteButtonInEditToggle.checked = state.settings.showPasteButtonInEdit;
-                elements.showDiceButtonToggle.checked = state.settings.showDiceButton;
-                document.getElementById('dice-value-settings').classList.toggle('hidden', !state.settings.showDiceButton);
-                elements.diceMinValueInput.value = state.settings.diceMinValue ?? '';
-                elements.diceMaxValueInput.value = state.settings.diceMaxValue ?? '';
-                elements.messageBubbleOpacityInput.value = state.settings.messageBubbleOpacity ?? DEFAULT_MESSAGE_BUBBLE_OPACITY;
-                elements.chatOverlayOpacityInput.value = state.settings.chatOverlayOpacity ?? DEFAULT_CHAT_OVERLAY_OPACITY;
-                elements.headerFooterOpacityInput.value = state.settings.headerFooterOpacity ?? DEFAULT_HEADER_FOOTER_OPACITY;
-                elements.messageActionsBackgroundOpacityInput.value = state.settings.messageActionsBackgroundOpacity ?? DEFAULT_MESSAGE_ACTIONS_BACKGROUND_OPACITY;
-                elements.thoughtSummaryOpacityInput.value = state.settings.thoughtSummaryOpacity ?? DEFAULT_THOUGHT_SUMMARY_OPACITY;
+                 elements.enterToSendCheckbox.checked = state.settings.enterToSend;
+                 elements.autoScrollOnNewMessageCheckbox.checked = state.settings.autoScrollOnNewMessage;
+                 elements.autoScrollOnThoughtCheckbox.checked = state.settings.autoScrollOnThought;
+                 elements.historySortOrderSelect.value = state.settings.historySortOrder || 'updatedAt';
+                 if (elements.themeSelect) elements.themeSelect.value = state.settings.theme || 'light';
+                 elements.enableSessionLinkingCheckbox.checked = state.settings.enableSessionLinking;
+                 elements.fontFamilyInput.value = state.settings.fontFamily || '';
+                 elements.messageBodyFontSizeInput.value = state.settings.messageBodyFontSize ?? '';
+                 elements.codeBlockFontSizeInput.value = state.settings.codeBlockFontSize ?? '';
+                 elements.thoughtSummaryFontSizeInput.value = state.settings.thoughtSummaryFontSize ?? '';
+                 elements.hideSystemPromptToggle.checked = state.settings.hideSystemPromptInChat;
+                 elements.swipeNavigationToggle.checked = state.settings.enableSwipeNavigation;
+                 elements.preventZoomToggle.checked = state.settings.preventZoom;
+                 elements.showChatTitleToggle.checked = state.settings.showChatTitle;
+                 elements.showNewChatButtonToggle.checked = state.settings.showNewChatButton;
+                 elements.showDeleteSessionButtonToggle.checked = state.settings.showDeleteSessionButton;
+                 elements.showCopySessionButtonToggle.checked = state.settings.showCopySessionButton;
+                 elements.showScrollToTopButtonToggle.checked = state.settings.showScrollToTopButton;
+                 elements.showScrollToBottomButtonToggle.checked = state.settings.showScrollToBottomButton;
+                 elements.showToggleAllContentButtonToggle.checked = state.settings.showToggleAllContentButton;
+                 elements.showBulkHistoryActionsToggle.checked = state.settings.showBulkHistoryActions;
+                 elements.showPasteButtonInFooterToggle.checked = state.settings.showPasteButtonInFooter;
+                 elements.showPasteButtonInEditToggle.checked = state.settings.showPasteButtonInEdit;
+                 elements.showDiceButtonToggle.checked = state.settings.showDiceButton;
+                 document.getElementById('dice-value-settings').classList.toggle('hidden', !state.settings.showDiceButton);
+                 elements.diceMinValueInput.value = state.settings.diceMinValue ?? '';
+                 elements.diceMaxValueInput.value = state.settings.diceMaxValue ?? '';
+                 elements.messageBubbleOpacityInput.value = state.settings.messageBubbleOpacity ?? DEFAULT_MESSAGE_BUBBLE_OPACITY;
+                 elements.chatOverlayOpacityInput.value = state.settings.chatOverlayOpacity ?? DEFAULT_CHAT_OVERLAY_OPACITY;
+                 elements.headerFooterOpacityInput.value = state.settings.headerFooterOpacity ?? DEFAULT_HEADER_FOOTER_OPACITY;
+                 elements.messageActionsBackgroundOpacityInput.value = state.settings.messageActionsBackgroundOpacity ?? DEFAULT_MESSAGE_ACTIONS_BACKGROUND_OPACITY;
+                 elements.thoughtSummaryOpacityInput.value = state.settings.thoughtSummaryOpacity ?? DEFAULT_THOUGHT_SUMMARY_OPACITY;
+                 elements.showApiProviderToggleHeaderCheckbox.checked = state.settings.showApiProviderToggleHeader;
+                 elements.showApiProviderToggleFooterCheckbox.checked = state.settings.showApiProviderToggleFooter;
+                 elements.apiProviderCycleGeminiCheckbox.checked = state.settings.apiProviderCycle.gemini;
+                 elements.apiProviderCycleDeepSeekCheckbox.checked = state.settings.apiProviderCycle.deepseek;
+                 elements.apiProviderCycleClaudeCheckbox.checked = state.settings.apiProviderCycle.claude;
 
                 elements.showMemoButtonToggle.checked = state.settings.showMemoButton;
                 elements.memoHeightInput.value = state.settings.memoHeight || '';
@@ -6210,6 +6306,32 @@
                                           state.currentChatId && state.linkedSessionIds.includes(state.currentChatId);
                     elements.aiToAiChatBtn.classList.toggle('hidden', !showAiToAiBtn);
                 }
+                if(elements.headerApiProviderToggleBtn){
+                    elements.headerApiProviderToggleBtn.classList.toggle('hidden', !state.settings.showApiProviderToggleHeader);
+                }
+                if(elements.footerApiProviderToggleBtn){
+                    elements.footerApiProviderToggleBtn.classList.toggle('hidden', !state.settings.showApiProviderToggleFooter);
+                }
+                this.updateProviderToggleButtons();
+            },
+            updateProviderToggleButtons() {
+                const providerMap = {
+                    gemini: { text: 'GE', title: 'Gemini', className: 'gemini' },
+                    deepseek: { text: 'DS', title: 'DeepSeek', className: 'deepseek' },
+                    claude: { text: 'AN', title: 'Anthropic', className: 'claude' },
+                };
+                const currentProviderInfo = providerMap[state.settings.apiProvider] || { text: '??', title: 'Unknown', className: '' };
+                
+                [elements.headerApiProviderToggleBtn, elements.footerApiProviderToggleBtn].forEach(button => {
+                    if (button) {
+                        button.textContent = currentProviderInfo.text;
+                        button.title = `API: ${currentProviderInfo.title}`;
+                        button.classList.remove('gemini', 'deepseek', 'claude');
+                        if (currentProviderInfo.className) {
+                            button.classList.add(currentProviderInfo.className);
+                        }
+                    }
+                });
             },
             updateHistoryHeaderButtonVisibility() {
                 const showBulkActions = state.settings.showBulkHistoryActions;
@@ -7034,6 +7156,8 @@
                 elements.deleteSessionBtn.addEventListener('click', () => this.confirmDeleteCurrentSession());
                 elements.copySessionBtn.addEventListener('click', () => this.copyCurrentSessionText());
                 elements.toggleAllContentBtn.addEventListener('click', () => this.toggleAllMessagesVisibility());
+                elements.headerApiProviderToggleBtn.addEventListener('click', () => this.toggleApiProvider());
+                elements.footerApiProviderToggleBtn.addEventListener('click', () => this.toggleApiProvider());
                 elements.sendButton.addEventListener('click', () => {
                     if (state.isSending) this.abortRequest();
                     else this.handleSend();
@@ -9237,6 +9361,53 @@
                 }
                 if (isBackgroundProcess) return null;
             },
+            async toggleApiProvider() {
+                if(state.isSending || state.isAiToAiChatProcessing) {
+                    await uiUtils.showCustomAlert('現在処理中のため、APIプロバイダーを変更できません。');
+                    return;
+                }
+                const providersInCycle = Object.entries(state.settings.apiProviderCycle)
+                                                .filter(([, isEnabled]) => isEnabled)
+                                                .map(([provider]) => provider);
+
+                if (providersInCycle.length === 0) {
+                    await uiUtils.showCustomAlert('切り替え可能なAPIプロバイダーが選択されていません。設定を確認してください。');
+                    return;
+                }
+
+                const currentIndex = providersInCycle.indexOf(state.settings.apiProvider);
+                const nextIndex = (currentIndex + 1) % providersInCycle.length;
+                state.settings.apiProvider = providersInCycle[nextIndex];
+
+                try {
+                    await dbUtils.saveSetting('apiProvider', state.settings.apiProvider);
+                    elements.apiProviderSelect.value = state.settings.apiProvider;
+                    uiUtils.updateChatScreenElementVisibility();
+                    uiUtils.toggleApiSettingsVisibility(state.settings.apiProvider);
+                    this.updateSystemPromptBasedOnProvider();
+                } catch (error) {
+                    await uiUtils.showCustomAlert(`APIプロバイダー設定の保存に失敗しました: ${error.message}`);
+                    state.settings.apiProvider = providersInCycle[currentIndex >= 0 ? currentIndex : 0];
+                    elements.apiProviderSelect.value = state.settings.apiProvider;
+                    uiUtils.updateChatScreenElementVisibility();
+                }
+            },
+            updateSystemPromptBasedOnProvider() {
+                 const currentProvider = state.settings.apiProvider;
+                 if (currentProvider === 'gemini' && state.settings.geminiEnableSystemPromptDefault) {
+                     state.currentSystemPrompt = state.settings.geminiSystemPrompt;
+                 } else if (currentProvider === 'deepseek' && state.settings.deepSeekEnableSystemPromptDefault) {
+                     state.currentSystemPrompt = state.settings.deepSeekSystemPrompt;
+                 } else if (currentProvider === 'claude' && state.settings.claudeEnableSystemPromptDefault) {
+                     state.currentSystemPrompt = state.settings.claudeSystemPrompt;
+                 } else {
+                     state.currentSystemPrompt = '';
+                 }
+                 uiUtils.updateSystemPromptUI();
+                 if (state.currentChatId) {
+                     dbUtils.saveChat();
+                 }
+            },
             abortRequest() {
                 if (state.abortController) {
                     state.abortController.abort();
@@ -9720,8 +9891,6 @@
                 newSettings.claudeIncludeThoughts = elements.claudeIncludeThoughtsToggle.checked;
                 newSettings.claudeExpandThoughtsByDefault = elements.claudeExpandThoughtsByDefaultToggle.checked;
                 newSettings.claudeThinkingBudget = elements.claudeThinkingBudgetInput.value === '' ? null : parseInt(elements.claudeThinkingBudgetInput.value, 10);
-
-
                  newSettings.enterToSend = elements.enterToSendCheckbox.checked;
                  newSettings.autoScrollOnNewMessage = elements.autoScrollOnNewMessageCheckbox.checked;
                  newSettings.autoScrollOnThought = elements.autoScrollOnThoughtCheckbox.checked;
@@ -9791,6 +9960,14 @@
                  newSettings.toggleButtonBottomTextCollapse = elements.toggleButtonBottomTextCollapseInput.value.trim() || DEFAULT_TOGGLE_BUTTON_BOTTOM_TEXT_COLLAPSE;
                  newSettings.toggleButtonBottomTextExpand = elements.toggleButtonBottomTextExpandInput.value.trim() || DEFAULT_TOGGLE_BUTTON_BOTTOM_TEXT_EXPAND;
                  newSettings.thoughtSummaryOpacity = elements.thoughtSummaryOpacityInput.value === '' ? DEFAULT_THOUGHT_SUMMARY_OPACITY : parseFloat(elements.thoughtSummaryOpacityInput.value);
+                 newSettings.showApiProviderToggleHeader = elements.showApiProviderToggleHeaderCheckbox.checked;
+                 newSettings.showApiProviderToggleFooter = elements.showApiProviderToggleFooterCheckbox.checked;
+                 newSettings.apiProviderCycle = {
+                     gemini: elements.apiProviderCycleGeminiCheckbox.checked,
+                     deepseek: elements.apiProviderCycleDeepSeekCheckbox.checked,
+                     claude: elements.apiProviderCycleClaudeCheckbox.checked,
+                 };
+
 
                 const validateNumeric = (value, defaultValue, min, max, isInteger = false) => {
                     let num = isInteger ? parseInt(value, 10) : parseFloat(value);
@@ -10069,6 +10246,10 @@
                         defaultSettingsCopy.toggleButtonBottomTextExpand = DEFAULT_TOGGLE_BUTTON_BOTTOM_TEXT_EXPAND;
                         defaultSettingsCopy.thoughtSummaryOpacity = DEFAULT_THOUGHT_SUMMARY_OPACITY;
                         defaultSettingsCopy.settingsUIDetailsOpenStates = {};
+                        defaultSettingsCopy.showApiProviderToggleHeader = false;
+                        defaultSettingsCopy.showApiProviderToggleFooter = false;
+                        defaultSettingsCopy.apiProviderCycle = { gemini: true, deepseek: true, claude: true };
+
                         state.settings = defaultSettingsCopy;
 
                         state.backgroundImageUrl = null;
