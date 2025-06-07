@@ -3,9 +3,7 @@
 
 # titan823によるフォーク版 GeminiPWA(ti) の変更点・仕様（2025年6月時点）
 
-* ⚠️PWAでClaude(Anthropic API)のAPIを利用できるようにアップデート致しました。本機能は試験的な実装です。 デバッグは全て便宜的な水準のみにとどまっており、完璧な動作を保証するものではありません。 不具合が生じた場合、予告なくアップデート前の版に差し替えます
-* ⚠️ Claudeのインターネットから情報を取得する機能は未実装です。チャット以外の機能に対応する予定もございません
-* ※ Anthropic APIが提供するAPIは全て有料です。
+
 -  自分用メモ:OpusはSonnetの5倍のコスト。SonnetはHaikuのおよそ4倍のコスト。最新の料金表は　https://www.anthropic.com/pricing
 -  Gemini用API課金管理
 -  ttps://console.cloud.google.com/welcome/new?hl=ja&inv=1&invt=AbzdRA&project=gen-lang-client-0937440006
@@ -30,8 +28,7 @@
 https://titan823.github.io/geminipwa/#chat
 
 ## ■ 更新履歴
-### 【2025/06/07】
-- Claude(Anthropic API)のAPIを利用できるようにアップデート
+
 ### 【2025/06/06】
 - Anthropic API対応前の最後の版（予定）をログとしてブランチ化
 - gemini-2.5-pro-preview-06-05をモデルオプションに追加
