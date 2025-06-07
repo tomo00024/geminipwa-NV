@@ -6,7 +6,7 @@
 
 -  自分用メモ:OpusはSonnetの5倍のコスト。SonnetはHaikuのおよそ4倍のコスト。最新の料金表は　https://www.anthropic.com/pricing
 -  Gemini用API課金管理
--  ttps://console.cloud.google.com/welcome/new?hl=ja&inv=1&invt=AbzdRA&project=gen-lang-client-0937440006
+-  https://console.cloud.google.com/welcome/new?hl=ja&inv=1&invt=AbzdRA&project=gen-lang-client-0937440006
 -  DeepSeek用API管理
 -  https://platform.deepseek.com/api_keys
 -  Anthropic用API管理
