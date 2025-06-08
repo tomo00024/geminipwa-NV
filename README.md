@@ -14,6 +14,7 @@
 -  https://platform.deepseek.com/api_keys
 -  Anthropic用API管理
 -  https://console.anthropic.com/settings/keys
+-  今後の予定:設定画面の項目の整理、セキュリティ強化
 
 ### ■ 注意事項
 -  本PWAを初めてのデバイスから使用する場合は、必ず無料モデルを用いて必要最低限の機能構成からテストしてください。
