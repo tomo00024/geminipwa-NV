@@ -5175,7 +5175,6 @@
                         list.appendChild(listItem);
                     });
                     details.appendChild(list);
-                    contentDiv.appendChild(details);
                     if (content && content.trim() !== '') {
                         const pre = document.createElement('pre');
                         pre.textContent = content;
@@ -6320,6 +6319,10 @@
                         elements.aiToAiChatBtn.classList.toggle('hidden', !showAiToAiBtn);
                     }
                     
+                    if (elements.footerApiProviderToggleBtn) {
+                        elements.footerApiProviderToggleBtn.classList.toggle('hidden', !state.settings.showApiProviderToggleFooter);
+                    }
+
                     this.adjustHeaderLayout();
                     this.updateProviderToggleButtons();
                 };
