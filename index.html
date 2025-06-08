@@ -743,6 +743,7 @@
             overscroll-behavior-y: contain;
             transition: background-color 0.3s ease, color 0.3s ease;
             overflow: hidden;
+            touch-action: manipulation;
         }
         button {
             cursor: pointer;
@@ -793,6 +794,7 @@
         :-ms-input-placeholder { color: var(--text-placeholder); }
         ::-ms-input-placeholder { color: var(--text-placeholder); }
         .hidden { display: none !important; }
+        .layout-hidden { display: none !important; }
 
         .app-container {
             display: flex;
@@ -1867,6 +1869,18 @@
         .app-header .api-provider-toggle-btn.gemini { background-color: #ffffff !important; color: #8A75D2 !important; }
         .app-header .api-provider-toggle-btn.deepseek { background-color: #4D6BFF !important; color: #ffffff !important; }
         .app-header .api-provider-toggle-btn.claude { background-color: #D97757 !important; color: #EFEDE5 !important; }
+        body.dark-mode .app-header .api-provider-toggle-btn.gemini:hover {
+            background-color: rgba(255, 255, 255, 0.9) !important;
+            color: #8A75D2 !important;
+        }
+        body.dark-mode .app-header .api-provider-toggle-btn.deepseek:hover {
+            background-color: rgba(77, 107, 255, 0.9) !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode .app-header .api-provider-toggle-btn.claude:hover {
+            background-color: rgba(217, 119, 87, 0.9) !important;
+            color: #EFEDE5 !important;
+        }
         .chat-input-area .api-provider-toggle-btn.gemini { background-color: #ffffff !important; color: #8A75D2 !important; }
         .chat-input-area .api-provider-toggle-btn.deepseek { background-color: #4D6BFF !important; color: #ffffff !important; }
         .chat-input-area .api-provider-toggle-btn.claude { background-color: #D97757 !important; color: #EFEDE5 !important; }
@@ -3572,7 +3586,7 @@
                            <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
                                ※ スマホ等でテキスト入力時に意図せずズームするのを防ぎます。
                            </p>
-                           <label class="checkbox-label">
+                            <label class="checkbox-label">
                                 <input type="checkbox" id="show-paste-button-in-edit-toggle">
                                 メッセージ編集ツールバーに「貼付け」ボタンを表示する
                             </label>
@@ -6136,7 +6150,6 @@
                 elements.claudeExpandThoughtsByDefaultToggle.checked = state.settings.claudeExpandThoughtsByDefault;
                 elements.claudeThinkingBudgetInput.value = state.settings.claudeThinkingBudget === null ? '' : state.settings.claudeThinkingBudget;
 
-
                  elements.enterToSendCheckbox.checked = state.settings.enterToSend;
                  elements.autoScrollOnNewMessageCheckbox.checked = state.settings.autoScrollOnNewMessage;
                  elements.autoScrollOnThoughtCheckbox.checked = state.settings.autoScrollOnThought;
@@ -6269,52 +6282,81 @@
                 elements.claudeAdvancedGroup.classList.toggle('hidden', !showClaude);
             },
             updateChatScreenElementVisibility() {
-                if (elements.chatTitle) {
-                    elements.chatTitle.classList.toggle('hidden', !state.settings.showChatTitle);
-                }
-                if (elements.newChatBtn) {
-                    elements.newChatBtn.classList.toggle('hidden', !state.settings.showNewChatButton);
-                }
-                if (elements.deleteSessionBtn) {
-                    elements.deleteSessionBtn.classList.toggle('hidden', !state.settings.showDeleteSessionButton);
-                }
-                if (elements.copySessionBtn) {
-                    elements.copySessionBtn.classList.toggle('hidden', !state.settings.showCopySessionButton);
-                }
-                if (elements.scrollToTopBtn) {
-                    elements.scrollToTopBtn.classList.toggle('hidden', !state.settings.showScrollToTopButton);
-                }
-                if (elements.scrollToBottomBtn) {
-                    elements.scrollToBottomBtn.classList.toggle('hidden', !state.settings.showScrollToBottomButton);
-                }
-                if (elements.toggleAllContentBtn) {
-                    elements.toggleAllContentBtn.classList.toggle('hidden', !state.settings.showToggleAllContentButton);
-                }
-                if (elements.toggleMemoBtn) {
-                    elements.toggleMemoBtn.classList.toggle('hidden', !state.settings.showMemoButton);
-                }
-                if (elements.toggleClipboardStackBtn) {
-                    elements.toggleClipboardStackBtn.classList.toggle('hidden', !state.settings.showClipboardStackButton);
-                }
-                if (elements.pasteToInputBtn) {
-                    elements.pasteToInputBtn.classList.toggle('hidden', !state.settings.showPasteButtonInFooter);
-                }
-                if (elements.rollDiceBtn) {
-                    elements.rollDiceBtn.classList.toggle('hidden', !state.settings.showDiceButton);
-                }
-                if (elements.aiToAiChatBtn) {
-                    const showAiToAiBtn = state.settings.enableSessionLinking &&
-                                          state.linkedSessionIds.length === 2 &&
-                                          state.currentChatId && state.linkedSessionIds.includes(state.currentChatId);
-                    elements.aiToAiChatBtn.classList.toggle('hidden', !showAiToAiBtn);
-                }
-                if(elements.headerApiProviderToggleBtn){
-                    elements.headerApiProviderToggleBtn.classList.toggle('hidden', !state.settings.showApiProviderToggleHeader);
-                }
-                if(elements.footerApiProviderToggleBtn){
-                    elements.footerApiProviderToggleBtn.classList.toggle('hidden', !state.settings.showApiProviderToggleFooter);
-                }
-                this.updateProviderToggleButtons();
+                const header = elements.chatScreen.querySelector('.app-header');
+                const allButtons = Array.from(header.querySelectorAll('button'));
+                allButtons.forEach(btn => btn.classList.remove('layout-hidden'));
+            
+                const updateVisibility = () => {
+                    const toggleableButtons = [
+                        { id: '#show-chat-title-toggle', element: elements.chatTitle },
+                        { id: '#show-new-chat-button-toggle', element: elements.newChatBtn },
+                        { id: '#show-delete-session-button-toggle', element: elements.deleteSessionBtn },
+                        { id: '#show-copy-session-button-toggle', element: elements.copySessionBtn },
+                        { id: '#show-api-provider-toggle-header', element: elements.headerApiProviderToggleBtn },
+                        { id: '#show-scroll-to-top-button-toggle', element: elements.scrollToTopBtn },
+                        { id: '#show-scroll-to-bottom-button-toggle', element: elements.scrollToBottomBtn },
+                        { id: '#show-toggle-all-content-button-toggle', element: elements.toggleAllContentBtn },
+                        { id: '#show-memo-button-toggle', element: elements.toggleMemoBtn },
+                        { id: '#show-clipboard-stack-button-toggle', element: elements.toggleClipboardStackBtn },
+                    ];
+
+                    toggleableButtons.forEach(item => {
+                        const checkbox = document.querySelector(item.id);
+                        if (item.element) {
+                            item.element.classList.toggle('hidden', !checkbox.checked);
+                        }
+                    });
+
+                    if (elements.pasteToInputBtn) {
+                        elements.pasteToInputBtn.classList.toggle('hidden', !state.settings.showPasteButtonInFooter);
+                    }
+                    if (elements.rollDiceBtn) {
+                        elements.rollDiceBtn.classList.toggle('hidden', !state.settings.showDiceButton);
+                    }
+                    if (elements.aiToAiChatBtn) {
+                        const showAiToAiBtn = state.settings.enableSessionLinking &&
+                                            state.linkedSessionIds.length === 2 &&
+                                            state.currentChatId && state.linkedSessionIds.includes(state.currentChatId);
+                        elements.aiToAiChatBtn.classList.toggle('hidden', !showAiToAiBtn);
+                    }
+                    
+                    this.adjustHeaderLayout();
+                    this.updateProviderToggleButtons();
+                };
+            
+                requestAnimationFrame(updateVisibility);
+            },
+            adjustHeaderLayout() {
+                const header = elements.chatScreen.querySelector('.app-header');
+                if (!header) return;
+            
+                const allButtons = Array.from(header.querySelectorAll('button:not(#goto-history-btn):not(#goto-settings-btn)'));
+                allButtons.forEach(btn => btn.classList.remove('layout-hidden'));
+            
+                requestAnimationFrame(() => {
+                    let containerWidth = header.offsetWidth;
+                    let settingsBtnRect = elements.gotoSettingsBtn.getBoundingClientRect();
+                    let headerRect = header.getBoundingClientRect();
+                    let isOverflowing = settingsBtnRect.right > headerRect.right - 5;
+            
+                    const buttonPriority = [
+                        '#toggle-clipboard-stack-btn', '#toggle-memo-btn', '#scroll-to-top-btn',
+                        '#scroll-to-bottom-btn', '#toggle-all-content-btn', '#header-api-provider-toggle-btn',
+                        '#copy-session-btn', '#delete-session-btn', '#new-chat-btn'
+                    ];
+
+                    if (isOverflowing) {
+                        for (const selector of buttonPriority) {
+                            const btn = header.querySelector(selector);
+                            if (btn && !btn.classList.contains('hidden') && !btn.classList.contains('layout-hidden')) {
+                                btn.classList.add('layout-hidden');
+                                settingsBtnRect = elements.gotoSettingsBtn.getBoundingClientRect();
+                                isOverflowing = settingsBtnRect.right > headerRect.right - 5;
+                                if (!isOverflowing) break;
+                            }
+                        }
+                    }
+                });
             },
             updateProviderToggleButtons() {
                 const providerMap = {
@@ -7065,7 +7107,7 @@
         };
 
         const appLogic = {
-            async initializeApp() {
+            initializeApp() {
                 if (typeof marked !== 'undefined') {
                     marked.setOptions({
                         breaks: true, gfm: true, sanitize: true, smartypants: false
@@ -7081,54 +7123,57 @@
                 registerServiceWorker();
 
                 try {
-                    await dbUtils.openDB();
-                    await dbUtils.loadSettings();
-                    uiUtils.applyTheme();
-                    uiUtils.applyFontFamily();
-                    uiUtils.applySidePanelSettingsToUI();
-
-                    if (state.settings.backgroundImageBlob instanceof Blob) {
-                        uiUtils.revokeExistingObjectUrl();
-                        try {
-                             state.backgroundImageUrl = URL.createObjectURL(state.settings.backgroundImageBlob);
-                             document.documentElement.style.setProperty('--chat-background-image', `url(${state.backgroundImageUrl})`);
-                        } catch (e) {
-                             document.documentElement.style.setProperty('--chat-background-image', 'none');
-                        }
-                    } else {
-                        document.documentElement.style.setProperty('--chat-background-image', 'none');
-                    }
-                    if (state.settings.userIconBlob instanceof Blob) {
-                        try { state.userIconUrl = URL.createObjectURL(state.settings.userIconBlob); } catch (e) { }
-                    }
-                    if (state.settings.aiIconBlob instanceof Blob) {
-                        try { state.aiIconUrl = URL.createObjectURL(state.settings.aiIconBlob); } catch (e) { }
-                    }
-
-                    uiUtils.applySettingsToUI();
-
-                    const chats = await dbUtils.getAllChats(state.settings.historySortOrder);
-                    if (chats && chats.length > 0) {
-                        await this.loadChat(chats[0].id);
-                    } else {
-                        this.startNewChat();
-                    }
-                    history.replaceState({ screen: 'chat' }, '', '#chat');
-                    state.currentScreen = 'chat';
-
+                    dbUtils.openDB().then(() => {
+                        dbUtils.loadSettings().then(() => {
+                            uiUtils.applyTheme();
+                            uiUtils.applyFontFamily();
+                            uiUtils.applySidePanelSettingsToUI();
+    
+                            if (state.settings.backgroundImageBlob instanceof Blob) {
+                                uiUtils.revokeExistingObjectUrl();
+                                try {
+                                     state.backgroundImageUrl = URL.createObjectURL(state.settings.backgroundImageBlob);
+                                     document.documentElement.style.setProperty('--chat-background-image', `url(${state.backgroundImageUrl})`);
+                                } catch (e) {
+                                     document.documentElement.style.setProperty('--chat-background-image', 'none');
+                                }
+                            } else {
+                                document.documentElement.style.setProperty('--chat-background-image', 'none');
+                            }
+                            if (state.settings.userIconBlob instanceof Blob) {
+                                try { state.userIconUrl = URL.createObjectURL(state.settings.userIconBlob); } catch (e) { }
+                            }
+                            if (state.settings.aiIconBlob instanceof Blob) {
+                                try { state.aiIconUrl = URL.createObjectURL(state.settings.aiIconBlob); } catch (e) { }
+                            }
+    
+                            uiUtils.applySettingsToUI();
+    
+                            dbUtils.getAllChats(state.settings.historySortOrder).then(chats => {
+                                if (chats && chats.length > 0) {
+                                    this.loadChat(chats[0].id);
+                                } else {
+                                    this.startNewChat();
+                                }
+                                history.replaceState({ screen: 'chat' }, '', '#chat');
+                                state.currentScreen = 'chat';
+    
+                            }).finally(() => {
+                                updateMessageMaxWidthVar();
+                                this.setupEventListeners();
+                                this.updateZoomState();
+                                uiUtils.adjustTextareaHeight();
+                                uiUtils.setSendingState(false);
+                                if (state.settings.autoScrollOnNewMessage) {
+                                    uiUtils.scrollToBottom();
+                                }
+                            });
+                        });
+                    });
                 } catch (error) {
-                    await uiUtils.showCustomAlert(`アプリの初期化に失敗しました: ${error}`);
+                    uiUtils.showCustomAlert(`アプリの初期化に失敗しました: ${error}`);
                     elements.appContainer.innerHTML = `<p style="padding: 20px; text-align: center; color: red;">アプリの起動に失敗しました。</p>`;
-                } finally {
-                    updateMessageMaxWidthVar();
-                    this.setupEventListeners();
-                    this.updateZoomState();
-                    uiUtils.adjustTextareaHeight();
-                    uiUtils.setSendingState(false);
-                    if (state.settings.autoScrollOnNewMessage) {
-                        uiUtils.scrollToBottom();
-                    }
-                }
+                } 
             },
             setupEventListeners() {
                 elements.gotoHistoryBtn.addEventListener('click', () => uiUtils.showScreen('history'));
@@ -7151,9 +7196,10 @@
                 elements.pasteToInputBtn.addEventListener('click', () => this.pasteToUserInput());
                 elements.rollDiceBtn.addEventListener('click', () => this.rollDiceAndInput());
 
-                elements.newChatBtn.addEventListener('click', async () => {
-                    const confirmed = await uiUtils.showCustomConfirm("現在のチャットを保存して新規チャットを開始しますか？");
-                    if (confirmed) this.confirmStartNewChat();
+                elements.newChatBtn.addEventListener('click', () => {
+                    uiUtils.showCustomConfirm("現在のチャットを保存して新規チャットを開始しますか？").then(confirmed => {
+                        if (confirmed) this.confirmStartNewChat();
+                    });
                 });
                 elements.deleteSessionBtn.addEventListener('click', () => this.confirmDeleteCurrentSession());
                 elements.copySessionBtn.addEventListener('click', () => this.copyCurrentSessionText());
@@ -7220,7 +7266,7 @@
                         const selectedProvider = event.target.value;
                         state.settings.apiProvider = selectedProvider;
                         uiUtils.toggleApiSettingsVisibility(selectedProvider);
-                        uiUtils.updateSystemPromptUI();
+                        this.updateSystemPromptBasedOnProvider();
                     });
                 }
                 if (elements.enableSessionLinkingCheckbox) {
@@ -7597,6 +7643,8 @@
                         }
                     });
                 });
+                window.addEventListener('resize', uiUtils.adjustHeaderLayout);
+                uiUtils.adjustHeaderLayout();
             },
             handlePopState(event) {
                 const targetScreen = event.state?.screen || 'chat';
@@ -10665,6 +10713,7 @@
                                                                        (messageApiProvider === 'claude' && state.settings.claudeExpandThoughtsByDefault));
                         }
                     });
+
 
 
                     uiUtils.renderChatMessages();
