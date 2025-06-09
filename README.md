@@ -18,7 +18,7 @@
 -  https://console.anthropic.com/settings/keys
 -  OpenAI用 API課金管理
 -  https://platform.openai.com/settings/organization/billing/overview
--  今後の予定:設定画面の項目の整理、セキュリティアップデート
+-  今後の予定:設定画面の項目の整理、セキュリティアップデート、OpenAI API対応
 
 ### ■ 注意事項
 -  本PWAを初めてのデバイスから使用する場合は、必ず無料モデルを用いて必要最低限の機能構成からテストしてください。
