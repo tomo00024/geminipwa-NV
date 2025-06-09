@@ -1,5 +1,5 @@
 # 概要
-- 本家Gemini PWA( https://github.com/ona-oni/geminipwa )に関心を持った他の人が、自分用にいじったコードを公開しているリポジトリ
+- 本家Gemini PWA( https://github.com/ona-oni/geminipwa )に感銘した他の人が、自分用にいじったコードを公開しているリポジトリ
 
 # titan823によるフォーク版 GeminiPWA(ti) の変更点・仕様（2025年6月時点）
 
@@ -16,6 +16,8 @@
 -  https://platform.deepseek.com/api_keys
 -  Anthropic用API管理
 -  https://console.anthropic.com/settings/keys
+-  OpenAI用 API課金管理
+-  https://platform.openai.com/settings/organization/billing/overview
 -  今後の予定:設定画面の項目の整理、セキュリティアップデート
 
 ### ■ 注意事項
