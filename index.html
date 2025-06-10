@@ -3155,6 +3155,10 @@
                         <input type="password" id="openai-api-key" placeholder="sk-..." aria-label="ChatGPT APIキー">
                         <label for="openai-model-name">モデル名:</label>
                         <select id="openai-model-name" aria-label="OpenAI モデル名">
+                            <optgroup label="GPT-4.1">
+                                <option value="gpt-4.1">gpt-4.1</option>
+                                <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+                            </optgroup>
                             <optgroup label="GPT-4o & Mini">
                                 <option value="gpt-4o">gpt-4o (2024-05-13)</option>
                                 <option value="gpt-4o-2024-08-06">gpt-4o-2024-08-06</option>
@@ -6764,7 +6768,7 @@
                 this.toggleSystemPromptVisibility();
             },
             toggleSystemPromptVisibility() {
-                const shouldHide = state.settings.hideSystemPromptInChat;
+                const shouldHide = state.settings.hideSystemPromptInChat || !state.settings.enableCommonSystemPromptDefault;
                 elements.systemPromptArea.classList.toggle('hidden', shouldHide);
             },
             showScreen(screenName, fromPopState = false) {
@@ -7698,6 +7702,10 @@
 
                 elements.hideSystemPromptToggle.addEventListener('change', () => {
                     state.settings.hideSystemPromptInChat = elements.hideSystemPromptToggle.checked;
+                    uiUtils.toggleSystemPromptVisibility();
+                });
+                elements.enableCommonSystemPromptDefaultCheckbox.addEventListener('change', () => {
+                    state.settings.enableCommonSystemPromptDefault = elements.enableCommonSystemPromptDefaultCheckbox.checked;
                     uiUtils.toggleSystemPromptVisibility();
                 });
                 elements.showChatTitleToggle.addEventListener('change', () => {
@@ -8726,7 +8734,7 @@
 
                 if (isBackgroundProcess) {
                     currentContextSystemPrompt = sourceSessionContext.systemPrompt || '';
-                } else {
+                } else if (state.settings.enableCommonSystemPromptDefault) {
                     const chatSystemPrompt = state.currentSystemPrompt.trim();
                     let individualPrompt = '';
                     let commonPrompt = '';
@@ -9333,7 +9341,7 @@
                                              if ((state.deepSeekThoughtStreamCompleted || !state.deepSeekThoughtRawTextBuffer) &&
                                                  !state.deepSeekIsProcessingContentQueue) {
                                                 uiUtils.processDeepSeekContentQueue(messageIndexForDisplay);
-                                            }
+                                             }
                                         }
                                     }
                                 }
@@ -12160,7 +12168,7 @@
                         fullReasoningContent: accumulatedFullReasoningContent || null
                     };
                 } catch (error) {
-                    yield { type: 'error', error: { message: error.message }, message: error.message };
+                     yield { type: 'error', error: { message: error.message }, message: error.message };
                 } finally {
                     if (!reader.closed && !isCancelled) {
                         try { await reader.cancel("Stream processing ended."); } catch (e) { }
