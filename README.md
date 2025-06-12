@@ -1,5 +1,6 @@
 # 概要
 - 本家Gemini PWA( https://github.com/ona-oni/geminipwa )に感銘を受けた他の人が、自分用にいじった派生コードを公開しているリポジトリ
+-  自前のAPIキーを用いてChat AIとやりとりを行うためのアプリ
 
 ## ■ 利用方法（PWA）
 -  当PWAはブラウザから以下のURLにて利用可能です：
