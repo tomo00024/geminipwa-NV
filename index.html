@@ -6489,6 +6489,7 @@
                 this.toggleSystemPromptVisibility();
                 this.applySidePanelSettingsToUI();
                 this.updateSessionLinkingUI();
+                this.updateApiProviderSelectOptions();
             },
             applySettingsUIDetailsOpenStates() {
                 const detailsElements = document.querySelectorAll('#settings-screen details[id]');
@@ -7187,6 +7188,51 @@
             updateSessionLinkingUI() {
                 this.renderHistoryList();
                 this.updateChatScreenElementVisibility();
+            },
+            updateApiProviderSelectOptions() {
+                const apiProviderSelect = elements.apiProviderSelect;
+                if (!apiProviderSelect) return;
+
+                const allProviderOptions = [
+                    { value: 'gemini', text: 'Google Gemini' },
+                    { value: 'deepseek', text: 'DeepSeek' },
+                    { value: 'claude', text: 'Claude (Anthropic API)' },
+                    { value: 'openai', text: 'ChatGPT (OpenAI API)' }
+                ];
+
+                const currentValue = apiProviderSelect.value;
+                apiProviderSelect.innerHTML = '';
+
+                const cycleSettings = state.settings.apiProviderCycle;
+                const enabledOptions = allProviderOptions.filter(option => 
+                    cycleSettings[option.value] === true
+                );
+
+                enabledOptions.forEach(option => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option.value;
+                    optionElement.textContent = option.text;
+                    apiProviderSelect.appendChild(optionElement);
+                });
+
+                if (enabledOptions.some(option => option.value === currentValue)) {
+                    apiProviderSelect.value = currentValue;
+                } else if (enabledOptions.length > 0) {
+                    const newProvider = enabledOptions[0].value;
+                    state.settings.apiProvider = newProvider;
+                    apiProviderSelect.value = newProvider;
+                    this.toggleApiSettingsVisibility(newProvider);
+                    appLogic.updateSystemPromptBasedOnProvider();
+                }
+
+                if (enabledOptions.length === 0) {
+                    const warningOption = document.createElement('option');
+                    warningOption.value = '';
+                    warningOption.textContent = '有効なAPIプロバイダーがありません';
+                    warningOption.disabled = true;
+                    apiProviderSelect.appendChild(warningOption);
+                    apiProviderSelect.value = '';
+                }
             },
             getDeepSeekThoughtElement(messageIndex, ensurePre = false) {
                 const messageDiv = document.getElementById(`streaming-message-${messageIndex}`) ||
@@ -7924,6 +7970,23 @@
                 });
                 window.addEventListener('resize', uiUtils.adjustHeaderLayout);
                 uiUtils.adjustHeaderLayout();
+                
+                elements.apiProviderCycleGeminiCheckbox.addEventListener('change', () => {
+                    state.settings.apiProviderCycle.gemini = elements.apiProviderCycleGeminiCheckbox.checked;
+                    uiUtils.updateApiProviderSelectOptions();
+                });
+                elements.apiProviderCycleDeepSeekCheckbox.addEventListener('change', () => {
+                    state.settings.apiProviderCycle.deepseek = elements.apiProviderCycleDeepSeekCheckbox.checked;
+                    uiUtils.updateApiProviderSelectOptions();
+                });
+                elements.apiProviderCycleClaudeCheckbox.addEventListener('change', () => {
+                    state.settings.apiProviderCycle.claude = elements.apiProviderCycleClaudeCheckbox.checked;
+                    uiUtils.updateApiProviderSelectOptions();
+                });
+                elements.apiProviderCycleOpenAICheckbox.addEventListener('change', () => {
+                    state.settings.apiProviderCycle.openai = elements.apiProviderCycleOpenAICheckbox.checked;
+                    uiUtils.updateApiProviderSelectOptions();
+                });
             },
             handlePopState(event) {
                 const targetScreen = event.state?.screen || 'chat';
@@ -10459,6 +10522,14 @@
                  document.querySelectorAll('#settings-screen details[id]').forEach(details => {
                     newSettings.settingsUIDetailsOpenStates[details.id] = details.open;
                  });
+                 if (!newSettings.apiProviderCycle[newSettings.apiProvider]) {
+                    const enabledProvider = Object.entries(newSettings.apiProviderCycle)
+                        .find(([provider, enabled]) => enabled)?.[0];
+                    if (enabledProvider) {
+                        newSettings.apiProvider = enabledProvider;
+                        elements.apiProviderSelect.value = enabledProvider;
+                    }
+                }
 
 
                  try {
@@ -10494,11 +10565,7 @@
                      state.settings.disableSaveSettingsConfirmation = newSettings.disableSaveSettingsConfirmation;
 
 
-                     if (!newSettings.enableSessionLinking) {
-                         state.linkedSessionIds = [];
-                     }
-
-                    if (!state.isSending && !state.isAiToAiChatProcessing) {
+                     if (!state.isSending && !state.isAiToAiChatProcessing) {
                         uiUtils.applySettingsToUI();
                         uiUtils.renderChatMessages(true);
                     } else {
