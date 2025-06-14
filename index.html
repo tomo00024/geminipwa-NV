@@ -818,7 +818,7 @@
             position: sticky;
             top: 0;
             z-index: 10;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, padding 0.2s ease, gap 0.2s ease, min-height 0.2s ease;
             gap: 8px;
         }
         body.pastel-rainbow-mode .app-header {
@@ -836,6 +836,7 @@
             margin-right: auto;
             flex-shrink: 1;
             min-width: 60px;
+            transition: font-size 0.2s ease;
         }
         .header-button {
             background: none;
@@ -846,6 +847,7 @@
             line-height: 1;
             min-width: 30px;
             flex-shrink: 0;
+            transition: padding 0.2s ease, font-size 0.2s ease, min-width 0.2s ease, height 0.2s ease;
         }
         #goto-settings-btn {
             order: 99;
@@ -907,7 +909,7 @@
             position: sticky;
             top: 0;
             z-index: 10;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, padding 0.2s ease, gap 0.2s ease, min-height 0.2s ease;
             gap: 10px;
             flex-direction: row-reverse;
             justify-content: flex-start;
@@ -926,6 +928,7 @@
             margin: 0;
             margin-left: auto;
             order: 2;
+            transition: font-size 0.2s ease;
         }
         #history-screen .app-header #back-to-chat-from-history {
             order: 1;
@@ -1012,7 +1015,7 @@
             border-radius: 5px;
             border: none;
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease, padding 0.2s ease, font-size 0.2s ease, height 0.2s ease;
             flex-shrink: 0;
         }
         .header-save-button:hover:not(:disabled) {
@@ -1070,7 +1073,7 @@
             border-radius: 5px;
             border: none;
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease, padding 0.2s ease, font-size 0.2s ease, height 0.2s ease;
         }
         .new-chat-button:hover {
             background-color: var(--bg-button-save-hover);
@@ -1088,7 +1091,7 @@
             border-radius: 5px;
             border: none;
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease, padding 0.2s ease, font-size 0.2s ease, height 0.2s ease;
             flex-shrink: 0;
         }
         .app-header #delete-session-btn {
@@ -1400,6 +1403,13 @@
         .system-prompt-actions button {
             padding: 4px 10px;
             font-size: 12px;
+        }
+        .system-prompt-actions .clear-system-prompt-btn {
+            background-color: var(--bg-button-delete);
+            margin-right: auto;
+        }
+        .system-prompt-actions .clear-system-prompt-btn:hover {
+            background-color: var(--bg-button-delete-hover);
         }
         .system-prompt-actions .save-system-prompt-btn { background-color: var(--bg-button-save); }
         .system-prompt-actions .save-system-prompt-btn:hover { background-color: var(--bg-button-save-hover); }
@@ -1812,7 +1822,7 @@
             border-top: 1px solid var(--border-primary);
             flex-shrink: 0;
             box-sizing: border-box;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
+            transition: background-color 0.3s ease, border-color 0.3s ease, padding 0.2s ease, gap 0.2s ease;
             gap: 10px;
         }
         .footer-action-button {
@@ -1830,7 +1840,7 @@
             border-radius: 5px;
             border: none;
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease, height 0.2s ease, width 0.2s ease, font-size 0.2s ease;
         }
         .footer-action-button:hover:not(:disabled) {
             background-color: var(--bg-button-action-hover);
@@ -1851,6 +1861,7 @@
             font-size: 16px;
             min-width: 30px;
             padding: 5px;
+            transition: font-size 0.2s ease, min-width 0.2s ease, height 0.2s ease;
         }
         .app-header .api-provider-toggle-btn {
             background-color: rgba(255, 255, 255, 0.2) !important;
@@ -1915,6 +1926,7 @@
             margin-bottom: 0;
             padding: 8px 10px;
             overflow-y: auto;
+            transition: min-height 0.2s ease, height 0.2s ease, padding 0.2s ease, font-size 0.2s ease;
         }
         .chat-input-area button#send-button {
             height: 40px;
@@ -1926,6 +1938,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: background-color 0.2s ease, height 0.2s ease, width 0.2s ease, font-size 0.2s ease;
         }
         .chat-input-area button#send-button.sending {
             background-color: #ffc107;
@@ -2911,6 +2924,69 @@
             flex-grow: 1;
         }
 
+        .app-container.minimized-ui .app-header,
+        .app-container.minimized-ui #history-screen .app-header {
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-left: 8px;
+            padding-right: 8px;
+            gap: 4px;
+            min-height: 32px;
+        }
+
+        .app-container.minimized-ui .app-header h1 {
+            font-size: 15px;
+        }
+
+        .app-container.minimized-ui .header-button,
+        .app-container.minimized-ui .new-chat-button,
+        .app-container.minimized-ui .app-header .action-button-in-header,
+        .app-container.minimized-ui .header-save-button {
+            padding: 2px 6px;
+            font-size: 13px;
+            min-width: 28px;
+            height: 28px;
+        }
+
+        .app-container.minimized-ui .header-button {
+            font-size: 16px;
+            padding: 2px;
+        }
+        
+        .app-container.minimized-ui .api-provider-toggle-btn {
+            font-size: 14px;
+            min-width: 28px;
+            height: 28px;
+        }
+
+        .app-container.minimized-ui .chat-input-area {
+            padding: 2px 8px;
+            gap: 6px;
+        }
+
+        .app-container.minimized-ui .chat-input-area textarea {
+            min-height: 32px;
+            height: 32px;
+            padding: 6px 8px;
+            font-size: 13px;
+        }
+
+        .app-container.minimized-ui .chat-input-area .footer-action-button,
+        .app-container.minimized-ui .chat-input-area button#send-button {
+            height: 32px;
+            width: 32px;
+        }
+
+        .app-container.minimized-ui .chat-input-area .footer-action-button {
+             font-size: 16px;
+        }
+        .app-container.minimized-ui .chat-input-area button#paste-to-input-btn {
+            font-size: 14px;
+        }
+        .app-container.minimized-ui .chat-input-area button#send-button {
+            font-size: 16px;
+        }
+
     </style>
     <script src="marked.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
@@ -2959,6 +3035,7 @@
                         <div class="system-prompt-content">
                             <textarea id="system-prompt-editor" aria-label="システムプロンプト編集"></textarea>
                             <div class="system-prompt-actions">
+                                <button id="clear-system-prompt-btn" class="clear-system-prompt-btn">全削除</button>
                                 <button id="cancel-system-prompt-btn" class="cancel-system-prompt-btn">キャンセル</button>
                                 <button id="save-system-prompt-btn" class="save-system-prompt-btn">保存</button>
                             </div>
@@ -3591,7 +3668,7 @@
                         <button id="delete-background-btn" class="settings-delete-button hidden" type="button">画像を削除</button>
                     </div>
                      <p style="font-size: 11px; color: var(--text-secondary); margin-top: 8px;">
-                       ※ 画像はブラウザ内のデータベースに保存されます。<br>
+                       ※ 画像はブラウザ内のデータベースに保存されます。gifも可<br>
                        ※ 可読性のため画像の上に半透明のレイヤーを表示。
                      </p>
                 </div>
@@ -3748,6 +3825,11 @@
                                    </label>
                                    <p style="height:10px"></p>
                                    <label class="checkbox-label">
+                                       <input type="checkbox" id="add-prefix-on-import-toggle">
+                                       履歴インポート時にタイトルへ接頭辞「(取込)」を付与する
+                                   </label>
+                                   <p style="height:10px"></p>
+                                   <label class="checkbox-label">
                                        <input type="checkbox" id="hide-system-prompt-toggle">
                                        システムプロンプト非表示
                                    </label>
@@ -3766,6 +3848,13 @@
                            <details id="settings-group-header-footer-buttons">
                                 <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">ヘッダー/フッターボタン・項目表示設定</summary>
                                 <div style="padding-top:10px; padding-left:15px;">
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="minimize-header-footer-toggle">
+                                       ヘッダー/フッターの縦幅を最小化する
+                                   </label>
+                                   <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                                       ※  ヘッダー/フッターの縦幅を切り詰め、表示領域を最大化します。画面が小型ないし横長の端末用
+                                   </p>
                                    <label class="checkbox-label">
                                         <input type="checkbox" id="show-bulk-history-actions-toggle">
                                         履歴画面に「全出力」「全取込」ボタンを表示する
@@ -4207,6 +4296,7 @@
             systemPromptEditor: document.getElementById('system-prompt-editor'),
             saveSystemPromptBtn: document.getElementById('save-system-prompt-btn'),
             cancelSystemPromptBtn: document.getElementById('cancel-system-prompt-btn'),
+            clearSystemPromptBtn: document.getElementById('clear-system-prompt-btn'),
             apiProviderSelect: document.getElementById('api-provider-select'),
             commonSystemPromptDefaultTextarea: document.getElementById('common-system-prompt-default'),
             enableCommonSystemPromptDefaultCheckbox: document.getElementById('enable-common-system-prompt-default'),
@@ -4326,6 +4416,7 @@
             enableSessionLinkingCheckbox: document.getElementById('enable-session-linking'),
             swipeNavigationToggle: document.getElementById('swipe-navigation-toggle'),
             preventZoomToggle: document.getElementById('prevent-zoom-toggle'),
+            minimizeHeaderFooterToggle: document.getElementById('minimize-header-footer-toggle'),
             showChatTitleToggle: document.getElementById('show-chat-title-toggle'),
             showNewChatButtonToggle: document.getElementById('show-new-chat-button-toggle'),
             showDeleteSessionButtonToggle: document.getElementById('show-delete-session-button-toggle'),
@@ -4401,6 +4492,7 @@
             disableRetryConfirmationToggle: document.getElementById('disable-retry-confirmation-toggle'),
             disableLoadChatConfirmationWhileSendingToggle: document.getElementById('disable-load-chat-confirmation-while-sending-toggle'),
             disableDeleteMessageConfirmationToggle: document.getElementById('disable-delete-message-confirmation-toggle'),
+            addPrefixOnImportToggle: document.getElementById('add-prefix-on-import-toggle'),
             showTopCollapseButtonToggle: document.getElementById('show-top-collapse-button-toggle'),
             showBottomCollapseButtonToggle: document.getElementById('show-bottom-collapse-button-toggle'),
             persistMessageCollapseStateCheckbox: document.getElementById('persist-message-collapse-state'),
@@ -4564,6 +4656,7 @@
                 enableSessionLinking: false,
                 enableSwipeNavigation: true,
                 preventZoom: true,
+                minimizeHeaderFooter: false,
                 showChatTitle: true,
                 showNewChatButton: true,
                 showDeleteSessionButton: false,
@@ -4604,6 +4697,7 @@
                 disableRetryConfirmation: false,
                 disableLoadChatConfirmationWhileSending: false,
                 disableDeleteMessageConfirmation: false,
+                addPrefixOnImport: true,
                 showTopCollapseButton: true,
                 showBottomCollapseButton: true,
                 persistMessageCollapseState: DEFAULT_PERSIST_MESSAGE_COLLAPSE_STATE,
@@ -6398,6 +6492,7 @@
                  elements.hideSystemPromptToggle.checked = state.settings.hideSystemPromptInChat;
                  elements.swipeNavigationToggle.checked = state.settings.enableSwipeNavigation;
                  elements.preventZoomToggle.checked = state.settings.preventZoom;
+                 elements.minimizeHeaderFooterToggle.checked = state.settings.minimizeHeaderFooter;
                  elements.showChatTitleToggle.checked = state.settings.showChatTitle;
                  elements.showNewChatButtonToggle.checked = state.settings.showNewChatButton;
                  elements.showDeleteSessionButtonToggle.checked = state.settings.showDeleteSessionButton;
@@ -6450,6 +6545,7 @@
                 elements.disableRetryConfirmationToggle.checked = state.settings.disableRetryConfirmation;
                 elements.disableLoadChatConfirmationWhileSendingToggle.checked = state.settings.disableLoadChatConfirmationWhileSending;
                 elements.disableDeleteMessageConfirmationToggle.checked = state.settings.disableDeleteMessageConfirmation;
+                elements.addPrefixOnImportToggle.checked = state.settings.addPrefixOnImport;
                 elements.disableSaveSettingsConfirmationToggle.checked = state.settings.disableSaveSettingsConfirmation;
                 elements.showTopCollapseButtonToggle.checked = state.settings.showTopCollapseButton;
                 elements.showBottomCollapseButtonToggle.checked = state.settings.showBottomCollapseButton;
@@ -6490,6 +6586,10 @@
                 this.applySidePanelSettingsToUI();
                 this.updateSessionLinkingUI();
                 this.updateApiProviderSelectOptions();
+                this.applyMinimizeUI();
+            },
+            applyMinimizeUI() {
+                elements.appContainer.classList.toggle('minimized-ui', state.settings.minimizeHeaderFooter);
             },
             applySettingsUIDetailsOpenStates() {
                 const detailsElements = document.querySelectorAll('#settings-screen details[id]');
@@ -6765,7 +6865,7 @@
                 this.toggleSystemPromptVisibility();
             },
             toggleSystemPromptVisibility() {
-                const shouldHide = state.settings.hideSystemPromptInChat || !state.settings.enableCommonSystemPromptDefault;
+                const shouldHide = state.settings.hideSystemPromptInChat;
                 elements.systemPromptArea.classList.toggle('hidden', shouldHide);
             },
             showScreen(screenName, fromPopState = false) {
@@ -7551,6 +7651,14 @@
                 });
                 elements.saveSystemPromptBtn.addEventListener('click', () => this.saveCurrentSystemPrompt());
                 elements.cancelSystemPromptBtn.addEventListener('click', () => this.cancelEditSystemPrompt());
+                elements.clearSystemPromptBtn.addEventListener('click', async () => {
+                    if (!elements.systemPromptEditor.value) return;
+                    const confirmed = await uiUtils.showCustomConfirm("システムプロンプトの内容を全て削除しますか？");
+                    if (confirmed) {
+                        elements.systemPromptEditor.value = '';
+                        uiUtils.adjustTextareaHeight(elements.systemPromptEditor, 200);
+                    }
+                });
                 elements.systemPromptEditor.addEventListener('input', () => {
                     uiUtils.adjustTextareaHeight(elements.systemPromptEditor, 200);
                 });
@@ -7805,6 +7913,10 @@
                 elements.preventZoomToggle.addEventListener('change', () => {
                     state.settings.preventZoom = elements.preventZoomToggle.checked;
                     uiUtils.applyZoomPreventionSetting();
+                });
+                document.getElementById('minimize-header-footer-toggle').addEventListener('change', (e) => {
+                    state.settings.minimizeHeaderFooter = e.target.checked;
+                    uiUtils.applyMinimizeUI();
                 });
 
                 elements.memoHeightInput.addEventListener('input', () => {
@@ -8404,8 +8516,8 @@
                 state.currentMessages = [];
                 state.currentSystemPrompt = '';
 
-                if (state.settings.enableCommonSystemPromptDefault) {
-                    state.currentSystemPrompt = state.settings.commonSystemPrompt || '';
+                if (state.settings.commonSystemPrompt && state.settings.commonSystemPrompt.trim() !== '') {
+                    state.currentSystemPrompt = state.settings.commonSystemPrompt;
                 }
                 
                 state.pendingAttachments = [];
@@ -8793,7 +8905,7 @@
 
                 if (isBackgroundProcess) {
                     currentContextSystemPrompt = sourceSessionContext.systemPrompt || '';
-                } else if (state.settings.enableCommonSystemPromptDefault) {
+                } else {
                     const chatSystemPrompt = state.currentSystemPrompt.trim();
                     let individualPrompt = '';
                     let commonPrompt = '';
@@ -9931,7 +10043,8 @@
 
 
                         const fileNameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
-                        const newTitle = IMPORT_PREFIX + (fileNameWithoutExt || `Imported_${Date.now()}`);
+                        const titlePrefix = state.settings.addPrefixOnImport ? IMPORT_PREFIX : '';
+                        const newTitle = titlePrefix + (fileNameWithoutExt || `Imported_${Date.now()}`);
 
                         const newChatData = {
                             messages: importedMessages, systemPrompt: importedSystemPrompt || '',
@@ -10097,8 +10210,9 @@
                                 continue;
                             }
 
+                            const titlePrefix = state.settings.addPrefixOnImport ? `${IMPORT_PREFIX}(全) ` : '';
                             const newChat = {
-                                title: `${IMPORT_PREFIX}(全) ${chatData.title}`.substring(0,100),
+                                title: `${titlePrefix}${chatData.title}`.substring(0,100),
                                 systemPrompt: chatData.systemPrompt || '',
                                 messages: (chatData.messages || []).map(msg => ({
                                     role: msg.role,
@@ -10380,6 +10494,7 @@
                  newSettings.hideSystemPromptInChat = elements.hideSystemPromptToggle.checked;
                  newSettings.enableSwipeNavigation = elements.swipeNavigationToggle.checked;
                  newSettings.preventZoom = elements.preventZoomToggle.checked;
+                 newSettings.minimizeHeaderFooter = document.getElementById('minimize-header-footer-toggle').checked;
                  newSettings.showChatTitle = elements.showChatTitleToggle.checked;
                  newSettings.showNewChatButton = elements.showNewChatButtonToggle.checked;
                  newSettings.showDeleteSessionButton = elements.showDeleteSessionButtonToggle.checked;
@@ -10418,6 +10533,7 @@
                  newSettings.disableRetryConfirmation = elements.disableRetryConfirmationToggle.checked;
                  newSettings.disableLoadChatConfirmationWhileSending = elements.disableLoadChatConfirmationWhileSendingToggle.checked;
                  newSettings.disableDeleteMessageConfirmation = elements.disableDeleteMessageConfirmationToggle.checked;
+                 newSettings.addPrefixOnImport = elements.addPrefixOnImportToggle.checked;
                  newSettings.disableSaveSettingsConfirmation = elements.disableSaveSettingsConfirmationToggle.checked;
                  newSettings.showTopCollapseButton = elements.showTopCollapseButtonToggle.checked;
                  newSettings.showBottomCollapseButton = elements.showBottomCollapseButtonToggle.checked;
@@ -10681,6 +10797,7 @@
                         defaultSettingsCopy.enableSessionLinking = false;
                         defaultSettingsCopy.enableSwipeNavigation = true;
                         defaultSettingsCopy.preventZoom = true;
+                        defaultSettingsCopy.minimizeHeaderFooter = false;
                         defaultSettingsCopy.showChatTitle = true;
                         defaultSettingsCopy.showNewChatButton = true;
                         defaultSettingsCopy.showDeleteSessionButton = false;
@@ -10721,6 +10838,7 @@
                         defaultSettingsCopy.disableRetryConfirmation = false;
                         defaultSettingsCopy.disableLoadChatConfirmationWhileSending = false;
                         defaultSettingsCopy.disableDeleteMessageConfirmation = false;
+                        defaultSettingsCopy.addPrefixOnImport = true;
                         defaultSettingsCopy.disableSaveSettingsConfirmation = false;
                         defaultSettingsCopy.showTopCollapseButton = true;
                         defaultSettingsCopy.showBottomCollapseButton = true;
@@ -11300,7 +11418,7 @@
                 const groupId = currentMsg.siblingGroupId;
                 const siblingsWithIndices = state.currentMessages
                     .map((msg, i) => ({ msg, originalIndex: i }))
-                    .filter(item => item.msg.role === 'model' && item.msg.isCascaded && item.msg.siblingGroupId === groupId);
+                                        .filter(item => item.msg.role === 'model' && item.msg.isCascaded && item.msg.siblingGroupId === groupId);
 
                 const currentSiblingIndexInGroup = siblingsWithIndices.findIndex(item => item.originalIndex === currentIndex);
                 if (currentSiblingIndexInGroup === -1) return;
@@ -12052,7 +12170,7 @@
                      }
                  }
             },
-            async callDeepSeekApi(messagesForApi, generationConfig, systemInstructionForDeepSeek, useStreaming) {
+            async callDeepSeekApi(messagesForApi, generationConfig, systemInstruction, useStreaming) {
                 if (!state.settings.deepSeekApiKey) {
                     throw new Error("DeepSeek APIキーが設定されていません。");
                 }
@@ -12065,8 +12183,8 @@
                 const endpoint = `${baseUrl.replace(/\/$/, '')}/chat/completions`;
 
                 const dsMessages = [];
-                if (systemInstructionForDeepSeek && systemInstructionForDeepSeek.content) {
-                    dsMessages.push({ role: "system", content: systemInstructionForDeepSeek.content });
+                if (systemInstruction && systemInstruction.content) {
+                    dsMessages.push({ role: "system", content: systemInstruction.content });
                 }
 
                 messagesForApi.forEach(msg => {
