@@ -59,7 +59,6 @@
             --bg-code-copy-button-hover: var(--bg-button-action-hover);
             --text-code-copy-button: var(--text-light);
 
-
             --text-primary: #333333;
             --text-secondary: #777777;
             --text-light: #ffffff;
@@ -70,7 +69,6 @@
             --text-system: #555;
             --text-memo: #000000;
             --bg-memo: #ffffff;
-
 
             --border-primary: #cccccc;
             --border-secondary: #dddddd;
@@ -242,7 +240,6 @@
             --default-ai-name-bubble-custom-rgb: 50, 50, 50;
         }
 
-
         body.pastel-pink-mode {
             --bg-primary: #fff5f8;
             --bg-secondary: #ffe6ea;
@@ -346,7 +343,6 @@
             --default-ai-name-bubble-custom-rgb: 255, 230, 234;
         }
 
-
         body.pastel-blue-mode {
             --bg-primary: #f0f8ff;
             --bg-secondary: #e0f0ff;
@@ -408,7 +404,6 @@
             --text-system: #5a7698;
             --text-memo: #3a5679;
 
-
             --border-primary: #b0dfff;
             --border-secondary: #d5eaff;
             --border-tertiary: #eaf5ff;
@@ -450,7 +445,6 @@
             --default-user-name-bubble-custom-rgb: 224, 240, 255;
             --default-ai-name-bubble-custom-rgb: 224, 240, 255;
         }
-
 
         body.pastel-yellow-mode {
             --bg-primary: #fffefa;
@@ -503,7 +497,6 @@
             --bg-code-copy-button-hover: var(--bg-button-action-hover);
             --text-code-copy-button: var(--text-light);
 
-
             --text-primary: #5d4037;
             --text-secondary: #8d6e63;
             --text-light: #424242;
@@ -539,7 +532,6 @@
             --default-user-name-bubble-custom-rgb: 255, 250, 205;
             --default-ai-name-bubble-custom-rgb: 255, 250, 205;
         }
-
 
         body.pastel-purple-mode {
             --bg-primary: #f3e5f5;
@@ -627,7 +619,6 @@
             --default-user-name-bubble-custom-rgb: 225, 190, 231;
             --default-ai-name-bubble-custom-rgb: 225, 190, 231;
         }
-
 
         body.pastel-rainbow-mode {
             --bg-primary: #fdfdfd;
@@ -727,8 +718,6 @@
             --default-user-name-bubble-custom-rgb: 245, 245, 245;
             --default-ai-name-bubble-custom-rgb: 245, 245, 245;
         }
-
-
 
         * {
             margin: 0;
@@ -854,7 +843,6 @@
             margin-left: 5px;
         }
 
-
         .app-header #toggle-clipboard-stack-btn,
         .app-header #toggle-memo-btn,
         .app-header .scroll-jump-button,
@@ -897,7 +885,6 @@
             background-color: rgba(255, 255, 255, 0.08) !important;
             border-color: rgba(255, 255, 255, 0.2) !important;
         }
-
 
         #history-screen .app-header {
             display: flex;
@@ -1062,7 +1049,6 @@
         body.pastel-rainbow-mode .header-save-button {
             color: var(--text-light);
         }
-
 
         .new-chat-button {
             font-size: 14px;
@@ -1329,7 +1315,6 @@
             display: block;
         }
 
-
         .system-prompt-area {
             padding: 10px 15px;
             margin-bottom: 15px;
@@ -1502,7 +1487,6 @@
             box-shadow: 0 1px 1px rgba(0,0,0,0.1);
         }
 
-
         .message.message-hidden-by-toggle {
             visibility: hidden;
             opacity: 0;
@@ -1525,7 +1509,6 @@
         .message.message-content-collapsed-fully .thought-summary-details {
             display: none !important;
         }
-
 
         .message:first-child {
             margin-top: 0;
@@ -1619,7 +1602,6 @@
             background: linear-gradient(to bottom, rgba(var(--overlay-base-rgb),0) 0%, var(--bg-model-message) 100%);
         }
 
-
         .message-toggle-button {
             position: absolute;
             background-color: var(--bg-toggle-button);
@@ -1647,7 +1629,6 @@
         .message.show-actions .message-toggle-button.bottom {
             opacity: 1;
         }
-
 
         .message-toggle-button.top {
             top: 3px;
@@ -1710,7 +1691,6 @@
         body.pastel-yellow-mode .message-edit-actions button {
             color: var(--text-light);
         }
-
 
         .message-actions button:hover {
             background-color: var(--bg-button-action-hover);
@@ -1969,7 +1949,6 @@
         body.pastel-rainbow-mode .chat-input-area button#send-button.sending:hover {
             background-color: #ffe766;
         }
-
 
         #loading-indicator {
             position: fixed;
@@ -2389,7 +2368,6 @@
              opacity: 1;
         }
 
-
         .message.editing.show-actions .message-actions,
         .message.editing.show-actions .message-cascade-controls,
         .message.editing.show-actions .message-toggle-button {
@@ -2459,7 +2437,6 @@
         body.pastel-rainbow-mode .message-content th {
             background-color: var(--bg-secondary);
         }
-
 
         .message-actions .token-count-display {
             font-size: 0.7rem;
@@ -2744,9 +2721,6 @@
             font-size: 10px;
             color: var(--text-attachment-filename);
             overflow-wrap: break-word;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
             line-height: 1.4;
         }
 
@@ -2987,9 +2961,188 @@
             font-size: 16px;
         }
 
+        .mermaid-container {
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .mermaid-diagram svg {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+
+        .mermaid-toggle-button:hover {
+            background-color: var(--bg-button-action-hover) !important;
+        }
+
+        .mermaid-copy-button:hover {
+            background-color: var(--bg-button-copy-hover) !important;
+        }
+        body:not(.dark-mode):not(.pastel-pink-mode):not(.pastel-blue-mode):not(.pastel-yellow-mode):not(.pastel-purple-mode):not(.pastel-rainbow-mode) .mermaid-diagram {
+            background-color: #ffffff !important;
+        }
+
+        body.dark-mode .mermaid-diagram {
+            background-color: #2a2a2a !important;
+        }
+
+        body.dark-mode .mermaid-diagram svg {
+            filter: none;
+        }
+
+        body.pastel-pink-mode .mermaid-diagram {
+            background-color: #fff8fa !important;
+        }
+
+        body.pastel-blue-mode .mermaid-diagram {
+            background-color: #f8fcff !important;
+        }
+
+        body.pastel-yellow-mode .mermaid-diagram {
+            background-color: #fffef8 !important;
+        }
+
+        body.pastel-purple-mode .mermaid-diagram {
+            background-color: #faf8ff !important;
+        }
+
+        body.pastel-rainbow-mode .mermaid-diagram {
+            background-color: #fefefe !important;
+        }
+
+        body.dark-mode .mermaid-diagram svg .node rect,
+        body.dark-mode .mermaid-diagram svg .node circle,
+        body.dark-mode .mermaid-diagram svg .node ellipse,
+        body.dark-mode .mermaid-diagram svg .node polygon {
+            fill: #404040 !important;
+            stroke: #666666 !important;
+        }
+
+        body.dark-mode .mermaid-diagram svg .node .label,
+        body.dark-mode .mermaid-diagram svg text {
+            fill: #e0e0e0 !important;
+        }
+
+        body.dark-mode .mermaid-diagram svg .edgePath .path {
+            stroke: #888888 !important;
+        }
+
+        body.dark-mode .mermaid-diagram svg .arrowheadPath {
+            fill: #888888 !important;
+        }
+
+        body.pastel-pink-mode .mermaid-diagram svg .node rect,
+        body.pastel-pink-mode .mermaid-diagram svg .node circle,
+        body.pastel-pink-mode .mermaid-diagram svg .node ellipse,
+        body.pastel-pink-mode .mermaid-diagram svg .node polygon {
+            fill: #ffe4f0 !important;
+            stroke: #ff8fab !important;
+        }
+
+        body.pastel-blue-mode .mermaid-diagram svg .node rect,
+        body.pastel-blue-mode .mermaid-diagram svg .node circle,
+        body.pastel-blue-mode .mermaid-diagram svg .node ellipse,
+        body.pastel-blue-mode .mermaid-diagram svg .node polygon {
+            fill: #e8f4ff !important;
+            stroke: #87cefa !important;
+        }
+
+        body.pastel-yellow-mode .mermaid-diagram svg .node rect,
+        body.pastel-yellow-mode .mermaid-diagram svg .node circle,
+        body.pastel-yellow-mode .mermaid-diagram svg .node ellipse,
+        body.pastel-yellow-mode .mermaid-diagram svg .node polygon {
+            fill: #fff8e1 !important;
+            stroke: #ffd700 !important;
+        }
+
+        body.pastel-purple-mode .mermaid-diagram svg .node rect,
+        body.pastel-purple-mode .mermaid-diagram svg .node circle,
+        body.pastel-purple-mode .mermaid-diagram svg .node ellipse,
+        body.pastel-purple-mode .mermaid-diagram svg .node polygon {
+            fill: #f3e5f5 !important;
+            stroke: #ab47bc !important;
+        }
+
+        body.pastel-rainbow-mode .mermaid-diagram svg .node rect,
+        body.pastel-rainbow-mode .mermaid-diagram svg .node circle,
+        body.pastel-rainbow-mode .mermaid-diagram svg .node ellipse,
+        body.pastel-rainbow-mode .mermaid-diagram svg .node polygon {
+            fill: #f0f8ff !important;
+            stroke: #4a90e2 !important;
+        }
+        .attachment-actions {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: auto;
+        }
+        .attachment-actions button {
+            padding: 2px 6px;
+            font-size: 10px;
+            border-radius: 3px;
+            line-height: 1.2;
+            min-width: 0;
+        }
+        .attachment-preview-btn {
+            background-color: var(--bg-button-paste);
+        }
+        .attachment-preview-btn:hover {
+            background-color: var(--bg-button-paste-hover);
+        }
+        .attachment-edit-btn {
+            background-color: var(--bg-button-edit);
+        }
+        .attachment-edit-btn:hover {
+            background-color: var(--bg-button-edit-hover);
+        }
+        .attachment-remove-btn {
+            background-color: var(--bg-button-delete);
+        }
+        .attachment-remove-btn:hover {
+            background-color: var(--bg-button-delete-hover);
+        }
+        .add-more-attachments-btn {
+            display: block;
+            width: calc(100% - 10px);
+            margin: 8px 5px 0 5px;
+            padding: 4px;
+            font-size: 12px;
+            background-color: var(--bg-button-save);
+        }
+        .add-more-attachments-btn:hover {
+            background-color: var(--bg-button-save-hover);
+        }
+        .attachment-list-item-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .attachment-list-item-name {
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 10px;
+        }
+        #imagePreviewDialog .dialog-content {
+            padding: 0;
+            margin: 0;
+            max-height: 80vh;
+            overflow: auto;
+            text-align: center;
+        }
+        #imagePreviewDialog img {
+            max-width: 100%;
+            max-height: 75vh;
+            display: block;
+            margin: 0 auto;
+        }
+        #imagePreviewDialog .dialog-actions {
+            margin-top: 15px;
+        }
     </style>
     <script src="marked.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -3262,7 +3415,6 @@
                         <textarea id="openai-additional-models" placeholder="例: gpt-4,my-finetuned-model" aria-label="OpenAI 追加モデル"></textarea>
                     </div>
                 </details>
-
 
                 <details id="gemini-params-group" class="settings-group" open>
                     <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">パラメータ (Gemini)</summary>
@@ -3645,7 +3797,6 @@
                     </div>
                 </details>
 
-
                 <div id="gemini-grounding-param" class="settings-group">
                     <h3>検索 (Gemini)</h3>
                     <label class="checkbox-label">
@@ -3692,7 +3843,6 @@
                         </label>
                         <label for="user-name-input">表示するユーザー名:</label>
                         <input type="text" id="user-name-input" placeholder="例: あなた" aria-label="表示するユーザー名">
-
 
                         <label class="checkbox-label" style="margin-top: 20px;">
                             <input type="checkbox" id="show-ai-icon-toggle">
@@ -3822,6 +3972,11 @@
                                    <label class="checkbox-label">
                                        <input type="checkbox" id="disable-delete-message-confirmation-toggle">
                                        メッセージ削除時の確認ダイアログを無効にする
+                                   </label>
+                                   <p style="height:10px"></p>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="disable-attachment-confirmation-toggle">
+                                       添付ファイル削除時の確認ダイアログを無効にする
                                    </label>
                                    <p style="height:10px"></p>
                                    <label class="checkbox-label">
@@ -4140,6 +4295,14 @@
             <button id="confirm-attach-btn" value="ok" class="dialog-ok-btn" disabled>添付して閉じる</button>
         </div>
     </dialog>
+    <dialog id="imagePreviewDialog" class="custom-dialog">
+        <div class="dialog-content">
+            <img src="" alt="画像プレビュー">
+        </div>
+        <div class="dialog-actions">
+            <button value="ok" class="dialog-ok-btn">閉じる</button>
+        </div>
+    </dialog>
 
     <script>
         const DB_NAME = 'GeminiPWA_DB';
@@ -4192,7 +4355,6 @@
         const PASTEL_PURPLE_THEME_COLOR = '#ab47bc';
         const PASTEL_RAINBOW_THEME_COLOR = '#ffadad';
 
-
         const DARK_MODE_USER_MESSAGE_COLOR = '#056162';
         const DARK_MODE_MODEL_MESSAGE_COLOR = '#3a3a3c';
         const DARK_MODE_SECONDARY_COLOR = '#101010';
@@ -4228,13 +4390,11 @@
         const PASTEL_RAINBOW_HEADER_COLOR = '#ffadad';
         const PASTEL_RAINBOW_PRIMARY_COLOR = '#fdfdfd';
 
-
         const LIGHT_MODE_USER_MESSAGE_COLOR = '#dcf8c6';
         const LIGHT_MODE_MODEL_MESSAGE_COLOR = '#e5e5ea';
         const LIGHT_MODE_SECONDARY_COLOR = '#f0f2f5';
         const LIGHT_MODE_HEADER_COLOR = '#4a90e2';
         const LIGHT_MODE_PRIMARY_COLOR = '#ffffff';
-
 
         const APP_VERSION = "0.26ti";
         const SWIPE_THRESHOLD = 50;
@@ -4492,6 +4652,7 @@
             disableRetryConfirmationToggle: document.getElementById('disable-retry-confirmation-toggle'),
             disableLoadChatConfirmationWhileSendingToggle: document.getElementById('disable-load-chat-confirmation-while-sending-toggle'),
             disableDeleteMessageConfirmationToggle: document.getElementById('disable-delete-message-confirmation-toggle'),
+            disableAttachmentConfirmationToggle: document.getElementById('disable-attachment-confirmation-toggle'),
             addPrefixOnImportToggle: document.getElementById('add-prefix-on-import-toggle'),
             showTopCollapseButtonToggle: document.getElementById('show-top-collapse-button-toggle'),
             showBottomCollapseButtonToggle: document.getElementById('show-bottom-collapse-button-toggle'),
@@ -4552,6 +4713,7 @@
             apiProviderCycleDeepSeekCheckbox: document.getElementById('api-provider-cycle-deepseek'),
             apiProviderCycleClaudeCheckbox: document.getElementById('api-provider-cycle-claude'),
             apiProviderCycleOpenAICheckbox: document.getElementById('api-provider-cycle-openai'),
+            imagePreviewDialog: document.getElementById('imagePreviewDialog'),
         };
 
         const state = {
@@ -4597,7 +4759,7 @@
                 deepSeekPresencePenalty: null,
                 deepSeekFrequencyPenalty: null,
                 deepSeekIncludeDeepSeekThoughts: false,
-                deepSeekExpandDeepSeekThoughtsByDefault: false,
+                deepSeekExpandThoughtsByDefault: false,
                 deepSeekStreamingOutput: true,
                 deepSeekStreamingSpeed: DEFAULT_STREAMING_SPEED,
                 deepSeekDummyUser: '',
@@ -4697,6 +4859,7 @@
                 disableRetryConfirmation: false,
                 disableLoadChatConfirmationWhileSending: false,
                 disableDeleteMessageConfirmation: false,
+                disableAttachmentConfirmation: false,
                 addPrefixOnImport: true,
                 showTopCollapseButton: true,
                 showBottomCollapseButton: true,
@@ -4734,23 +4897,6 @@
             abortController: null,
             partialStreamContent: '',
             partialThoughtStreamContent: '',
-
-            deepSeekThoughtRawTextBuffer: '',
-            deepSeekRawTextBuffer: '',
-            isDisplayingDeepSeekThought: false,
-            isDisplayingDeepSeekContent: false,
-            deepSeekThoughtDisplayIndex: 0,
-            deepSeekContentDisplayIndex: 0,
-            deepSeekThoughtTimerId: null,
-            deepSeekContentTimerId: null,
-            deepSeekThoughtStreamCompleted: false,
-            deepSeekContentStreamCompleted: false,
-            deepSeekThoughtChunkQueue: [],
-            deepSeekContentChunkQueue: [],
-            deepSeekIsProcessingThoughtQueue: false,
-            deepSeekIsProcessingContentQueue: false,
-            deepSeekStreamEnded: false,
-
             editingMessageIndex: null,
             isEditingSystemPrompt: false,
             touchStartX: 0,
@@ -4941,9 +5087,8 @@
                             state.settings.deepSeekIncludeDeepSeekThoughts = loadedSettings.includeDeepSeekThoughts;
                         }
                         if (loadedSettings.hasOwnProperty('expandDeepSeekThoughtsByDefault') && !loadedSettings.hasOwnProperty('deepSeekExpandDeepSeekThoughtsByDefault') && state.settings.hasOwnProperty('deepSeekExpandDeepSeekThoughtsByDefault')) {
-                            state.settings.deepSeekExpandDeepSeekThoughtsByDefault = loadedSettings.expandDeepSeekThoughtsByDefault;
+                            state.settings.deepSeekExpandThoughtsByDefault = loadedSettings.expandDeepSeekThoughtsByDefault;
                         }
-
 
                         for (const key in loadedSettings) {
                              if (key === 'darkMode') continue;
@@ -5374,10 +5519,9 @@
                     initialThoughtOpenState = messageData.thoughtSummaryOpen;
                 } else if (includeThoughtsForProvider) {
                      initialThoughtOpenState = (messageApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) ||
-                                               (messageApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault) ||
+                                               (messageApiProvider === 'deepseek' && state.settings.deepSeekExpandThoughtsByDefault) ||
                                                (messageApiProvider === 'claude' && state.settings.claudeExpandThoughtsByDefault);
                 }
-
 
                 if (role === 'model' && includeThoughtsForProvider && (messageData?.thoughtSummary || messageData?.deepSeekThoughtSummary || isStreamingPlaceholder)) {
                     const thoughtDetails = document.createElement('details');
@@ -5395,7 +5539,6 @@
                         }
                     });
 
-
                     const thoughtSummaryElem = document.createElement('summary');
                     thoughtSummaryElem.textContent = '思考プロセス';
                     thoughtDetails.appendChild(thoughtSummaryElem);
@@ -5405,20 +5548,14 @@
 
                     if (isStreamingPlaceholder) {
                         thoughtContentDiv.id = `streaming-thought-summary-${index}`;
-                        if (messageApiProvider === 'deepseek' || messageApiProvider === 'claude') {
-                            const pre = document.createElement('pre');
-                            pre.id = `thought-pre-${index}`;
-                            thoughtContentDiv.appendChild(pre);
-                        } else {
-                            thoughtContentDiv.innerHTML = '';
-                        }
-                    } else if ((messageApiProvider === 'gemini' || messageApiProvider === 'claude') && messageData?.thoughtSummary) {
+                        thoughtContentDiv.innerHTML = '';
+                    } else if (messageData?.thoughtSummary) {
                         try {
                             thoughtContentDiv.innerHTML = this._sanitizeAndParseMarkdown(messageData.thoughtSummary || '');
                         } catch (e) {
                             thoughtContentDiv.textContent = messageData.thoughtSummary || '';
                         }
-                    } else if (messageApiProvider === 'deepseek' && messageData?.deepSeekThoughtSummary) {
+                    } else if (messageData?.deepSeekThoughtSummary) {
                         const pre = document.createElement('pre');
                         pre.textContent = messageData.deepSeekThoughtSummary || '';
                         thoughtContentDiv.appendChild(pre);
@@ -5426,7 +5563,6 @@
                     thoughtDetails.appendChild(thoughtContentDiv);
                     messageDiv.appendChild(thoughtDetails);
                 }
-
 
                 if (state.areAllMessagesHidden && (role === 'user' || role === 'model') && !isStreamingPlaceholder) {
                     messageDiv.classList.add('message-hidden-by-toggle');
@@ -5456,7 +5592,6 @@
                     contentDiv.id = `streaming-content-${index}`;
                 }
 
-
                 if (isCurrentlyCollapsed) {
                     contentDiv.classList.add('collapsed');
                     const toggleButtonTopElement = messageDiv.querySelector('.message-toggle-button.top');
@@ -5467,22 +5602,78 @@
                     }
                 }
 
-
                 if (role === 'user' && attachments && attachments.length > 0) {
                     const details = document.createElement('details');
                     details.classList.add('attachment-details');
                     const summary = document.createElement('summary');
                     summary.textContent = `添付ファイル (${attachments.length}件)`;
                     details.appendChild(summary);
+
                     const list = document.createElement('ul');
                     list.classList.add('attachment-list');
-                    attachments.forEach(att => {
+
+                    attachments.forEach((att, attachmentIndex) => {
                         const listItem = document.createElement('li');
-                        listItem.textContent = sanitizeText(att.name);
-                        listItem.title = `${sanitizeText(att.name)} (${sanitizeText(att.mimeType)})`;
+                        listItem.dataset.attachmentIndex = attachmentIndex;
+                        const itemContainer = document.createElement('div');
+                        itemContainer.classList.add('attachment-list-item-container');
+
+                        const nameSpan = document.createElement('span');
+                        nameSpan.classList.add('attachment-list-item-name');
+                        nameSpan.textContent = sanitizeText(att.name);
+                        nameSpan.title = `${sanitizeText(att.name)} (${sanitizeText(att.mimeType)})`;
+
+                        const actionsDiv = document.createElement('div');
+                        actionsDiv.classList.add('attachment-actions');
+
+                        if (att.mimeType.startsWith('image/')) {
+                            const previewBtn = document.createElement('button');
+                            previewBtn.textContent = '表示';
+                            previewBtn.classList.add('attachment-preview-btn');
+                            previewBtn.onclick = (e) => {
+                                e.preventDefault();
+                                appLogic.previewAttachment(index, attachmentIndex);
+                            };
+                            actionsDiv.appendChild(previewBtn);
+                        }
+
+                        const editBtn = document.createElement('button');
+                        editBtn.textContent = '編集';
+                        editBtn.classList.add('attachment-edit-btn');
+                        editBtn.onclick = (e) => {
+                            e.preventDefault();
+                            appLogic.editAttachment(index, attachmentIndex);
+                        };
+
+                        const removeBtn = document.createElement('button');
+                        removeBtn.textContent = '削除';
+                        removeBtn.classList.add('attachment-remove-btn');
+                        removeBtn.onclick = (e) => {
+                            e.preventDefault();
+                            appLogic.removeAttachment(index, attachmentIndex, listItem);
+                        };
+                        
+                        actionsDiv.appendChild(editBtn);
+                        actionsDiv.appendChild(removeBtn);
+                        itemContainer.appendChild(nameSpan);
+                        itemContainer.appendChild(actionsDiv);
+                        listItem.appendChild(itemContainer);
                         list.appendChild(listItem);
                     });
+
                     details.appendChild(list);
+                    
+                    const addMoreBtn = document.createElement('button');
+                    addMoreBtn.textContent = 'ファイルを追加';
+                    addMoreBtn.classList.add('add-more-attachments-btn');
+                    addMoreBtn.onclick = (e) => {
+                        e.preventDefault();
+                        appLogic.addMoreAttachments(index, list);
+                    };
+                    details.appendChild(addMoreBtn);
+
+                    contentDiv.appendChild(details);
+
                     if (content && content.trim() !== '') {
                         const pre = document.createElement('pre');
                         pre.textContent = content;
@@ -5496,7 +5687,7 @@
                             contentDiv.innerHTML = safeHtml;
                             this.processInteractivePlaceholders(contentDiv);
                             this.processInteractiveTitles(contentDiv);
-                            this.addCopyButtonsToCodeBlocks(contentDiv);
+                            this.addCopyButtonsToCodeBlocks(contentDiv, false);
                         } else if (role === 'user') {
                             const pre = document.createElement('pre'); pre.textContent = content; contentDiv.appendChild(pre);
                         } else if (role === 'error') {
@@ -5519,7 +5710,6 @@
                 }
                 messageDiv.appendChild(citationDetailsDiv);
                 this.renderCitations(messageData, citationDetailsDiv);
-
 
                 const editArea = document.createElement('div');
                 editArea.classList.add('message-edit-area', 'hidden');
@@ -5752,9 +5942,16 @@
                     }
                 }
             },
-            addCopyButtonsToCodeBlocks(contentDiv) {
+            addCopyButtonsToCodeBlocks(contentDiv, isStreamingContext = false) {
                 const codeBlocks = contentDiv.querySelectorAll('pre');
                 codeBlocks.forEach(preElement => {
+                    if (this.isMermaidCode(preElement) && !isStreamingContext) {
+                        const codeElement = preElement.querySelector('code');
+                        const mermaidCode = codeElement ? codeElement.innerText : preElement.innerText;
+                        this.processMermaidBlock(preElement, mermaidCode);
+                        return;
+                    }
+
                     const codeElement = preElement.querySelector('code');
                     const textToCopy = codeElement ? codeElement.innerText : preElement.innerText;
 
@@ -5787,6 +5984,213 @@
                     }
                 });
             },
+            isMermaidCode(preElement) {
+                const codeElement = preElement.querySelector('code');
+                if (codeElement && (
+                    codeElement.classList.contains('language-mermaid') ||
+                    codeElement.classList.contains('mermaid')
+                )) {
+                    return true;
+                }
+
+                const content = preElement.textContent.trim();
+                const mermaidKeywords = [
+                    'graph', 'flowchart', 'sequenceDiagram', 'classDiagram',
+                    'stateDiagram', 'journey', 'gantt', 'pie', 'gitgraph',
+                    'erDiagram', 'mindmap', 'timeline', 'sankey'
+                ];
+                
+                return mermaidKeywords.some(keyword => content.includes(keyword));
+            },
+            async processMermaidBlock(preElement, mermaidCode) {
+                if (typeof mermaid === 'undefined') {
+                    return;
+                }
+
+                const getCurrentMermaidTheme = () => {
+                    const bodyClasses = document.body.classList;
+                    if (bodyClasses.contains('dark-mode')) {
+                        return 'dark';
+                    } else if (bodyClasses.contains('pastel-pink-mode')) {
+                        return 'base';
+                    } else if (bodyClasses.contains('pastel-blue-mode')) {
+                        return 'base';
+                    } else if (bodyClasses.contains('pastel-yellow-mode')) {
+                        return 'base';
+                    } else if (bodyClasses.contains('pastel-purple-mode')) {
+                        return 'base';
+                    } else if (bodyClasses.contains('pastel-rainbow-mode')) {
+                        return 'base';
+                    } else {
+                        return 'default';
+                    }
+                };
+
+                const currentTheme = getCurrentMermaidTheme();
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: currentTheme,
+                    securityLevel: 'loose',
+                    fontFamily: 'var(--font-family)',
+                    flowchart: { useMaxWidth: true, htmlLabels: true },
+                    sequence: { useMaxWidth: true },
+                    gantt: { useMaxWidth: true },
+                    journey: { useMaxWidth: true },
+                    pie: { useMaxWidth: true },
+                    themeVariables: {
+                        primaryColor: currentTheme === 'dark' ? '#404040' : '#ffffff',
+                        primaryTextColor: currentTheme === 'dark' ? '#e0e0e0' : '#333333',
+                        primaryBorderColor: currentTheme === 'dark' ? '#666666' : '#cccccc',
+                        lineColor: currentTheme === 'dark' ? '#888888' : '#666666',
+                        secondaryColor: currentTheme === 'dark' ? '#303030' : '#f8f9fa',
+                        tertiaryColor: currentTheme === 'dark' ? '#2a2a2a' : '#ffffff'
+                    }
+                });
+                
+                const container = document.createElement('div');
+                container.classList.add('mermaid-container');
+                container.style.cssText = `
+                    position: relative;
+                    background-color: var(--bg-tertiary);
+                    border: 1px solid var(--border-secondary);
+                    border-radius: 8px;
+                    padding: 15px;
+                    margin: 10px 0;
+                    overflow: auto;
+                `;
+                const diagramDiv = document.createElement('div');
+                diagramDiv.classList.add('mermaid-diagram');
+                diagramDiv.style.cssText = `
+                    text-align: center;
+                    min-height: 100px;
+                    border-radius: 5px;
+                    padding: 10px;
+                    margin-bottom: 10px;
+                    transition: background-color 0.3s ease;
+                `;
+                const codeDiv = document.createElement('div');
+                codeDiv.classList.add('mermaid-code');
+                codeDiv.style.cssText = `
+                    display: none;
+                    background-color: var(--bg-secondary);
+                    border-radius: 5px;
+                    padding: 10px;
+                    font-family: monospace;
+                    font-size: 13px;
+                    white-space: pre-wrap;
+                    word-break: break-all;
+                    margin-bottom: 10px;
+                    color: var(--text-secondary);
+                `;
+                codeDiv.textContent = mermaidCode;
+                const buttonContainer = document.createElement('div');
+                buttonContainer.style.cssText = `
+                    display: flex;
+                    gap: 8px;
+                    justify-content: flex-end;
+                    flex-wrap: wrap;
+                `;
+                const toggleButton = document.createElement('button');
+                toggleButton.textContent = 'コード表示';
+                toggleButton.classList.add('mermaid-toggle-button');
+                toggleButton.style.cssText = `
+                    padding: 4px 10px;
+                    font-size: 12px;
+                    background-color: var(--bg-button-action);
+                    color: var(--text-light);
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                `;
+                const copyButton = document.createElement('button');
+                copyButton.textContent = 'コピー';
+                copyButton.classList.add('mermaid-copy-button');
+                copyButton.style.cssText = `
+                    padding: 4px 10px;
+                    font-size: 12px;
+                    background-color: var(--bg-button-copy);
+                    color: var(--text-light);
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                `;
+                const errorDiv = document.createElement('div');
+                errorDiv.classList.add('mermaid-error');
+                errorDiv.style.cssText = `
+                    display: none;
+                    background-color: var(--bg-error-message);
+                    color: var(--text-error);
+                    padding: 10px;
+                    border-radius: 5px;
+                    margin-bottom: 10px;
+                    font-size: 13px;
+                `;
+
+                toggleButton.onclick = () => {
+                    const isCodeVisible = codeDiv.style.display !== 'none';
+                    if (isCodeVisible) {
+                        codeDiv.style.display = 'none';
+                        diagramDiv.style.display = 'block';
+                        toggleButton.textContent = 'コード表示';
+                    } else {
+                        codeDiv.style.display = 'block';
+                        diagramDiv.style.display = 'none';
+                        toggleButton.textContent = '図表表示';
+                    }
+                };
+
+                copyButton.onclick = async () => {
+                    try {
+                        await navigator.clipboard.writeText(mermaidCode);
+                        const originalText = copyButton.textContent;
+                        copyButton.textContent = 'コピー完了!';
+                        copyButton.disabled = true;
+                        setTimeout(() => {
+                            copyButton.textContent = originalText;
+                            copyButton.disabled = false;
+                        }, 1500);
+                    } catch (err) {
+                        const originalText = copyButton.textContent;
+                        copyButton.textContent = '失敗';
+                        copyButton.disabled = true;
+                        setTimeout(() => {
+                            copyButton.textContent = originalText;
+                            copyButton.disabled = false;
+                        }, 2000);
+                    }
+                };
+
+                buttonContainer.appendChild(toggleButton);
+                buttonContainer.appendChild(copyButton);
+                container.appendChild(errorDiv);
+                container.appendChild(diagramDiv);
+                container.appendChild(codeDiv);
+                container.appendChild(buttonContainer);
+                try {
+                    const uniqueId = `mermaid-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                    diagramDiv.id = uniqueId;
+                    
+                    const { svg } = await mermaid.render(uniqueId + '-svg', mermaidCode);
+                    diagramDiv.innerHTML = svg;
+                    
+                    const svgElement = diagramDiv.querySelector('svg');
+                    if (svgElement) {
+                        svgElement.style.maxWidth = '100%';
+                        svgElement.style.height = 'auto';
+                    }
+                    
+                    errorDiv.style.display = 'none';
+                } catch (error) {
+                    errorDiv.textContent = `図表の描画に失敗しました: ${error.message}`;
+                    errorDiv.style.display = 'block';
+                    diagramDiv.style.display = 'none';
+                    
+                    codeDiv.style.display = 'block';
+                    toggleButton.textContent = '図表表示';
+                }
+
+                preElement.parentNode.replaceChild(container, preElement);
+            },
             async updateStreamingMessage(index, newCharOrChunk, isThoughtSummary = false) {
                 const messageDiv = document.getElementById(`streaming-message-${index}`);
                 if (!messageDiv || typeof marked === 'undefined') return;
@@ -5800,24 +6204,18 @@
                                   selectedApiProvider === 'claude' ? state.settings.claudeStreamingSpeed :
                                   state.settings.openaiStreamingSpeed;
 
-
                 if (isThoughtSummary) {
                     if ((selectedApiProvider === 'gemini' && state.settings.geminiIncludeThoughts) ||
+                        (selectedApiProvider === 'deepseek' && state.settings.deepSeekIncludeDeepSeekThoughts) ||
                         (selectedApiProvider === 'claude' && state.settings.claudeIncludeThoughts)) {
                         targetContentDiv = messageDiv.querySelector(`#streaming-thought-summary-${index}`);
                         accumulatedContentForDisplay = state.partialThoughtStreamContent;
-                    } else if (selectedApiProvider === 'deepseek' && state.settings.deepSeekIncludeDeepSeekThoughts) {
-                        return;
                     } else {
                         return;
                     }
                 } else {
                     targetContentDiv = messageDiv.querySelector(`#streaming-content-${index}`);
-                    if (selectedApiProvider === 'gemini' || selectedApiProvider === 'claude' || selectedApiProvider === 'openai') {
-                        accumulatedContentForDisplay = state.partialStreamContent;
-                    } else {
-                        return;
-                    }
+                    accumulatedContentForDisplay = state.partialStreamContent;
                 }
 
                 if (targetContentDiv) {
@@ -5829,7 +6227,7 @@
                             if (!isThoughtSummary) {
                                 this.processInteractivePlaceholders(targetContentDiv);
                                 this.processInteractiveTitles(targetContentDiv);
-                                this.addCopyButtonsToCodeBlocks(targetContentDiv);
+                                this.addCopyButtonsToCodeBlocks(targetContentDiv, true);
                             }
                         } catch (e) {
                             targetContentDiv.textContent = contentToRender;
@@ -5843,7 +6241,6 @@
                         this.renderCitations(state.currentMessages[index], citationContainer);
                     }
                 }
-
 
                 const autoScrollEnabledForThisContentType = isThoughtSummary
                     ? state.settings.autoScrollOnThought
@@ -5860,30 +6257,25 @@
                     if (!finalMessageData) return;
                     const messageApiProvider = finalMessageData.generatedByApiProvider || state.settings.apiProvider;
 
-                    if (finalMessageData.thoughtSummary && (messageApiProvider === 'gemini' || messageApiProvider === 'claude')) {
+                    if (finalMessageData.thoughtSummary || finalMessageData.deepSeekThoughtSummary) {
                         const thoughtContentDiv = messageDiv.querySelector(`#streaming-thought-summary-${index}`);
                         if (thoughtContentDiv && typeof marked !== 'undefined') {
-                            try {
-                                thoughtContentDiv.innerHTML = this._sanitizeAndParseMarkdown(finalMessageData.thoughtSummary || '');
-                            } catch (e) {
-                                thoughtContentDiv.textContent = finalMessageData.thoughtSummary || '';
-                            }
-                        } else if (thoughtContentDiv) {
-                            thoughtContentDiv.textContent = finalMessageData.thoughtSummary || '';
-                        }
-                        if (thoughtContentDiv) thoughtContentDiv.removeAttribute('id');
-                    } else if (finalMessageData.deepSeekThoughtSummary && messageApiProvider === 'deepseek' && state.settings.deepSeekIncludeDeepSeekThoughts) {
-                        const thoughtContentDiv = messageDiv.querySelector(`#streaming-thought-summary-${index}`) || messageDiv.querySelector('.thought-summary-details .thought-summary-content');
-                        const preElement = this.getDeepSeekThoughtElement(index, true);
-                        if (preElement) {
-                            preElement.textContent = finalMessageData.deepSeekThoughtSummary || '';
-                            if (preElement.id === `deepseek-thought-pre-${index}`) {
-                                preElement.removeAttribute('id');
+                            const summaryContent = finalMessageData.thoughtSummary || finalMessageData.deepSeekThoughtSummary;
+                            if (messageApiProvider === 'deepseek') {
+                                const pre = document.createElement('pre');
+                                pre.textContent = summaryContent || '';
+                                thoughtContentDiv.innerHTML = '';
+                                thoughtContentDiv.appendChild(pre);
+                            } else {
+                                try {
+                                    thoughtContentDiv.innerHTML = this._sanitizeAndParseMarkdown(summaryContent || '');
+                                    this.addCopyButtonsToCodeBlocks(thoughtContentDiv, false);
+                                } catch (e) {
+                                    thoughtContentDiv.textContent = summaryContent || '';
+                                }
                             }
                         }
-                         if (thoughtContentDiv && thoughtContentDiv.id === `streaming-thought-summary-${index}`) {
-                             thoughtContentDiv.removeAttribute('id');
-                         }
+                        if(thoughtContentDiv) thoughtContentDiv.removeAttribute('id');
                     }
 
                     const thoughtDetailsElement = messageDiv.querySelector('.thought-summary-details');
@@ -5893,7 +6285,6 @@
                         }
                     }
 
-
                     const contentDiv = messageDiv.querySelector(`#streaming-content-${index}`);
                     const finalRawContent = finalMessageData.content || '';
                     if (contentDiv && typeof marked !== 'undefined') {
@@ -5902,7 +6293,7 @@
                              contentDiv.innerHTML = safeHtml;
                              this.processInteractivePlaceholders(contentDiv);
                              this.processInteractiveTitles(contentDiv);
-                             this.addCopyButtonsToCodeBlocks(contentDiv);
+                             this.addCopyButtonsToCodeBlocks(contentDiv, false);
                          } catch (e) {
                              contentDiv.textContent = finalRawContent;
                          }
@@ -5916,7 +6307,6 @@
                         this.renderCitations(finalMessageData, citationContainer);
                         citationContainer.removeAttribute('id');
                     }
-
 
                     messageDiv.removeAttribute('id');
 
@@ -6172,7 +6562,6 @@
                      aiBubbleFinalBg = 'transparent';
                 }
                 document.documentElement.style.setProperty('--ai-name-bubble-bg', aiBubbleFinalBg);
-
 
                 if(elements.userNameBubbleToggle && elements.userNameBubbleUseThemeColorToggle && document.getElementById('user-name-bubble-custom-color-settings')) {
                     const customColorDiv = document.getElementById('user-name-bubble-custom-color-settings');
@@ -6437,7 +6826,7 @@
                 elements.deepSeekPresencePenaltyInput.value = state.settings.deepSeekPresencePenalty === null ? '' : state.settings.deepSeekPresencePenalty;
                 elements.deepSeekFrequencyPenaltyInput.value = state.settings.deepSeekFrequencyPenalty === null ? '' : state.settings.deepSeekFrequencyPenalty;
                 elements.deepSeekIncludeThoughtsToggle.checked = state.settings.deepSeekIncludeDeepSeekThoughts;
-                elements.deepSeekExpandThoughtsByDefaultToggle.checked = state.settings.deepSeekExpandDeepSeekThoughtsByDefault;
+                elements.deepSeekExpandThoughtsByDefaultToggle.checked = state.settings.deepSeekExpandThoughtsByDefault;
                 elements.deepSeekStreamingOutputCheckbox.checked = state.settings.deepSeekStreamingOutput;
                 elements.deepSeekStreamingSpeedInput.value = state.settings.deepSeekStreamingSpeed ?? DEFAULT_STREAMING_SPEED;
                 elements.deepSeekDummyUserInput.value = state.settings.deepSeekDummyUser || '';
@@ -6545,6 +6934,7 @@
                 elements.disableRetryConfirmationToggle.checked = state.settings.disableRetryConfirmation;
                 elements.disableLoadChatConfirmationWhileSendingToggle.checked = state.settings.disableLoadChatConfirmationWhileSending;
                 elements.disableDeleteMessageConfirmationToggle.checked = state.settings.disableDeleteMessageConfirmation;
+                elements.disableAttachmentConfirmationToggle.checked = state.settings.disableAttachmentConfirmation;
                 elements.addPrefixOnImportToggle.checked = state.settings.addPrefixOnImport;
                 elements.disableSaveSettingsConfirmationToggle.checked = state.settings.disableSaveSettingsConfirmation;
                 elements.showTopCollapseButtonToggle.checked = state.settings.showTopCollapseButton;
@@ -6560,6 +6950,7 @@
                 elements.toggleButtonBottomFontSizeInput.value = state.settings.toggleButtonBottomFontSize ?? DEFAULT_TOGGLE_BUTTON_BOTTOM_FONT_SIZE;
                 elements.toggleButtonBottomTextCollapseInput.value = state.settings.toggleButtonBottomTextCollapse || DEFAULT_TOGGLE_BUTTON_BOTTOM_TEXT_COLLAPSE;
                 elements.toggleButtonBottomTextExpandInput.value = state.settings.toggleButtonBottomTextExpand || DEFAULT_TOGGLE_BUTTON_BOTTOM_TEXT_EXPAND;
+                elements.thoughtSummaryOpacityInput.value = state.settings.thoughtSummaryOpacity ?? DEFAULT_THOUGHT_SUMMARY_OPACITY;
 
                 document.documentElement.style.setProperty('--message-body-font-size', `${state.settings.messageBodyFontSize || DEFAULT_MESSAGE_BODY_FONT_SIZE}px`);
                 document.documentElement.style.setProperty('--code-block-font-size', `${state.settings.codeBlockFontSize || DEFAULT_CODE_BLOCK_FONT_SIZE}px`);
@@ -6774,7 +7165,6 @@
                     baseModelsOptgroup.appendChild(option);
                 });
 
-
                 const additionalModels = (state.settings.deepSeekAdditionalModels || '')
                     .split(',')
                     .map(m => m.trim())
@@ -6905,7 +7295,6 @@
                         history.replaceState({ screen: 'chat' }, '', '#chat');
                     }
                 }
-
 
                 allScreens.forEach(screen => {
                     screen.classList.remove('active');
@@ -7042,7 +7431,6 @@
                  const newPromptInput = elements.promptInput.cloneNode(true);
                  elements.promptInput.parentNode.replaceChild(newPromptInput, elements.promptInput);
                  elements.promptInput = newPromptInput;
-
 
                 const enterHandler = (event) => {
                     if (event.key === 'Enter') {
@@ -7333,194 +7721,6 @@
                     apiProviderSelect.appendChild(warningOption);
                     apiProviderSelect.value = '';
                 }
-            },
-            getDeepSeekThoughtElement(messageIndex, ensurePre = false) {
-                const messageDiv = document.getElementById(`streaming-message-${messageIndex}`) ||
-                                elements.messageContainer.querySelector(`.message[data-index="${messageIndex}"]`);
-                if (!messageDiv) return null;
-
-                const thoughtSummaryDetails = messageDiv.querySelector('.thought-summary-details');
-                if (!thoughtSummaryDetails) return null;
-
-                let thoughtContentDiv = thoughtSummaryDetails.querySelector('.thought-summary-content');
-                if (!thoughtContentDiv) {
-                    thoughtContentDiv = document.createElement('div');
-                    thoughtContentDiv.classList.add('thought-summary-content');
-                    thoughtSummaryDetails.appendChild(thoughtContentDiv);
-                }
-
-                if (ensurePre) {
-                    let preElement = thoughtContentDiv.querySelector('pre');
-                    if (!preElement) {
-                        preElement = document.createElement('pre');
-                        preElement.id = `thought-pre-${index}`;
-                        thoughtContentDiv.innerHTML = '';
-                        thoughtContentDiv.appendChild(preElement);
-                    }
-                    return preElement;
-                }
-                return thoughtContentDiv;
-            },
-            getDeepSeekContentElement(messageIndex) {
-                const messageDiv = document.getElementById(`streaming-message-${messageIndex}`) ||
-                                elements.messageContainer.querySelector(`.message[data-index="${messageIndex}"]`);
-                if (!messageDiv) return null;
-                return messageDiv.querySelector('.message-content');
-            },
-            async processDeepSeekThoughtQueue(messageIndex) {
-                if (state.deepSeekIsProcessingThoughtQueue || state.deepSeekThoughtChunkQueue.length === 0) {
-                    return;
-                }
-                state.deepSeekIsProcessingThoughtQueue = true;
-
-                while (state.deepSeekThoughtChunkQueue.length > 0) {
-                    const chunk = state.deepSeekThoughtChunkQueue.shift();
-                    state.deepSeekThoughtRawTextBuffer += chunk;
-
-                    if (!state.isDisplayingDeepSeekThought) {
-                        this.animateDeepSeekThought(messageIndex);
-                    }
-                    while (state.isDisplayingDeepSeekThought) {
-                        await new Promise(resolve => setTimeout(resolve, 50));
-                    }
-                }
-                state.deepSeekIsProcessingThoughtQueue = false;
-
-                if (state.deepSeekThoughtStreamCompleted &&
-                    state.deepSeekContentChunkQueue.length > 0 &&
-                    !state.deepSeekIsProcessingContentQueue) {
-                    this.processDeepSeekContentQueue(messageIndex);
-                }
-            },
-            async processDeepSeekContentQueue(messageIndex) {
-                if (state.deepSeekIsProcessingContentQueue || state.deepSeekContentChunkQueue.length === 0) {
-                    return;
-                }
-                state.deepSeekIsProcessingContentQueue = true;
-
-                while (state.deepSeekContentChunkQueue.length > 0) {
-                    const chunk = state.deepSeekContentChunkQueue.shift();
-                    state.deepSeekRawTextBuffer += chunk;
-
-                    if (!state.isDisplayingDeepSeekContent &&
-                        (state.deepSeekThoughtStreamCompleted || !state.deepSeekThoughtRawTextBuffer)) {
-                        this.animateDeepSeekContent(messageIndex);
-                    }
-                    while (state.isDisplayingDeepSeekContent) {
-                        await new Promise(resolve => setTimeout(resolve, 50));
-                    }
-                }
-                state.deepSeekIsProcessingContentQueue = false;
-            },
-            animateDeepSeekThought(messageIndex) {
-                if (state.isDisplayingDeepSeekThought) return;
-                state.isDisplayingDeepSeekThought = true;
-
-                const preElement = this.getDeepSeekThoughtElement(messageIndex, true);
-                if (!preElement) {
-                    state.isDisplayingDeepSeekThought = false;
-                    return;
-                }
-
-                const animate = () => {
-                    if (state.deepSeekThoughtDisplayIndex < state.deepSeekThoughtRawTextBuffer.length) {
-                        preElement.textContent = state.deepSeekThoughtRawTextBuffer.substring(0, state.deepSeekThoughtDisplayIndex + 1);
-                        state.deepSeekThoughtDisplayIndex++;
-                        if (state.settings.autoScrollOnThought) this.scrollToBottom();
-                        if (state.settings.deepSeekStreamingSpeed > 0) {
-                            state.deepSeekThoughtTimerId = setTimeout(animate, state.settings.deepSeekStreamingSpeed);
-                        } else {
-                            preElement.textContent = state.deepSeekThoughtRawTextBuffer;
-                            state.deepSeekThoughtDisplayIndex = state.deepSeekThoughtRawTextBuffer.length;
-                            state.isDisplayingDeepSeekThought = false;
-                        }
-                    } else {
-                        preElement.textContent = state.deepSeekThoughtRawTextBuffer;
-                        state.isDisplayingDeepSeekThought = false;
-                        if (state.deepSeekThoughtTimerId) {
-                            clearTimeout(state.deepSeekThoughtTimerId);
-                            state.deepSeekThoughtTimerId = null;
-                        }
-                    }
-                };
-                animate();
-            },
-            animateDeepSeekContent(messageIndex) {
-                if (state.isDisplayingDeepSeekContent) return;
-                if (state.isDisplayingDeepSeekThought) return;
-                state.isDisplayingDeepSeekContent = true;
-
-                const contentDiv = this.getDeepSeekContentElement(messageIndex);
-                if (!contentDiv) {
-                    state.isDisplayingDeepSeekContent = false;
-                    return;
-                }
-
-                const animate = () => {
-                    if (state.deepSeekContentDisplayIndex < state.deepSeekRawTextBuffer.length) {
-                        const currentTextToParse = state.deepSeekRawTextBuffer.substring(0, state.deepSeekContentDisplayIndex + 1);
-                        try {
-                            contentDiv.innerHTML = this._sanitizeAndParseMarkdown(currentTextToParse || '');
-                            this.addCopyButtonsToCodeBlocks(contentDiv);
-                        } catch (e) {
-                            contentDiv.textContent = currentTextToParse;
-                        }
-                        state.deepSeekContentDisplayIndex++;
-                        if (state.settings.autoScrollOnNewMessage) this.scrollToBottom();
-                        if (state.settings.deepSeekStreamingSpeed > 0) {
-                            state.deepSeekContentTimerId = setTimeout(animate, state.settings.deepSeekStreamingSpeed);
-                        } else {
-                            try {
-                                contentDiv.innerHTML = this._sanitizeAndParseMarkdown(state.deepSeekRawTextBuffer || '');
-                                this.addCopyButtonsToCodeBlocks(contentDiv);
-                            } catch (e) {
-                                contentDiv.textContent = state.deepSeekRawTextBuffer;
-                            }
-                            state.deepSeekContentDisplayIndex = state.deepSeekRawTextBuffer.length;
-                            state.isDisplayingDeepSeekContent = false;
-                        }
-                    } else {
-                        try {
-                            contentDiv.innerHTML = this._sanitizeAndParseMarkdown(state.deepSeekRawTextBuffer || '');
-                            this.addCopyButtonsToCodeBlocks(contentDiv);
-                        } catch (e) {
-                            contentDiv.textContent = state.deepSeekRawTextBuffer;
-                        }
-                        state.isDisplayingDeepSeekContent = false;
-                        if (state.deepSeekContentTimerId) {
-                            clearTimeout(state.deepSeekContentTimerId);
-                            state.deepSeekContentTimerId = null;
-                        }
-                    }
-                };
-                animate();
-            },
-            finalizeDeepSeekDisplay(messageIndex) {
-                if (state.deepSeekThoughtTimerId) clearTimeout(state.deepSeekThoughtTimerId);
-                state.deepSeekThoughtTimerId = null;
-                state.isDisplayingDeepSeekThought = false;
-
-                if (state.deepSeekContentTimerId) clearTimeout(state.deepSeekContentTimerId);
-                state.deepSeekContentTimerId = null;
-                state.isDisplayingDeepSeekContent = false;
-
-                const messageData = state.currentMessages[messageIndex];
-                if (messageData) {
-                    const thoughtPre = this.getDeepSeekThoughtElement(messageIndex, true);
-                    if (thoughtPre) {
-                        thoughtPre.textContent = messageData.deepSeekThoughtSummary || state.deepSeekThoughtRawTextBuffer;
-                    }
-                    const contentDiv = this.getDeepSeekContentElement(messageIndex);
-                    if (contentDiv) {
-                        try {
-                            contentDiv.innerHTML = this._sanitizeAndParseMarkdown(messageData.content || state.deepSeekRawTextBuffer || '');
-                            this.addCopyButtonsToCodeBlocks(contentDiv);
-                        } catch (e) {
-                            contentDiv.textContent = messageData.content || state.deepSeekRawTextBuffer;
-                        }
-                    }
-                    this.finalizeStreamingMessage(messageIndex);
-                }
             }
         };
 
@@ -7534,6 +7734,20 @@
                         smartypants: false
                     });
                 }
+                if (typeof mermaid !== 'undefined') {
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'default',
+                        securityLevel: 'loose',
+                        fontFamily: 'var(--font-family)',
+                        flowchart: { useMaxWidth: true, htmlLabels: true },
+                        sequence: { useMaxWidth: true },
+                        gantt: { useMaxWidth: true },
+                        journey: { useMaxWidth: true },
+                        pie: { useMaxWidth: true }
+                    });
+                }
+
                 elements.appVersionSpan.textContent = APP_VERSION;
 
                 window.addEventListener('beforeinstallprompt', (event) => {
@@ -7849,7 +8063,6 @@
                     uiUtils.renderChatMessages(true);
                 });
 
-
                 elements.hideSystemPromptToggle.addEventListener('change', () => {
                     state.settings.hideSystemPromptInChat = elements.hideSystemPromptToggle.checked;
                     uiUtils.toggleSystemPromptVisibility();
@@ -8011,7 +8224,7 @@
 
                 elements.messageContainer.addEventListener('click', (event) => {
                     const clickedMessage = event.target.closest('.message');
-                    if (event.target.closest('.message-actions button, .message-cascade-controls button, .message-toggle-button, .interactive-title-content, .code-copy-button, a[href="#"], .thought-summary-details summary')) {
+                    if (event.target.closest('.message-actions button, .message-cascade-controls button, .message-toggle-button, .interactive-title-content, .code-copy-button, a[href="#"], .thought-summary-details summary, .attachment-actions button, .add-more-attachments-btn')) {
                         return;
                     }
                     if (clickedMessage) {
@@ -8948,7 +9161,6 @@
                 
                 let contextOpenAIVisionEnable;
 
-
                 if (isBackgroundProcess) {
                     const providerForSettingsB = sourceSessionContext.apiProvider || state.settings.apiProvider;
                     if (providerForSettingsB === 'gemini') {
@@ -9078,7 +9290,6 @@
                     }
                 }
 
-
                 if (!isBackgroundProcess) {
                     if (state.editingMessageIndex !== null) { await uiUtils.showCustomAlert("他のメッセージを編集中です。"); return; }
                     if (state.isEditingSystemPrompt) { await uiUtils.showCustomAlert("システムプロンプト編集中です。"); return; }
@@ -9121,30 +9332,9 @@
                     return "APIキー未設定";
                 }
 
-
                 if (!isBackgroundProcess) uiUtils.setSendingState(true);
                 state.partialStreamContent = '';
                 state.partialThoughtStreamContent = '';
-                if (selectedApiProvider === 'deepseek') {
-                    state.deepSeekThoughtRawTextBuffer = '';
-                    state.deepSeekRawTextBuffer = '';
-                    state.isDisplayingDeepSeekThought = false;
-                    state.isDisplayingDeepSeekContent = false;
-                    state.deepSeekThoughtDisplayIndex = 0;
-                    state.deepSeekContentDisplayIndex = 0;
-                    state.deepSeekThoughtChunkQueue = [];
-                    state.deepSeekContentChunkQueue = [];
-                    state.deepSeekIsProcessingThoughtQueue = false;
-                    state.deepSeekIsProcessingContentQueue = false;
-                    state.deepSeekStreamEnded = false;
-                    if (state.deepSeekThoughtTimerId) clearTimeout(state.deepSeekThoughtTimerId);
-                    if (state.deepSeekContentTimerId) clearTimeout(state.deepSeekContentTimerId);
-                    state.deepSeekThoughtTimerId = null;
-                    state.deepSeekContentTimerId = null;
-                    state.deepSeekThoughtStreamCompleted = false;
-                    state.deepSeekContentStreamCompleted = false;
-                }
-
 
                 let userMessageIndex = isRetry ? retryUserMessageIndex : -1;
                 let existingSiblingGroupId = null;
@@ -9198,7 +9388,6 @@
                     ? currentContextMessages.slice(0, userMessageIndex + 1)
                     : [...currentContextMessages];
 
-
                 try {
                     let titleToSave = null;
                     let isNewChatForDBSave = !currentContextSessionId;
@@ -9224,7 +9413,6 @@
                             sourceSessionContext.sessionId = null;
                          }
                     }
-
 
                     if (isNewChatForDBSave || !titleToSave) {
                         const firstUserMsg = currentContextMessages.find(m => m.role === 'user');
@@ -9292,7 +9480,6 @@
                     }
                 }
 
-
                 const apiMessages = messagesToProcess
                     .filter(msg => {
                         if (msg.role === 'user') return true;
@@ -9324,7 +9511,6 @@
                 if (dummyUserTextToUse) apiMessages.push({ role: 'user', parts: [{ text: dummyUserTextToUse }] });
                 if (dummyModelTextToUse) apiMessages.push({ role: 'model', parts: [{ text: dummyModelTextToUse }] });
 
-
                 const commonGenerationConfig = {};
                 if (contextTemperature !== null) commonGenerationConfig.temperature = contextTemperature;
                 if (contextMaxTokens !== null) commonGenerationConfig.maxOutputTokens = contextMaxTokens;
@@ -9354,10 +9540,8 @@
                     }
                 }
 
-
                 let systemInstructionForProvider = null;
                 const systemPromptTextToUseForApi = currentContextSystemPrompt?.trim() ? currentContextSystemPrompt.trim() : null;
-
 
                 if (systemPromptTextToUseForApi) {
                     if (selectedApiProvider === 'gemini') {
@@ -9366,7 +9550,6 @@
                         systemInstructionForProvider = { content: systemPromptTextToUseForApi, parts: [{ text: systemPromptTextToUseForApi }] };
                     }
                 }
-
 
                 let modelResponseRawContent = '';
                 let modelThoughtSummaryContent = '';
@@ -9395,28 +9578,21 @@
 
                     const dummyModelPrefix = (contextConcatDummyModel && dummyModelTextToUse) ? dummyModelTextToUse : '';
                      if (!isBackgroundProcess) {
-                        if (selectedApiProvider === 'gemini' || selectedApiProvider === 'claude' || selectedApiProvider === 'openai') {
-                            state.partialStreamContent = dummyModelPrefix;
-                            state.partialThoughtStreamContent = '';
-                        } else if (selectedApiProvider === 'deepseek') {
-                            state.deepSeekRawTextBuffer = dummyModelPrefix;
-                            state.deepSeekThoughtRawTextBuffer = '';
-                            state.deepSeekContentDisplayIndex = dummyModelPrefix.length;
-                        }
+                        state.partialStreamContent = dummyModelPrefix;
+                        state.partialThoughtStreamContent = '';
                     }
-
 
                     if (useStreamingForThisCall && !isBackgroundProcess) {
                         const tempPlaceholderIndex = state.currentMessages.length;
                         modelMessageObjectForStream = {
                             role: 'model',
-                            content: selectedApiProvider === 'deepseek' ? dummyModelPrefix : '',
+                            content: '',
                             thoughtSummary: null,
                             deepSeekThoughtSummary: null,
                             timestamp: Date.now(),
                             generatedByApiProvider: selectedApiProvider,
                             thoughtSummaryOpen: (selectedApiProvider === 'gemini' && contextGeminiIncludeThoughts && state.settings.geminiExpandThoughtsByDefault) ||
-                                                (selectedApiProvider === 'deepseek' && contextDeepSeekIncludeThoughts && state.settings.deepSeekExpandDeepSeekThoughtsByDefault) ||
+                                                (selectedApiProvider === 'deepseek' && contextDeepSeekIncludeThoughts && state.settings.deepSeekExpandThoughtsByDefault) ||
                                                 (selectedApiProvider === 'claude' && contextClaudeIncludeThoughts && state.settings.claudeExpandThoughtsByDefault),
                         };
 
@@ -9440,7 +9616,6 @@
                         uiUtils.appendMessage('model', modelMessageObjectForStream.content, tempPlaceholderIndex, true);
                     }
 
-
                     if (useStreamingForThisCall) {
                         let responseStreamIterator;
                         if (selectedApiProvider === 'gemini') {
@@ -9453,14 +9628,12 @@
                             responseStreamIterator = apiUtils.handleOpenAiStreamingResponse(apiResponseObject);
                         }
 
-
                         const currentContextStreamSpeed = selectedApiProvider === 'gemini' ? contextStreamingSpeed : 
                                                           selectedApiProvider === 'deepseek' ? state.settings.deepSeekStreamingSpeed :
                                                           selectedApiProvider === 'claude' ? state.settings.claudeStreamingSpeed :
                                                           state.settings.openaiStreamingSpeed;
 
                         const messageIndexForDisplay = isBackgroundProcess ? -1 : (modelMessageObjectForStream ? state.currentMessages.indexOf(modelMessageObjectForStream) : -1);
-
 
                         for await (const streamData of responseStreamIterator) {
                             if (state.abortController?.signal.aborted) {
@@ -9473,46 +9646,23 @@
                                     if (isBackgroundProcess) {
                                         modelThoughtSummaryContent += streamData.thoughtText;
                                     } else {
-                                        if (selectedApiProvider === 'gemini' && contextGeminiIncludeThoughts) {
-                                            for (const char of streamData.thoughtText) {
-                                                if (state.abortController?.signal.aborted) break;
-                                                state.partialThoughtStreamContent += char;
-                                                uiUtils.updateStreamingMessage(messageIndexForDisplay, char, true);
-                                                if (currentContextStreamSpeed > 0) await sleep(currentContextStreamSpeed);
-                                            }
-                                        } else if (selectedApiProvider === 'deepseek' && contextDeepSeekIncludeThoughts) {
-                                            state.deepSeekThoughtChunkQueue.push(streamData.thoughtText);
-                                            if (!state.deepSeekIsProcessingThoughtQueue) {
-                                                uiUtils.processDeepSeekThoughtQueue(messageIndexForDisplay);
-                                            }
-                                        } else if (selectedApiProvider === 'claude' && contextClaudeIncludeThoughts) {
-                                            for (const char of streamData.thoughtText) {
-                                                if (state.abortController?.signal.aborted) break;
-                                                state.partialThoughtStreamContent += char;
-                                                uiUtils.updateStreamingMessage(messageIndexForDisplay, char, true);
-                                                if (currentContextStreamSpeed > 0) await sleep(currentContextStreamSpeed);
-                                            }
+                                        for (const char of streamData.thoughtText) {
+                                            if (state.abortController?.signal.aborted) break;
+                                            state.partialThoughtStreamContent += char;
+                                            uiUtils.updateStreamingMessage(messageIndexForDisplay, char, true);
+                                            if (currentContextStreamSpeed > 0) await sleep(currentContextStreamSpeed);
                                         }
                                     }
                                 }
-
                                 if (streamData.contentText) {
                                     if (isBackgroundProcess) {
                                         modelResponseRawContent += streamData.contentText;
                                     } else {
-                                        if (selectedApiProvider === 'gemini' || selectedApiProvider === 'claude' || selectedApiProvider === 'openai') {
-                                            for (const char of streamData.contentText) {
-                                                if (state.abortController?.signal.aborted) break;
-                                                state.partialStreamContent += char;
-                                                uiUtils.updateStreamingMessage(messageIndexForDisplay, char, false);
-                                                if (currentContextStreamSpeed > 0) await sleep(currentContextStreamSpeed);
-                                            }
-                                        } else if (selectedApiProvider === 'deepseek') {
-                                            state.deepSeekContentChunkQueue.push(streamData.contentText);
-                                             if ((state.deepSeekThoughtStreamCompleted || !state.deepSeekThoughtRawTextBuffer) &&
-                                                 !state.deepSeekIsProcessingContentQueue) {
-                                                uiUtils.processDeepSeekContentQueue(messageIndexForDisplay);
-                                             }
+                                        for (const char of streamData.contentText) {
+                                            if (state.abortController?.signal.aborted) break;
+                                            state.partialStreamContent += char;
+                                            uiUtils.updateStreamingMessage(messageIndexForDisplay, char, false);
+                                            if (currentContextStreamSpeed > 0) await sleep(currentContextStreamSpeed);
                                         }
                                     }
                                 }
@@ -9530,34 +9680,7 @@
                                     }
                                 }
                                 if (streamData.usageMetadata) finalUsageMetadataFromStream = streamData.usageMetadata;
-                            } else if (streamData.type === 'thoughtStreamEnd' && selectedApiProvider === 'deepseek') {
-                                state.deepSeekThoughtStreamCompleted = true;
-                                if (!state.deepSeekIsProcessingThoughtQueue && state.deepSeekThoughtChunkQueue.length > 0) {
-                                    await uiUtils.processDeepSeekThoughtQueue(messageIndexForDisplay);
-                                }
-                                while (state.deepSeekIsProcessingThoughtQueue) {
-                                    await sleep(50);
-                                }
-                                if (!state.deepSeekIsProcessingContentQueue && state.deepSeekContentChunkQueue.length > 0) {
-                                    uiUtils.processDeepSeekContentQueue(messageIndexForDisplay);
-                                }
                             } else if (streamData.type === 'metadata') {
-                                if (selectedApiProvider === 'deepseek') {
-                                    state.deepSeekStreamEnded = true;
-                                    if (!state.deepSeekIsProcessingThoughtQueue && state.deepSeekThoughtChunkQueue.length > 0) {
-                                        await uiUtils.processDeepSeekThoughtQueue(messageIndexForDisplay);
-                                    }
-                                    while (state.deepSeekIsProcessingThoughtQueue) {
-                                        await sleep(50);
-                                    }
-                                    if (!state.deepSeekIsProcessingContentQueue && state.deepSeekContentChunkQueue.length > 0) {
-                                        await uiUtils.processDeepSeekContentQueue(messageIndexForDisplay);
-                                    }
-                                    while (state.deepSeekIsProcessingContentQueue) {
-                                        await sleep(50);
-                                    }
-                                }
-
                                 modelResponseMetadata = {
                                     finishReason: streamData.finishReason,
                                     safetyRatings: streamData.safetyRatings,
@@ -9566,8 +9689,6 @@
                                      if (streamData.groundingMetadata) currentGroundingMetadata = streamData.groundingMetadata;
                                      if (streamData.usageMetadata) finalUsageMetadataFromStream = streamData.usageMetadata;
                                 } else if (selectedApiProvider === 'deepseek') {
-                                    state.deepSeekThoughtStreamCompleted = true;
-                                    state.deepSeekContentStreamCompleted = true;
                                     if (streamData.fullReasoningContent && contextDeepSeekIncludeThoughts) {
                                         modelThoughtSummaryContent = streamData.fullReasoningContent;
                                     }
@@ -9584,13 +9705,8 @@
                         }
 
                         if (!isBackgroundProcess) {
-                           if (selectedApiProvider === 'gemini' || selectedApiProvider === 'claude' || selectedApiProvider === 'openai') {
-                               modelThoughtSummaryContent = state.partialThoughtStreamContent;
-                               modelResponseRawContent = state.partialStreamContent;
-                           } else if (selectedApiProvider === 'deepseek') {
-                               modelThoughtSummaryContent = state.deepSeekThoughtRawTextBuffer;
-                               modelResponseRawContent = state.deepSeekRawTextBuffer;
-                           }
+                            modelThoughtSummaryContent = state.partialThoughtStreamContent;
+                            modelResponseRawContent = state.partialStreamContent;
                         }
 
                         if (modelResponseMetadata.finishReason === 'ABORTED' || state.abortController?.signal.aborted) {
@@ -9716,9 +9832,8 @@
                              }
 
                               bgModelMessage.thoughtSummaryOpen = (selectedApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) || 
-                                                                  (selectedApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault) ||
+                                                                  (selectedApiProvider === 'deepseek' && state.settings.deepSeekExpandThoughtsByDefault) ||
                                                                   (selectedApiProvider === 'claude' && state.settings.claudeExpandThoughtsByDefault);
-
 
                              currentContextMessages.push(bgModelMessage);
                              const chatToSaveBg = {
@@ -9759,7 +9874,6 @@
                         return { content: "", metadata: modelResponseMetadata };
                     }
 
-
                     if (modelResponseRawContent || modelThoughtSummaryContent || modelResponseMetadata.finishReason) {
                         if (useStreamingForThisCall && modelMessageObjectForStream) {
                             const finalModelMessageIndex = state.currentMessages.indexOf(modelMessageObjectForStream);
@@ -9778,11 +9892,7 @@
                                 } else if (selectedApiProvider === 'claude' && contextClaudeIncludeThoughts && modelThoughtSummaryContent) {
                                     msgToUpdate.thoughtSummary = modelThoughtSummaryContent || null;
                                 }
-                                if (selectedApiProvider === 'gemini' || selectedApiProvider === 'claude' || selectedApiProvider === 'openai') {
-                                    uiUtils.finalizeStreamingMessage(finalModelMessageIndex);
-                                } else if (selectedApiProvider === 'deepseek') {
-                                    uiUtils.finalizeDeepSeekDisplay(finalModelMessageIndex);
-                                }
+                                uiUtils.finalizeStreamingMessage(finalModelMessageIndex);
                                 await dbUtils.saveChat();
                             }
                         } else {
@@ -9802,7 +9912,7 @@
                                  newModelMessage.thoughtSummary = modelThoughtSummaryContent || null;
                             }
                             newModelMessage.thoughtSummaryOpen = (selectedApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) || 
-                                                                 (selectedApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault) ||
+                                                                 (selectedApiProvider === 'deepseek' && state.settings.deepSeekExpandThoughtsByDefault) ||
                                                                  (selectedApiProvider === 'claude' && state.settings.claudeExpandThoughtsByDefault);
 
                              const targetUserIndexForCascade = userMessageIndex;
@@ -9840,20 +9950,14 @@
                     const displayErrorMessage = isAbort ? error.message : (error.message || "不明なエラーが発生しました");
 
                     let partialThoughtContentOnError, partialContentOnError;
-                    if (selectedApiProvider === 'gemini' || selectedApiProvider === 'claude' || selectedApiProvider === 'openai') {
-                        partialThoughtContentOnError = state.partialThoughtStreamContent;
-                        partialContentOnError = state.partialStreamContent;
-                    } else if (selectedApiProvider === 'deepseek') {
-                        partialThoughtContentOnError = state.deepSeekThoughtRawTextBuffer;
-                        partialContentOnError = state.deepSeekRawTextBuffer;
-                    }
-
+                    partialThoughtContentOnError = state.partialThoughtStreamContent;
+                    partialContentOnError = state.partialStreamContent;
 
                     if (isBackgroundProcess) {
                          throw error;
                     }
 
-                    if ((partialContentOnError || partialContentOnError) && useStreamingForThisCall && modelMessageObjectForStream) {
+                    if ((partialContentOnError || partialThoughtContentOnError) && useStreamingForThisCall && modelMessageObjectForStream) {
                          const finalPartialContent = partialContentOnError + `\n\n(${isAbort ? '中断されました' : 'エラーが発生しました'})`;
                          let finalPartialThoughtValue = null;
                          if (selectedApiProvider === 'gemini' && partialThoughtContentOnError && contextGeminiIncludeThoughts) {
@@ -9885,12 +9989,8 @@
                             }
 
                              try {
-                                 if (selectedApiProvider === 'gemini' || selectedApiProvider === 'claude' || selectedApiProvider === 'openai') {
-                                     uiUtils.finalizeStreamingMessage(streamingMessageIndex);
-                                 } else if (selectedApiProvider === 'deepseek') {
-                                     uiUtils.finalizeDeepSeekDisplay(streamingMessageIndex);
-                                 }
-                                 await dbUtils.saveChat();
+                                uiUtils.finalizeStreamingMessage(streamingMessageIndex);
+                                await dbUtils.saveChat();
                              } catch (saveError) {
                                  uiUtils.displayError(displayErrorMessage, !isAbort);
                              }
@@ -9912,25 +10012,6 @@
                         state.abortController = null;
                         state.partialStreamContent = '';
                         state.partialThoughtStreamContent = '';
-                        if (selectedApiProvider === 'deepseek') {
-                            state.deepSeekThoughtRawTextBuffer = '';
-                            state.deepSeekRawTextBuffer = '';
-                            state.isDisplayingDeepSeekThought = false;
-                            state.isDisplayingDeepSeekContent = false;
-                            state.deepSeekThoughtDisplayIndex = 0;
-                            state.deepSeekContentDisplayIndex = 0;
-                            state.deepSeekThoughtChunkQueue = [];
-                            state.deepSeekContentChunkQueue = [];
-                            state.deepSeekIsProcessingThoughtQueue = false;
-                            state.deepSeekIsProcessingContentQueue = false;
-                            state.deepSeekStreamEnded = false;
-                            if (state.deepSeekThoughtTimerId) clearTimeout(state.deepSeekThoughtTimerId);
-                            if (state.deepSeekContentTimerId) clearTimeout(state.deepSeekContentTimerId);
-                            state.deepSeekThoughtTimerId = null;
-                            state.deepSeekContentTimerId = null;
-                            state.deepSeekThoughtStreamCompleted = false;
-                            state.deepSeekContentStreamCompleted = false;
-                        }
                         if (state.settings.autoScrollOnNewMessage) {
                             uiUtils.scrollToBottom();
                         }
@@ -9977,21 +10058,6 @@
                 if (state.abortController) {
                     state.abortController.abort();
                 }
-                if (state.deepSeekThoughtTimerId) {
-                    clearTimeout(state.deepSeekThoughtTimerId);
-                    state.deepSeekThoughtTimerId = null;
-                }
-                if (state.deepSeekContentTimerId) {
-                    clearTimeout(state.deepSeekContentTimerId);
-                    state.deepSeekContentTimerId = null;
-                }
-                state.isDisplayingDeepSeekThought = false;
-                state.isDisplayingDeepSeekContent = false;
-                state.deepSeekStreamEnded = true;
-                state.deepSeekThoughtChunkQueue = [];
-                state.deepSeekContentChunkQueue = [];
-                state.deepSeekIsProcessingThoughtQueue = false;
-                state.deepSeekIsProcessingContentQueue = false;
             },
             async handleHistoryImport(file) {
                 if (!file || !file.type.startsWith('text/plain')) {
@@ -10241,7 +10307,6 @@
                                 newChat.collapsedStates = { ...chatData.collapsedStates };
                             }
 
-
                             const groupIds = new Set(newChat.messages.filter(m => m.siblingGroupId).map(m => m.siblingGroupId));
                             groupIds.forEach(gid => {
                                 const siblings = newChat.messages.filter(m => m.siblingGroupId === gid);
@@ -10439,7 +10504,7 @@
                 newSettings.deepSeekPresencePenalty = elements.deepSeekPresencePenaltyInput.value === '' ? null : parseFloat(elements.deepSeekPresencePenaltyInput.value);
                 newSettings.deepSeekFrequencyPenalty = elements.deepSeekFrequencyPenaltyInput.value === '' ? null : parseFloat(elements.deepSeekFrequencyPenaltyInput.value);
                 newSettings.deepSeekIncludeDeepSeekThoughts = elements.deepSeekIncludeThoughtsToggle.checked;
-                newSettings.deepSeekExpandDeepSeekThoughtsByDefault = elements.deepSeekExpandThoughtsByDefaultToggle.checked;
+                newSettings.deepSeekExpandThoughtsByDefault = elements.deepSeekExpandThoughtsByDefaultToggle.checked;
                 newSettings.deepSeekStreamingOutput = elements.deepSeekStreamingOutputCheckbox.checked;
                 newSettings.deepSeekStreamingSpeed = elements.deepSeekStreamingSpeedInput.value === '' ? DEFAULT_STREAMING_SPEED : parseInt(elements.deepSeekStreamingSpeedInput.value);
                 newSettings.deepSeekDummyUser = elements.deepSeekDummyUserInput.value.trim();
@@ -10533,6 +10598,7 @@
                  newSettings.disableRetryConfirmation = elements.disableRetryConfirmationToggle.checked;
                  newSettings.disableLoadChatConfirmationWhileSending = elements.disableLoadChatConfirmationWhileSendingToggle.checked;
                  newSettings.disableDeleteMessageConfirmation = elements.disableDeleteMessageConfirmationToggle.checked;
+                 newSettings.disableAttachmentConfirmation = elements.disableAttachmentConfirmationToggle.checked;
                  newSettings.addPrefixOnImport = elements.addPrefixOnImportToggle.checked;
                  newSettings.disableSaveSettingsConfirmation = elements.disableSaveSettingsConfirmationToggle.checked;
                  newSettings.showTopCollapseButton = elements.showTopCollapseButtonToggle.checked;
@@ -10560,7 +10626,6 @@
                      claude: elements.apiProviderCycleClaudeCheckbox.checked,
                      openai: elements.apiProviderCycleOpenAICheckbox.checked,
                  };
-
 
                 const validateNumeric = (value, defaultValue, min, max, isInteger = false) => {
                     let num = isInteger ? parseInt(value, 10) : parseFloat(value);
@@ -10602,7 +10667,6 @@
                     newSettings.openaiPresencePenalty = validateNumeric(newSettings.openaiPresencePenalty, null, -2.0, 2.0);
                     newSettings.openaiFrequencyPenalty = validateNumeric(newSettings.openaiFrequencyPenalty, null, -2.0, 2.0);
                 }
-
 
                  newSettings.messageBodyFontSize = validateNumeric(newSettings.messageBodyFontSize, null, 1, 100, true);
                  newSettings.codeBlockFontSize = validateNumeric(newSettings.codeBlockFontSize, null, 1, 100, true);
@@ -10647,7 +10711,6 @@
                     }
                 }
 
-
                  try {
                      const oldSortOrder = state.settings.historySortOrder;
                      const { backgroundImageBlob, userIconBlob, aiIconBlob, ...settingsToSave } = newSettings;
@@ -10679,7 +10742,6 @@
                      state.settings.userIconBlob = currentUserIconBlob;
                      state.settings.aiIconBlob = currentAiIconBlob;
                      state.settings.disableSaveSettingsConfirmation = newSettings.disableSaveSettingsConfirmation;
-
 
                      if (!state.isSending && !state.isAiToAiChatProcessing) {
                         uiUtils.applySettingsToUI();
@@ -10760,7 +10822,7 @@
                                 else if(key === 'geminiPseudoStreaming') defaultSettingsCopy[key] = false;
                                 else if(key === 'geminiEnableGrounding') defaultSettingsCopy[key] = false;
                                 else if(key === 'deepSeekIncludeDeepSeekThoughts') defaultSettingsCopy[key] = false;
-                                else if(key === 'deepSeekExpandDeepSeekThoughtsByDefault') defaultSettingsCopy[key] = false;
+                                else if(key === 'deepSeekExpandThoughtsByDefault') defaultSettingsCopy[key] = false;
                                 else if(key === 'claudeIncludeThoughts') defaultSettingsCopy[key] = false;
                                 else if(key === 'claudeExpandThoughtsByDefault') defaultSettingsCopy[key] = false;
                                 else if(key === 'claudeThinkingBudget') defaultSettingsCopy[key] = null;
@@ -10838,6 +10900,7 @@
                         defaultSettingsCopy.disableRetryConfirmation = false;
                         defaultSettingsCopy.disableLoadChatConfirmationWhileSending = false;
                         defaultSettingsCopy.disableDeleteMessageConfirmation = false;
+                        defaultSettingsCopy.disableAttachmentConfirmation = false;
                         defaultSettingsCopy.addPrefixOnImport = true;
                         defaultSettingsCopy.disableSaveSettingsConfirmation = false;
                         defaultSettingsCopy.showTopCollapseButton = true;
@@ -10978,7 +11041,6 @@
                  }
                  messageElement.style.width = `calc(var(--message-max-width) + ${horizontalPadding}px + 17px)`;
 
-
                  const textarea = document.createElement('textarea');
                  textarea.value = rawContent;
                  textarea.classList.add('edit-textarea');
@@ -11082,7 +11144,7 @@
                     this.cancelEditMessage(index, messageElement);
                     return;
                 }
-                const newRawContent = textarea.value.trim();
+                const newRawContent = textarea.value;
                 const originalMessage = state.currentMessages[index];
 
                 if (newRawContent === originalMessage.content) {
@@ -11095,29 +11157,34 @@
                 delete originalMessage.error;
 
                 const contentDiv = messageElement.querySelector('.message-content');
-                if (contentDiv && typeof marked !== 'undefined' && originalMessage.role === 'model') {
-                    try {
-                        const safeHtml = uiUtils._sanitizeAndParseMarkdown(newRawContent || '');
-                        const tempDiv = document.createElement('div');
-                        tempDiv.innerHTML = safeHtml;
-                        uiUtils.processInteractivePlaceholders(tempDiv);
-                        uiUtils.processInteractiveTitles(tempDiv);
-                        contentDiv.innerHTML = tempDiv.innerHTML;
-                        uiUtils.addCopyButtonsToCodeBlocks(contentDiv);
-                    } catch (e) {
-                        contentDiv.textContent = newRawContent;
+                
+                if (originalMessage.role === 'user') {
+                    let preElement = contentDiv.querySelector('pre');
+                    if (!preElement) {
+                        preElement = document.createElement('pre');
+                        preElement.style.marginTop = '8px';
+                        contentDiv.appendChild(preElement);
                     }
-                } else if (contentDiv) {
-                    const pre = contentDiv.querySelector('pre') || document.createElement('pre');
-                    pre.textContent = newRawContent;
-                    if (!contentDiv.querySelector('pre')) {
-                        contentDiv.innerHTML = '';
-                        contentDiv.appendChild(pre);
+                    preElement.textContent = newRawContent;
+                } else if (originalMessage.role === 'model') {
+                    if (contentDiv && typeof marked !== 'undefined') {
+                        try {
+                            const safeHtml = uiUtils._sanitizeAndParseMarkdown(newRawContent || '');
+                            const tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = safeHtml;
+                            uiUtils.processInteractivePlaceholders(tempDiv);
+                            uiUtils.processInteractiveTitles(tempDiv);
+                            contentDiv.innerHTML = tempDiv.innerHTML;
+                            uiUtils.addCopyButtonsToCodeBlocks(contentDiv, false);
+                        } catch (e) {
+                            contentDiv.textContent = newRawContent;
+                        }
+                    } else if (contentDiv) {
+                        contentDiv.textContent = newRawContent;
                     }
                 }
 
                 this.finishEditing(messageElement);
-                this.uncollapseMessage(index, messageElement);
 
                 const isFirstUserMessage = (index === state.currentMessages.findIndex(m => m.role === 'user'));
                 let titleForSave = null;
@@ -11129,9 +11196,6 @@
                     await dbUtils.saveChat(titleForSave);
                     if (isFirstUserMessage) {
                         uiUtils.updateChatTitle(titleForSave);
-                    }
-                    if (state.currentMessages.length === 0 && !state.currentSystemPrompt && state.currentChatId) {
-                        this.startNewChat();
                     }
                 } catch (error) {
                     await uiUtils.showCustomAlert("メッセージ編集後のチャット保存に失敗しました。");
@@ -11271,12 +11335,10 @@
                         } else {
                             const messageApiProvider = msg?.generatedByApiProvider || state.settings.apiProvider;
                             state.thoughtSummaryOpenStates.set(newIdx, (messageApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) || 
-                                                                       (messageApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault) ||
+                                                                       (messageApiProvider === 'deepseek' && state.settings.deepSeekExpandThoughtsByDefault) ||
                                                                        (messageApiProvider === 'claude' && state.settings.claudeExpandThoughtsByDefault));
                         }
                     });
-
-
 
                     uiUtils.renderChatMessages();
 
@@ -11484,7 +11546,6 @@
                     state.messageCollapsedStates.delete(indexToDelete);
                     state.thoughtSummaryOpenStates.delete(indexToDelete);
 
-
                     const oldCollapsedStates = new Map(state.messageCollapsedStates);
                     state.messageCollapsedStates.clear();
                      state.currentMessages.forEach((msg, newIdx) => {
@@ -11504,12 +11565,10 @@
                         } else {
                             const messageApiProvider = msg?.generatedByApiProvider || state.settings.apiProvider;
                             state.thoughtSummaryOpenStates.set(newIdx, (messageApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) || 
-                                                                       (messageApiProvider === 'deepseek' && state.settings.deepSeekExpandDeepSeekThoughtsByDefault) ||
+                                                                       (messageApiProvider === 'deepseek' && state.settings.deepSeekExpandThoughtsByDefault) ||
                                                                        (messageApiProvider === 'claude' && state.settings.claudeExpandThoughtsByDefault));
                         }
                     });
-
-
 
                     let newlySelectedIndex = -1;
                     const remainingSiblingsWithIndices = state.currentMessages.map((msg, i) => ({ msg, originalIndex: i }))
@@ -11894,7 +11953,6 @@
                         openaiVisionEnableB = state.settings.openaiVisionEnable;
                     }
 
-
                     const contextForB = {
                         sessionId: sessionB_Id,
                         messages: sessionB_Data.messages ? [...sessionB_Data.messages] : [],
@@ -11912,7 +11970,9 @@
                         includeThoughts: providerForSettingsB === 'gemini' ? geminiIncludeThoughtsB : 
                                          providerForSettingsB === 'deepseek' ? deepSeekIncludeThoughtsB : 
                                          providerForSettingsB === 'claude' ? claudeIncludeThoughtsB : undefined,
-                        expandThoughtsByDefault: providerForSettingsB === 'claude' ? claudeExpandThoughtsByDefaultB : undefined,
+                        expandThoughtsByDefault: (providerForSettingsB === 'gemini' && state.settings.geminiExpandThoughtsByDefault) ||
+                                                 (providerForSettingsB === 'deepseek' && state.settings.deepSeekExpandThoughtsByDefault) ||
+                                                 (providerForSettingsB === 'claude' ? claudeExpandThoughtsByDefaultB : undefined),
                         pseudoStreaming: providerForSettingsB === 'gemini' ? geminiPseudoStreamingB : undefined,
                         enableGrounding: providerForSettingsB === 'gemini' ? geminiEnableGroundingB : undefined,
                         visionEnable: providerForSettingsB === 'openai' ? openaiVisionEnableB : undefined,
@@ -11943,6 +12003,199 @@
                 } finally {
                     uiUtils.setAiToAiProcessingState(false);
                 }
+            },
+            removeAttachment: async function(messageIndex, attachmentIndex, listItemElement) {
+                const message = state.currentMessages[messageIndex];
+                if (!message || !message.attachments || !message.attachments[attachmentIndex]) return;
+
+                const attachmentName = message.attachments[attachmentIndex].name;
+                
+                let confirmed = true;
+                if (!state.settings.disableAttachmentConfirmation) {
+                    confirmed = await uiUtils.showCustomConfirm(`添付ファイル「${attachmentName}」を削除しますか？`);
+                }
+                
+                if (confirmed) {
+                    message.attachments.splice(attachmentIndex, 1);
+                    
+                    const list = listItemElement.parentElement;
+                    listItemElement.remove();
+
+                    const summary = list.closest('.attachment-details').querySelector('summary');
+                    summary.textContent = `添付ファイル (${message.attachments.length}件)`;
+
+                    try {
+                        await dbUtils.saveChat();
+                    } catch(e) {
+                        await uiUtils.showCustomAlert('添付ファイルの削除状態の保存に失敗しました。');
+                    }
+                }
+            },
+            editAttachment: function(messageIndex, attachmentIndex) {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'file';
+                hiddenInput.accept = "image/*,text/*,application/pdf,video/*,audio/*";
+                hiddenInput.style.display = 'none';
+
+                hiddenInput.onchange = async (event) => {
+                    const file = event.target.files[0];
+                    if (!file) return;
+
+                    if (file.size > MAX_FILE_SIZE) {
+                        await uiUtils.showCustomAlert(`ファイルサイズが大きすぎます (${formatFileSize(MAX_FILE_SIZE)}以下)。`);
+                        return;
+                    }
+
+                    try {
+                        const base64Data = await fileToBase64(file);
+                        let browserMimeType = file.type || '';
+                        const fileName = file.name;
+                        const fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
+                        let guessedMimeType = extensionToMimeTypeMap[fileExtension] || browserMimeType || 'application/octet-stream';
+
+                        const message = state.currentMessages[messageIndex];
+                        message.attachments[attachmentIndex] = {
+                            file: file,
+                            name: fileName,
+                            mimeType: guessedMimeType,
+                            base64Data: base64Data
+                        };
+                        
+                        const messageElement = elements.messageContainer.querySelector(`.message[data-index="${messageIndex}"]`);
+                        if(messageElement) {
+                            const listItem = messageElement.querySelector(`li[data-attachment-index="${attachmentIndex}"] .attachment-list-item-name`);
+                            if(listItem) {
+                                listItem.textContent = sanitizeText(fileName);
+                                listItem.title = `${sanitizeText(fileName)} (${sanitizeText(guessedMimeType)})`;
+                            }
+                        }
+
+                        await dbUtils.saveChat();
+
+                    } catch (error) {
+                        await uiUtils.showCustomAlert(`ファイルの処理中にエラーが発生しました: ${error.message}`);
+                    }
+                    document.body.removeChild(hiddenInput);
+                };
+                
+                document.body.appendChild(hiddenInput);
+                hiddenInput.click();
+            },
+            addMoreAttachments: function(messageIndex, listElement) {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'file';
+                hiddenInput.multiple = true;
+                hiddenInput.accept = "image/*,text/*,application/pdf,video/*,audio/*";
+                hiddenInput.style.display = 'none';
+
+                hiddenInput.onchange = async (event) => {
+                    const files = event.target.files;
+                    if (!files || files.length === 0) return;
+
+                    const message = state.currentMessages[messageIndex];
+                    let currentTotalSize = message.attachments.reduce((sum, att) => sum + (att.file?.size || 0), 0);
+                    let encodingError = false;
+
+                    for (const file of files) {
+                        if (file.size > MAX_FILE_SIZE) {
+                            await uiUtils.showCustomAlert(`ファイル "${file.name}" はサイズが大きすぎます。`);
+                            continue;
+                        }
+                        if (currentTotalSize + file.size > MAX_TOTAL_ATTACHMENT_SIZE) {
+                            await uiUtils.showCustomAlert('合計ファイルサイズの上限を超えたため、一部のファイルは追加されませんでした。');
+                            break;
+                        }
+                        
+                        try {
+                            const base64Data = await fileToBase64(file);
+                            let browserMimeType = file.type || '';
+                            const fileName = file.name;
+                            const fileExtension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
+                            let guessedMimeType = extensionToMimeTypeMap[fileExtension] || browserMimeType || 'application/octet-stream';
+                            
+                            const newAttachment = {
+                                file: file,
+                                name: fileName,
+                                mimeType: guessedMimeType,
+                                base64Data: base64Data
+                            };
+                            message.attachments.push(newAttachment);
+                            currentTotalSize += file.size;
+
+                            const newAttachmentIndex = message.attachments.length - 1;
+                            const listItem = document.createElement('li');
+                            listItem.dataset.attachmentIndex = newAttachmentIndex;
+                            const itemContainer = document.createElement('div');
+                            itemContainer.classList.add('attachment-list-item-container');
+
+                            const nameSpan = document.createElement('span');
+                            nameSpan.classList.add('attachment-list-item-name');
+                            nameSpan.textContent = sanitizeText(fileName);
+                            nameSpan.title = `${sanitizeText(fileName)} (${sanitizeText(guessedMimeType)})`;
+
+                            const actionsDiv = document.createElement('div');
+                            actionsDiv.classList.add('attachment-actions');
+
+                            if (guessedMimeType.startsWith('image/')) {
+                                const previewBtn = document.createElement('button');
+                                previewBtn.textContent = '表示';
+                                previewBtn.classList.add('attachment-preview-btn');
+                                previewBtn.onclick = (e) => { e.preventDefault(); appLogic.previewAttachment(messageIndex, newAttachmentIndex); };
+                                actionsDiv.appendChild(previewBtn);
+                            }
+
+                            const editBtn = document.createElement('button');
+                            editBtn.textContent = '編集';
+                            editBtn.classList.add('attachment-edit-btn');
+                            editBtn.onclick = (e) => { e.preventDefault(); appLogic.editAttachment(messageIndex, newAttachmentIndex); };
+
+                            const removeBtn = document.createElement('button');
+                            removeBtn.textContent = '削除';
+                            removeBtn.classList.add('attachment-remove-btn');
+                            removeBtn.onclick = (e) => { e.preventDefault(); appLogic.removeAttachment(messageIndex, newAttachmentIndex, listItem); };
+
+                            actionsDiv.appendChild(editBtn);
+                            actionsDiv.appendChild(removeBtn);
+                            itemContainer.appendChild(nameSpan);
+                            itemContainer.appendChild(actionsDiv);
+                            listItem.appendChild(itemContainer);
+                            listElement.appendChild(listItem);
+
+                        } catch (error) {
+                            encodingError = true;
+                            await uiUtils.showCustomAlert(`ファイル "${file.name}" の処理中にエラーが発生しました。`);
+                            break;
+                        }
+                    }
+
+                    if (!encodingError) {
+                        const summary = listElement.closest('.attachment-details').querySelector('summary');
+                        summary.textContent = `添付ファイル (${message.attachments.length}件)`;
+                        await dbUtils.saveChat();
+                    }
+                    
+                    document.body.removeChild(hiddenInput);
+                };
+
+                document.body.appendChild(hiddenInput);
+                hiddenInput.click();
+            },
+            
+            previewAttachment: async function(messageIndex, attachmentIndex) {
+                const message = state.currentMessages[messageIndex];
+                const attachment = message?.attachments?.[attachmentIndex];
+                if (!attachment || !attachment.mimeType.startsWith('image/')) return;
+                
+                const dialog = elements.imagePreviewDialog;
+                const img = dialog.querySelector('img');
+                const okBtn = dialog.querySelector('.dialog-ok-btn');
+                
+                img.src = `data:${attachment.mimeType};base64,${attachment.base64Data}`;
+                img.alt = attachment.name;
+                
+                okBtn.onclick = () => dialog.close();
+                
+                dialog.showModal();
             },
         };
 
@@ -11979,7 +12232,6 @@
                     }
                      if (Object.keys(finalGenerationConfig.thinkingConfig).length === 0) delete finalGenerationConfig.thinkingConfig;
                 }
-
 
                 const requestBody = {
                     contents: messagesForApi,
@@ -12199,7 +12451,6 @@
                     }
                 });
 
-
                 const dsRequestBody = {
                     model: model,
                     messages: dsMessages,
@@ -12259,7 +12510,6 @@
                 let finalFinishReason = null;
                 let isCancelled = false;
                 let accumulatedFullReasoningContent = "";
-                let thoughtStreamEnded = false;
 
                 try {
                     while (true) {
@@ -12274,14 +12524,7 @@
 
                         buffer += value;
                         let eolIndex;
-                        let processingBuffer = true;
-                        while (processingBuffer) {
-                            eolIndex = buffer.indexOf('\n');
-                            if (eolIndex === -1) {
-                                processingBuffer = false;
-                                continue;
-                            }
-
+                        while ((eolIndex = buffer.indexOf('\n')) >= 0) {
                             const line = buffer.substring(0, eolIndex).trim();
                             buffer = buffer.substring(eolIndex + 1);
 
@@ -12289,25 +12532,19 @@
                                 const jsonData = line.substring(6);
                                 if (jsonData.trim() === '[DONE]') {
                                     finalFinishReason = finalFinishReason || 'stop';
-                                    processingBuffer = false;
                                     break;
                                 }
                                 try {
                                     const chunk = JSON.parse(jsonData);
                                     let contentTextChunk = null;
                                     let reasoningTextChunk = null;
-                                    let isFirstContentAfterThought = false;
-
+                                    
                                     if (chunk.choices && chunk.choices[0] && chunk.choices[0].delta) {
                                         const delta = chunk.choices[0].delta;
                                         if (delta.reasoning_content) {
                                             reasoningTextChunk = delta.reasoning_content;
                                             accumulatedFullReasoningContent += reasoningTextChunk;
                                         } else if (delta.content) {
-                                            if (!thoughtStreamEnded && accumulatedFullReasoningContent.length > 0) {
-                                                isFirstContentAfterThought = true;
-                                                thoughtStreamEnded = true;
-                                            }
                                             contentTextChunk = delta.content;
                                         }
                                     }
@@ -12319,22 +12556,13 @@
                                         finalUsage = chunk.usage;
                                     }
 
-                                    if (isFirstContentAfterThought) {
-                                        yield { type: 'thoughtStreamEnd' };
-                                    }
-
                                     if (contentTextChunk !== null || reasoningTextChunk !== null) {
                                         yield { type: 'chunk', contentText: contentTextChunk, thoughtText: reasoningTextChunk };
                                     }
-                                } catch (e) {
-                                }
+                                } catch (e) {}
                             }
-                            if (finalFinishReason && finalFinishReason !== 'null' && processingBuffer) break;
                         }
                          if (finalFinishReason && finalFinishReason !== 'null') break;
-                    }
-                    if (!thoughtStreamEnded && accumulatedFullReasoningContent.length > 0) {
-                        yield { type: 'thoughtStreamEnd' };
                     }
 
                     yield {
@@ -12561,7 +12789,7 @@
 
                 const headers = {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${state.settings.openaiApiKey}`
+                                        "Authorization": `Bearer ${state.settings.openaiApiKey}`
                 };
 
                 const oaMessages = [];
