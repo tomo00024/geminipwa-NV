@@ -5086,7 +5086,7 @@
                         if (loadedSettings.hasOwnProperty('includeDeepSeekThoughts') && !loadedSettings.hasOwnProperty('deepSeekIncludeDeepSeekThoughts') && state.settings.hasOwnProperty('deepSeekIncludeDeepSeekThoughts')) {
                             state.settings.deepSeekIncludeDeepSeekThoughts = loadedSettings.includeDeepSeekThoughts;
                         }
-                        if (loadedSettings.hasOwnProperty('expandDeepSeekThoughtsByDefault') && !loadedSettings.hasOwnProperty('deepSeekExpandDeepSeekThoughtsByDefault') && state.settings.hasOwnProperty('deepSeekExpandDeepSeekThoughtsByDefault')) {
+                        if (loadedSettings.hasOwnProperty('expandDeepSeekThoughtsByDefault') && !loadedSettings.hasOwnProperty('deepSeekExpandThoughtsByDefault') && state.settings.hasOwnProperty('deepSeekExpandThoughtsByDefault')) {
                             state.settings.deepSeekExpandThoughtsByDefault = loadedSettings.expandDeepSeekThoughtsByDefault;
                         }
 
@@ -6261,18 +6261,11 @@
                         const thoughtContentDiv = messageDiv.querySelector(`#streaming-thought-summary-${index}`);
                         if (thoughtContentDiv && typeof marked !== 'undefined') {
                             const summaryContent = finalMessageData.thoughtSummary || finalMessageData.deepSeekThoughtSummary;
-                            if (messageApiProvider === 'deepseek') {
-                                const pre = document.createElement('pre');
-                                pre.textContent = summaryContent || '';
-                                thoughtContentDiv.innerHTML = '';
-                                thoughtContentDiv.appendChild(pre);
-                            } else {
-                                try {
-                                    thoughtContentDiv.innerHTML = this._sanitizeAndParseMarkdown(summaryContent || '');
-                                    this.addCopyButtonsToCodeBlocks(thoughtContentDiv, false);
-                                } catch (e) {
-                                    thoughtContentDiv.textContent = summaryContent || '';
-                                }
+                            try {
+                                thoughtContentDiv.innerHTML = this._sanitizeAndParseMarkdown(summaryContent || '');
+                                this.addCopyButtonsToCodeBlocks(thoughtContentDiv, false);
+                            } catch (e) {
+                                thoughtContentDiv.textContent = summaryContent || '';
                             }
                         }
                         if(thoughtContentDiv) thoughtContentDiv.removeAttribute('id');
@@ -11878,7 +11871,7 @@
                         temperatureB, maxTokensB, topPB, presencePenaltyB, frequencyPenaltyB,
                         streamingOutputB, streamingSpeedB, concatDummyModelB,
                         geminiTopKB, geminiThinkingBudgetB, geminiIncludeThoughtsB, geminiPseudoStreamingB, geminiEnableGroundingB,
-                        deepSeekIncludeThoughtsB,
+                        deepSeekIncludeThoughtsB, deepSeekExpandThoughtsByDefaultB,
                         claudeTopKB, claudeIncludeThoughtsB, claudeThinkingBudgetB, claudeExpandThoughtsByDefaultB,
                         openaiVisionEnableB;
 
@@ -11911,6 +11904,7 @@
                         presencePenaltyB = state.settings.deepSeekPresencePenalty;
                         frequencyPenaltyB = state.settings.deepSeekFrequencyPenalty;
                         deepSeekIncludeThoughtsB = state.settings.deepSeekIncludeDeepSeekThoughts;
+                        deepSeekExpandThoughtsByDefaultB = state.settings.deepSeekExpandThoughtsByDefault;
                         streamingOutputB = state.settings.deepSeekStreamingOutput;
                         streamingSpeedB = state.settings.deepSeekStreamingSpeed;
                         dummyUserB = state.settings.deepSeekDummyUser;
@@ -11970,7 +11964,7 @@
                         includeThoughts: providerForSettingsB === 'gemini' ? geminiIncludeThoughtsB : 
                                          providerForSettingsB === 'deepseek' ? deepSeekIncludeThoughtsB : 
                                          providerForSettingsB === 'claude' ? claudeIncludeThoughtsB : undefined,
-                        expandThoughtsByDefault: (providerForSettingsB === 'gemini' && state.settings.geminiExpandThoughtsByDefault) ||
+                        expandThoughtsByDefault: (providerForSettingsB === 'gemini' && state.settings.geminiExpandThoughtsByDefault) || 
                                                  (providerForSettingsB === 'deepseek' && state.settings.deepSeekExpandThoughtsByDefault) ||
                                                  (providerForSettingsB === 'claude' ? claudeExpandThoughtsByDefaultB : undefined),
                         pseudoStreaming: providerForSettingsB === 'gemini' ? geminiPseudoStreamingB : undefined,
@@ -12200,6 +12194,55 @@
         };
 
         const apiUtils = {
+            _createOpenAICompatibleRequestBody(model, messagesForApi, systemInstruction, generationConfig, useStreaming, enableVision) {
+                const oaMessages = [];
+                if (systemInstruction && systemInstruction.parts?.[0]?.text) {
+                    oaMessages.push({ role: "system", content: systemInstruction.parts[0].text });
+                }
+
+                messagesForApi.forEach(m => {
+                    const role = m.role === "model" ? "assistant" : m.role;
+                    const contentParts = [];
+
+                    const textContent = m.parts.filter(p => p.text).map(p => p.text.trim()).join('\n').trim();
+
+                    if (enableVision) {
+                        if(textContent) {
+                            contentParts.push({ type: "text", text: textContent });
+                        }
+                        m.parts.forEach(p => {
+                            if (p.inlineData && p.inlineData.mimeType && p.inlineData.data && p.inlineData.mimeType.startsWith('image/')) {
+                                contentParts.push({
+                                    type: "image_url",
+                                    image_url: { url: `data:${p.inlineData.mimeType};base64,${p.inlineData.data}` }
+                                });
+                            }
+                        });
+                    } else {
+                        if (textContent) {
+                             contentParts.push(textContent);
+                        }
+                    }
+                    
+                    if (contentParts.length > 0) {
+                        oaMessages.push({ role: role, content: enableVision ? contentParts : contentParts.join('\n') });
+                    }
+                });
+                
+                const body = {
+                    model: model,
+                    messages: oaMessages,
+                    stream: useStreaming,
+                };
+                
+                if (generationConfig.temperature != null) body.temperature = generationConfig.temperature;
+                if (generationConfig.maxOutputTokens != null) body.max_tokens = generationConfig.maxOutputTokens;
+                if (generationConfig.topP != null) body.top_p = generationConfig.topP;
+                if (generationConfig.presencePenalty != null) body.presence_penalty = generationConfig.presencePenalty;
+                if (generationConfig.frequencyPenalty != null) body.frequency_penalty = generationConfig.frequencyPenalty;
+
+                return body;
+            },
             async callGeminiApi(messagesForApi, generationConfig, systemInstruction, useStreaming, usePseudo, enableGrounding) {
                 if (!state.settings.apiKey) {
                     throw new Error("APIキーが設定されていません。");
@@ -12429,38 +12472,18 @@
                 state.abortController = new AbortController();
                 const { signal } = state.abortController;
 
-                const model = state.settings.deepSeekModelName || DEFAULT_DEEPSEEK_MODEL;
                 const apiKey = state.settings.deepSeekApiKey;
                 const baseUrl = state.settings.deepSeekApiEndpoint || DEEPSEEK_API_DEFAULT_BASE_URL;
                 const endpoint = `${baseUrl.replace(/\/$/, '')}/chat/completions`;
 
-                const dsMessages = [];
-                if (systemInstruction && systemInstruction.content) {
-                    dsMessages.push({ role: "system", content: systemInstruction.content });
-                }
-
-                messagesForApi.forEach(msg => {
-                    const contentParts = msg.parts.filter(p => p.text).map(p => p.text.trim());
-                    const fullContent = contentParts.join('\n').trim();
-
-                    if (fullContent) {
-                        dsMessages.push({
-                            role: msg.role === 'model' ? 'assistant' : msg.role,
-                            content: fullContent
-                        });
-                    }
-                });
-
-                const dsRequestBody = {
-                    model: model,
-                    messages: dsMessages,
-                    stream: useStreaming,
-                    ...(generationConfig.temperature !== undefined && { temperature: generationConfig.temperature }),
-                    ...(generationConfig.maxOutputTokens !== undefined && { max_tokens: generationConfig.maxOutputTokens }),
-                    ...(generationConfig.topP !== undefined && { top_p: generationConfig.topP }),
-                    ...(generationConfig.presencePenalty !== undefined && { presence_penalty: generationConfig.presencePenalty }),
-                    ...(generationConfig.frequencyPenalty !== undefined && { frequency_penalty: generationConfig.frequencyPenalty }),
-                };
+                const requestBody = this._createOpenAICompatibleRequestBody(
+                    state.settings.deepSeekModelName,
+                    messagesForApi,
+                    systemInstruction,
+                    generationConfig,
+                    useStreaming,
+                    false
+                );
 
                 try {
                     const response = await fetch(endpoint, {
@@ -12469,7 +12492,7 @@
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${apiKey}`
                         },
-                        body: JSON.stringify(dsRequestBody),
+                        body: JSON.stringify(requestBody),
                         signal
                     });
 
@@ -12501,88 +12524,7 @@
                 }
             },
             async *handleDeepSeekStreamingResponse(response) {
-                if (!response.body) {
-                    throw new Error("DeepSeekレスポンスボディがありません。");
-                }
-                const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
-                let buffer = '';
-                let finalUsage = null;
-                let finalFinishReason = null;
-                let isCancelled = false;
-                let accumulatedFullReasoningContent = "";
-
-                try {
-                    while (true) {
-                        if (state.abortController?.signal.aborted && !isCancelled) {
-                            isCancelled = true;
-                            await reader.cancel("User aborted");
-                            throw new Error("リクエストがキャンセルされました。");
-                        }
-
-                        const { value, done } = await reader.read();
-                        if (done) break;
-
-                        buffer += value;
-                        let eolIndex;
-                        while ((eolIndex = buffer.indexOf('\n')) >= 0) {
-                            const line = buffer.substring(0, eolIndex).trim();
-                            buffer = buffer.substring(eolIndex + 1);
-
-                            if (line.startsWith('data: ')) {
-                                const jsonData = line.substring(6);
-                                if (jsonData.trim() === '[DONE]') {
-                                    finalFinishReason = finalFinishReason || 'stop';
-                                    break;
-                                }
-                                try {
-                                    const chunk = JSON.parse(jsonData);
-                                    let contentTextChunk = null;
-                                    let reasoningTextChunk = null;
-                                    
-                                    if (chunk.choices && chunk.choices[0] && chunk.choices[0].delta) {
-                                        const delta = chunk.choices[0].delta;
-                                        if (delta.reasoning_content) {
-                                            reasoningTextChunk = delta.reasoning_content;
-                                            accumulatedFullReasoningContent += reasoningTextChunk;
-                                        } else if (delta.content) {
-                                            contentTextChunk = delta.content;
-                                        }
-                                    }
-
-                                    if (chunk.choices && chunk.choices[0] && chunk.choices[0].finish_reason) {
-                                        finalFinishReason = chunk.choices[0].finish_reason;
-                                    }
-                                    if (chunk.usage) {
-                                        finalUsage = chunk.usage;
-                                    }
-
-                                    if (contentTextChunk !== null || reasoningTextChunk !== null) {
-                                        yield { type: 'chunk', contentText: contentTextChunk, thoughtText: reasoningTextChunk };
-                                    }
-                                } catch (e) {}
-                            }
-                        }
-                         if (finalFinishReason && finalFinishReason !== 'null') break;
-                    }
-
-                    yield {
-                        type: 'metadata',
-                        finishReason: isCancelled ? 'ABORTED' : finalFinishReason || 'stop',
-                        safetyRatings: null,
-                        groundingMetadata: null,
-                        usageMetadata: finalUsage ? {
-                            candidatesTokenCount: finalUsage.completion_tokens,
-                            totalTokenCount: finalUsage.total_tokens,
-                        } : null,
-                        fullReasoningContent: accumulatedFullReasoningContent || null
-                    };
-                } catch (error) {
-                     yield { type: 'error', error: { message: error.message }, message: error.message };
-                } finally {
-                    if (!reader.closed && !isCancelled) {
-                        try { await reader.cancel("Stream processing ended."); } catch (e) { }
-                    }
-                }
+                yield* this.handleOpenAICompatibleStreamingResponse(response, 'deepseek');
             },
             async callClaudeApi(messagesForApi, generationConfig, systemInstruction, useStreaming) {
                 if (!state.settings.claudeApiKey) {
@@ -12789,44 +12731,18 @@
 
                 const headers = {
                     "Content-Type": "application/json",
-                                        "Authorization": `Bearer ${state.settings.openaiApiKey}`
+                    "Authorization": `Bearer ${state.settings.openaiApiKey}`
                 };
 
-                const oaMessages = [];
-                if (systemInstruction && systemInstruction.parts?.[0]?.text) {
-                    oaMessages.push({ role: "system", content: systemInstruction.parts[0].text });
-                }
-
-                messagesForApi.forEach(m => {
-                    const role = m.role === "model" ? "assistant" : m.role;
-                    const contentParts = m.parts.map(p => {
-                        if (p.text) {
-                            return { type: "text", text: p.text };
-                        }
-                        if (enableVision && p.inlineData && p.inlineData.mimeType && p.inlineData.data && p.inlineData.mimeType.startsWith('image/')) {
-                            return {
-                                type: "image_url",
-                                image_url: { url: `data:${p.inlineData.mimeType};base64,${p.inlineData.data}` }
-                            };
-                        }
-                        return null;
-                    }).filter(Boolean);
-
-                    if (contentParts.length > 0) {
-                        oaMessages.push({ role: role, content: contentParts });
-                    }
-                });
-
-                const body = {
-                    model: state.settings.openaiModelName,
-                    messages: oaMessages,
-                    stream: useStreaming,
-                    temperature: generationConfig.temperature ?? state.settings.openaiTemperature ?? 1,
-                };
-                if (generationConfig.maxOutputTokens != null) body.max_tokens = generationConfig.maxOutputTokens;
-                if (generationConfig.topP != null) body.top_p = generationConfig.topP;
-                if (generationConfig.presencePenalty != null) body.presence_penalty = generationConfig.presencePenalty;
-                if (generationConfig.frequencyPenalty != null) body.frequency_penalty = generationConfig.frequencyPenalty;
+                const body = this._createOpenAICompatibleRequestBody(
+                    state.settings.openaiModelName,
+                    messagesForApi,
+                    systemInstruction,
+                    generationConfig,
+                    useStreaming,
+                    enableVision
+                );
+                body.temperature = body.temperature ?? state.settings.openaiTemperature ?? 1;
 
                 const response = await fetch(OPENAI_API_BASE_URL, { method: "POST", headers, body: JSON.stringify(body), signal });
                 if (!response.ok) {
@@ -12840,20 +12756,24 @@
                 return response;
             },
             async *handleOpenAiStreamingResponse(response) {
+                yield* this.handleOpenAICompatibleStreamingResponse(response, 'openai');
+            },
+            async *handleOpenAICompatibleStreamingResponse(response, provider) {
                 if (!response.body) {
-                    throw new Error("OpenAIレスポンスボディがありません。");
+                    throw new Error(`${provider}レスポンスボディがありません。`);
                 }
                 const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
                 let buffer = '';
                 let usage = null;
                 let finishReason = null;
                 let isCancelled = false;
+                let accumulatedFullReasoningContent = "";
 
                 try {
                     while (true) {
                         if (state.abortController?.signal.aborted) {
                             isCancelled = true;
-                            await reader.cancel();
+                            await reader.cancel("User aborted");
                             throw new Error("リクエストがキャンセルされました。");
                         }
 
@@ -12870,37 +12790,55 @@
                             const data = line.slice(5).trim();
 
                             if (data === '[DONE]') {
-                                finishReason = 'stop';
+                                finishReason = finishReason || 'stop';
                                 break;
                             }
                             try {
                                 const chunk = JSON.parse(data);
-                                if (chunk.choices?.[0]) {
+                                let contentTextChunk = null;
+                                let reasoningTextChunk = null;
+                                
+                                if (chunk.choices?.[0]?.delta) {
                                     const delta = chunk.choices[0].delta;
-                                    if (delta?.content) {
-                                        yield { type: "chunk", contentText: delta.content, thoughtText: null };
+                                    if (provider === 'deepseek' && delta.reasoning_content) {
+                                        reasoningTextChunk = delta.reasoning_content;
+                                        accumulatedFullReasoningContent += reasoningTextChunk;
+                                    } else if (delta.content) {
+                                        contentTextChunk = delta.content;
                                     }
-                                    if (chunk.choices[0].finish_reason) {
-                                        finishReason = chunk.choices[0].finish_reason;
-                                    }
+                                }
+
+                                if (chunk.choices?.[0]?.finish_reason) {
+                                    finishReason = chunk.choices[0].finish_reason;
                                 }
                                 if (chunk.usage) {
                                     usage = chunk.usage;
                                 }
+
+                                if (contentTextChunk !== null || reasoningTextChunk !== null) {
+                                    yield { type: 'chunk', contentText: contentTextChunk, thoughtText: reasoningTextChunk };
+                                }
                             } catch (e) {}
                         }
-                        if (finishReason) break;
+                        if (finishReason && finishReason !== 'null') break;
                     }
-                    yield {
+
+                    const metadata = {
                         type: "metadata",
                         finishReason: isCancelled ? "ABORTED" : finishReason || 'stop',
                         usageMetadata: usage ? {
                             candidatesTokenCount: usage.completion_tokens,
-                            totalTokenCount: usage.prompt_tokens + usage.completion_tokens
+                            totalTokenCount: usage.total_tokens + (usage.prompt_tokens || 0)
                         } : null,
                         safetyRatings: null,
                         groundingMetadata: null
                     };
+                    
+                    if (provider === 'deepseek') {
+                         metadata.fullReasoningContent = accumulatedFullReasoningContent || null;
+                    }
+
+                    yield metadata;
                 } catch (error) {
                      yield { type: 'error', error: { message: error.message }, message: error.message };
                 } finally {
