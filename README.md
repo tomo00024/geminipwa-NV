@@ -31,7 +31,8 @@ https://titan823.github.io/geminipwa/#chat
 -  https://console.anthropic.com/settings/keys
 -  OpenAI用 API課金管理
 -  https://platform.openai.com/settings/organization/billing/overview
-
+-  xAIのAPIコンソール
+-  https://console.x.ai/
 ### ■ 注意事項
 -  本PWAを初めてのデバイスから使用する場合は、必ず無料モデルを用いて必要最低限の機能構成からテストしてください。
 -  当フォークは私用目的のため、性質上、サポートは行われません。本コードの編集・仕様変更のプロセスにおいて予告・告知などは行いません。また、本コードの更新は予告なく終了致します。
