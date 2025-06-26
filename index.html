@@ -1863,6 +1863,8 @@
         .app-header .api-provider-toggle-btn.openai { background-color: #10A37F !important; color: #ffffff !important; }
         .app-header .api-provider-toggle-btn.xai { background-color: #000000 !important; color: #ffffff !important; }
         .app-header .api-provider-toggle-btn.llmaggregator { background-color: #e53935 !important; color: #ffffff !important; }
+        .app-header .api-provider-toggle-btn.dummy { background-color: var(--bg-button-gold) !important; color: var(--text-button-gold) !important; }
+        .app-header .api-provider-toggle-btn.dummy:hover { background-color: var(--bg-button-gold-hover) !important; }
         body.dark-mode .app-header .api-provider-toggle-btn.gemini:hover {
             background-color: rgba(255, 255, 255, 0.9) !important;
             color: #8A75D2 !important;
@@ -1892,6 +1894,7 @@
         .chat-input-area .api-provider-toggle-btn.openai { background-color: #10A37F !important; color: #ffffff !important; }
         .chat-input-area .api-provider-toggle-btn.xai { background-color: #000000 !important; color: #ffffff !important; }
         .chat-input-area .api-provider-toggle-btn.llmaggregator { background-color: #e53935 !important; color: #ffffff !important; }
+        .chat-input-area .api-provider-toggle-btn.dummy { background-color: var(--bg-button-gold) !important; color: var(--text-button-gold) !important; }
         
         .attachment-badge {
             position: absolute;
@@ -2370,6 +2373,24 @@
             border: none;
             border-top: 1px solid var(--border-secondary);
             margin: 1.5em 0;
+        }
+
+        .message-content img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 12px auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-secondary);
+            background-color: var(--bg-tertiary);
+            box-shadow: 0 1px 3px var(--shadow-primary);
+            cursor: pointer;
+            transition: opacity 0.3s ease, transform 0.2s ease;
+        }
+
+        .message-content img:hover {
+            opacity: 0.9;
+            transform: scale(1.01);
         }
 
         .message:hover .message-actions,
@@ -3288,6 +3309,7 @@
                             <option value="openai">ChatGPT (OpenAI API)</option>
                             <option value="xai">Grok (xAI API)</option>
                             <option value="llmaggregator">LLM Aggregator</option>
+                            <option value="dummy">Dummy AI</option>
                         </select>
                     </div>
                     <details id="settings-group-common-system-prompt" style="margin-top:15px;">
@@ -3486,6 +3508,28 @@
                         <label for="llmaggregator-additional-models" style="margin-top:10px;">追加モデル (カンマ区切り):</label>
                         <textarea id="llmaggregator-additional-models" placeholder="例: mistralai/Mixtral-8x7B-Instruct-v0.1,another/model" aria-label="LLM Aggregator 追加モデル"></textarea>
                         </p>
+                    </div>
+                </details>
+                
+                <details id="dummy-settings-group" class="settings-group hidden" open>
+                    <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">Dummy AI 設定</summary>
+                    <div style="margin-top:15px;">
+                        <p style="font-size: 12px; color: var(--text-secondary);">このプロバイダーはデバッグ用のダミーです。</p>
+                        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 5px;">APIキーは不要で、バックエンドへの接続も行いません。ユーザーがメッセージを送信すると、常に空の応答を返します。</p>
+                        <label class="checkbox-label" style="margin-top: 15px;">
+                            <input type="checkbox" id="dummy-error-debug-mode">
+                            エラーログを応答する (デバッグモード)
+                        </label>
+                        <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                            ※ チェック時、これまでに発生したJavaScriptエラーのログを応答します。
+                        </p>
+                        <hr style="margin: 15px 0;">
+                        <label for="dummy-dummy-model">ダミー Model プロンプト:</label>
+                        <textarea id="dummy-dummy-model" placeholder="この内容は、Dummy AIの応答の先頭に付与されます。" aria-label="Dummy AI ダミー Model プロンプト"></textarea>
+                        <label class="checkbox-label" style="margin-top: -5px; margin-bottom: 15px;">
+                            <input type="checkbox" id="dummy-enable-dummy-model">
+                            このダミーModelプロンプトを有効にする
+                        </label>
                     </div>
                 </details>
 
@@ -4287,6 +4331,10 @@
                                                     <input type="checkbox" id="api-provider-cycle-llmaggregator">
                                                     LLM Aggregator
                                                 </label>
+                                                <label class="checkbox-label" style="font-size: 12px;">
+                                                    <input type="checkbox" id="api-provider-cycle-dummy">
+                                                    Dummy AI
+                                                </label>
                                            </div>
                                        </div>
                                    </details>
@@ -4412,7 +4460,7 @@
                                         </div>
                                    </details>
                                 </div>
-                                </p>
+</p>
                            </details>
 
                            <details id="settings-group-font">
@@ -4785,6 +4833,7 @@
             openaiAdvancedGroup: document.getElementById('openai-advanced-group'),
             xaiAdvancedGroup: document.getElementById('xai-advanced-group'),
             llmAggregatorAdvancedGroup: document.getElementById('llmaggregator-advanced-group'),
+            dummySettingsGroup: document.getElementById('dummy-settings-group'),
 
             geminiSystemPromptDefaultTextarea: document.getElementById('gemini-system-prompt-default'),
             geminiEnableSystemPromptDefaultCheckbox: document.getElementById('gemini-enable-system-prompt-default'),
@@ -5049,7 +5098,11 @@
             apiProviderCycleOpenAICheckbox: document.getElementById('api-provider-cycle-openai'),
             apiProviderCycleXaiCheckbox: document.getElementById('api-provider-cycle-xai'),
             apiProviderCycleLlmAggregatorCheckbox: document.getElementById('api-provider-cycle-llmaggregator'),
+            apiProviderCycleDummyCheckbox: document.getElementById('api-provider-cycle-dummy'),
             imagePreviewDialog: document.getElementById('imagePreviewDialog'),
+            dummyErrorDebugModeCheckbox: document.getElementById('dummy-error-debug-mode'),
+            dummyDummyModelInput: document.getElementById('dummy-dummy-model'),
+            dummyEnableDummyModelCheckbox: document.getElementById('dummy-enable-dummy-model'),
         };
 
         const state = {
@@ -5267,7 +5320,11 @@
                     openai: true,
                     xai: true,
                     llmaggregator: true,
+                    dummy: true,
                 },
+                dummyErrorDebugMode: false,
+                dummyDummyModel: '',
+                dummyEnableDummyModel: false,
             },
             backgroundImageUrl: null,
             userIconUrl: null,
@@ -5504,7 +5561,7 @@
                                         state.settings[key] = defaultValue;
                                     }
                                 } else if (key === 'apiProvider') {
-                                    if (['gemini', 'deepseek', 'claude', 'openai', 'xai', 'llmaggregator'].includes(loadedValue)) {
+                                    if (['gemini', 'deepseek', 'claude', 'openai', 'xai', 'llmaggregator', 'dummy'].includes(loadedValue)) {
                                         state.settings.apiProvider = loadedValue;
                                     } else {
                                         state.settings.apiProvider = defaultValue;
@@ -6096,6 +6153,7 @@
                             this.processInteractivePlaceholders(contentDiv);
                             this.processInteractiveTitles(contentDiv);
                             this.addCopyButtonsToCodeBlocks(contentDiv, false);
+                            this.addImageClickListeners(contentDiv);
                         } else if (role === 'user') {
                             const pre = document.createElement('pre'); pre.textContent = content; contentDiv.appendChild(pre);
                         } else if (role === 'error') {
@@ -6644,6 +6702,7 @@
                                 this.processInteractivePlaceholders(targetContentDiv);
                                 this.processInteractiveTitles(targetContentDiv);
                                 this.addCopyButtonsToCodeBlocks(targetContentDiv, true);
+                                this.addImageClickListeners(targetContentDiv);
                             } catch (e) {
                                 targetContentDiv.textContent = contentToRender;
                             }
@@ -6703,6 +6762,7 @@
                              this.processInteractivePlaceholders(contentDiv);
                              this.processInteractiveTitles(contentDiv);
                              this.addCopyButtonsToCodeBlocks(contentDiv, false);
+                             this.addImageClickListeners(contentDiv);
                          } catch (e) {
                              contentDiv.textContent = finalRawContent;
                          }
@@ -7361,6 +7421,9 @@
                  elements.apiProviderCycleOpenAICheckbox.checked = state.settings.apiProviderCycle.openai;
                  elements.apiProviderCycleXaiCheckbox.checked = state.settings.apiProviderCycle.xai;
                  elements.apiProviderCycleLlmAggregatorCheckbox.checked = state.settings.apiProviderCycle.llmaggregator;
+                 elements.apiProviderCycleDummyCheckbox.checked = state.settings.apiProviderCycle.dummy;
+                 elements.dummyDummyModelInput.value = state.settings.dummyDummyModel || '';
+                 elements.dummyEnableDummyModelCheckbox.checked = state.settings.dummyEnableDummyModel;
 
                 elements.showMemoButtonToggle.checked = state.settings.showMemoButton;
                 elements.memoHeightInput.value = state.settings.memoHeight || '';
@@ -7405,6 +7468,7 @@
                 elements.toggleButtonBottomTextCollapseInput.value = state.settings.toggleButtonBottomTextCollapse || DEFAULT_TOGGLE_BUTTON_BOTTOM_TEXT_COLLAPSE;
                 elements.toggleButtonBottomTextExpandInput.value = state.settings.toggleButtonBottomTextExpand || DEFAULT_TOGGLE_BUTTON_BOTTOM_TEXT_EXPAND;
                 elements.thoughtSummaryOpacityInput.value = state.settings.thoughtSummaryOpacity ?? DEFAULT_THOUGHT_SUMMARY_OPACITY;
+                elements.dummyErrorDebugModeCheckbox.checked = state.settings.dummyErrorDebugMode;
 
                 document.documentElement.style.setProperty('--message-body-font-size', `${state.settings.messageBodyFontSize || DEFAULT_MESSAGE_BODY_FONT_SIZE}px`);
                 document.documentElement.style.setProperty('--code-block-font-size', `${state.settings.codeBlockFontSize || DEFAULT_CODE_BLOCK_FONT_SIZE}px`);
@@ -7455,6 +7519,7 @@
                 const showOpenAI = provider === 'openai';
                 const showXai = provider === 'xai';
                 const showLlmAggregator = provider === 'llmaggregator';
+                const showDummy = provider === 'dummy';
 
                 elements.geminiSettingsGroup.classList.toggle('hidden', !showGemini);
                 elements.geminiParamsGroup.classList.toggle('hidden', !showGemini);
@@ -7480,6 +7545,20 @@
                 elements.llmAggregatorSettingsGroup.classList.toggle('hidden', !showLlmAggregator);
                 elements.llmAggregatorParamsGroup.classList.toggle('hidden', !showLlmAggregator);
                 elements.llmAggregatorAdvancedGroup.classList.toggle('hidden', !showLlmAggregator);
+
+                elements.dummySettingsGroup.classList.toggle('hidden', !showDummy);
+
+                const paramGroups = [
+                    elements.geminiParamsGroup, elements.deepseekParamsGroup, elements.claudeParamsGroup,
+                    elements.openaiParamsGroup, elements.xaiParamsGroup, elements.llmAggregatorParamsGroup,
+                    elements.geminiAdvancedGroup, elements.deepseekAdvancedGroup, elements.claudeAdvancedGroup,
+                    elements.openaiAdvancedGroup, elements.xaiAdvancedGroup, elements.llmAggregatorAdvancedGroup,
+                    elements.geminiGroundingParam
+                ];
+
+                if (showDummy) {
+                    paramGroups.forEach(group => group.classList.add('hidden'));
+                }
             },
             updateChatScreenElementVisibility() {
                 const header = elements.chatScreen.querySelector('.app-header');
@@ -7570,6 +7649,7 @@
                     openai: { text: 'OP', title: 'OpenAI', className: 'openai' },
                     xai: { text: 'XA', title: 'xAI', className: 'xai' },
                     llmaggregator: { text: 'LA', title: 'LLM Aggregator', className: 'llmaggregator' },
+                    dummy: { text: 'DU', title: 'Dummy AI', className: 'dummy' },
                 };
                 const currentProviderInfo = providerMap[state.settings.apiProvider] || { text: '??', title: 'Unknown', className: '' };
                 
@@ -7577,7 +7657,7 @@
                     if (button) {
                         button.textContent = currentProviderInfo.text;
                         button.title = `API: ${currentProviderInfo.title}`;
-                        button.classList.remove('gemini', 'deepseek', 'claude', 'openai', 'xai', 'llmaggregator');
+                        button.classList.remove('gemini', 'deepseek', 'claude', 'openai', 'xai', 'llmaggregator', 'dummy');
                         if (currentProviderInfo.className) {
                             button.classList.add(currentProviderInfo.className);
                         }
@@ -7889,7 +7969,6 @@
                     elements.sendButton.textContent = '送';
                     elements.sendButton.classList.remove('sending');
                     elements.sendButton.title = "送信";
-                    elements.sendButton.disabled = elements.userInput.value.trim() === '' && state.pendingAttachments.length === 0;
                     elements.userInput.disabled = false;
                     elements.attachFileBtn.disabled = false;
                     elements.pasteToInputBtn.disabled = false;
@@ -7904,6 +7983,7 @@
                     elements.loadingIndicator.removeAttribute('aria-live');
                     elements.systemPromptDetails.style.pointerEvents = '';
                     elements.systemPromptDetails.style.opacity = '';
+                    this.adjustTextareaHeight();
                 }
             },
             adjustTextareaHeight(textarea = elements.userInput, maxHeight = TEXTAREA_MAX_HEIGHT) {
@@ -7913,7 +7993,15 @@
                 textarea.style.height = Math.min(scrollHeight, maxHeight) + 'px';
 
                 if (textarea === elements.userInput && !state.isSending) {
-                    elements.sendButton.disabled = textarea.value.trim() === '' && state.pendingAttachments.length === 0;
+                    const isInputEmpty = textarea.value.trim() === '';
+                    const hasAttachments = state.pendingAttachments.length > 0;
+                    const isDummyProvider = state.settings.apiProvider === 'dummy';
+
+                    if (isDummyProvider) {
+                        elements.sendButton.disabled = false;
+                    } else {
+                        elements.sendButton.disabled = isInputEmpty && !hasAttachments;
+                    }
                 }
             },
             showCustomDialog(dialogElement, focusElement) {
@@ -7988,9 +8076,14 @@
             updateAttachmentBadgeVisibility() {
                 const hasAttachments = state.pendingAttachments.length > 0;
                 elements.attachFileBtn.classList.toggle('has-attachments', hasAttachments);
-                 if (!state.isSending) {
-                     elements.sendButton.disabled = elements.userInput.value.trim() === '' && state.pendingAttachments.length === 0;
-                 }
+                if (!state.isSending) {
+                    const isDummyProvider = state.settings.apiProvider === 'dummy';
+                    if (isDummyProvider) {
+                        elements.sendButton.disabled = false;
+                    } else {
+                        elements.sendButton.disabled = elements.userInput.value.trim() === '' && !hasAttachments;
+                    }
+                }
             },
             showFileUploadDialog() {
                 if (state.pendingAttachments.length > 0) {
@@ -8220,7 +8313,8 @@
                     { value: 'claude', text: 'Claude (Anthropic API)' },
                     { value: 'openai', text: 'ChatGPT (OpenAI API)' },
                     { value: 'xai', text: 'Grok (xAI API)' },
-                    { value: 'llmaggregator', text: 'LLM Aggregator' }
+                    { value: 'llmaggregator', text: 'LLM Aggregator' },
+                    { value: 'dummy', text: 'Dummy AI' }
                 ];
 
                 const currentValue = apiProviderSelect.value;
@@ -8256,6 +8350,18 @@
                     apiProviderSelect.appendChild(warningOption);
                     apiProviderSelect.value = '';
                 }
+            },
+            addImageClickListeners(contentElement) {
+                if (!contentElement) return;
+                contentElement.querySelectorAll('img').forEach(img => {
+                    const newImg = img.cloneNode(true);
+                    img.parentNode.replaceChild(newImg, img);
+
+                    newImg.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        window.open(newImg.src, '_blank', 'noopener,noreferrer');
+                    });
+                });
             }
         };
 
@@ -8384,7 +8490,8 @@
                 elements.userInput.addEventListener('keypress', (e) => {
                     if (state.settings.enterToSend && e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
-                        if (!(elements.userInput.value.trim() === '' && state.pendingAttachments.length === 0) && !state.isSending) {
+                        const canSend = state.settings.apiProvider === 'dummy' || !(elements.userInput.value.trim() === '' && state.pendingAttachments.length === 0);
+                        if (canSend && !state.isSending) {
                              this.handleSend();
                         }
                     }
@@ -8872,6 +8979,10 @@
                 });
                  elements.apiProviderCycleLlmAggregatorCheckbox.addEventListener('change', () => {
                     state.settings.apiProviderCycle.llmaggregator = elements.apiProviderCycleLlmAggregatorCheckbox.checked;
+                    uiUtils.updateApiProviderSelectOptions();
+                });
+                 elements.apiProviderCycleDummyCheckbox.addEventListener('change', () => {
+                    state.settings.apiProviderCycle.dummy = elements.apiProviderCycleDummyCheckbox.checked;
                     uiUtils.updateApiProviderSelectOptions();
                 });
                 
@@ -9690,11 +9801,94 @@
             },
             async handleSend(isRetry = false, retryUserMessageIndex = -1, sourceSessionContext = null) {
                 const isBackgroundProcess = !!sourceSessionContext;
+                const selectedApiProvider = isBackgroundProcess ? (sourceSessionContext.apiProvider || state.settings.apiProvider) : state.settings.apiProvider;
+
+                let text = '';
+                let attachmentsToSend = [];
+                if (isBackgroundProcess) {
+                    text = sourceSessionContext.inputText || '';
+                    attachmentsToSend = sourceSessionContext.attachments ? [...sourceSessionContext.attachments] : [];
+                } else if (isRetry) {
+                    const retryUserMessage = state.currentMessages[retryUserMessageIndex];
+                    if (!retryUserMessage || retryUserMessage.role !== 'user') {
+                        uiUtils.setSendingState(false);
+                        return;
+                    }
+                    text = retryUserMessage.content || '';
+                    attachmentsToSend = retryUserMessage.attachments ? [...retryUserMessage.attachments] : [];
+                } else {
+                    text = elements.userInput.value.trim();
+                    attachmentsToSend = [...state.pendingAttachments];
+                }
+
+                if (!isBackgroundProcess) {
+                    const isInputEmpty = text.trim() === '';
+                    const hasAttachments = attachmentsToSend.length > 0;
+                    const isDummyProvider = selectedApiProvider === 'dummy';
+
+                    if (state.isSending) {
+                        return;
+                    }
+
+                    if (!isDummyProvider && isInputEmpty && !hasAttachments) {
+                        return;
+                    }
+                }
+                
+                if (selectedApiProvider === 'dummy') {
+                    let dummyResponseContent = '';
+                    if (state.settings.dummyEnableDummyModel && state.settings.dummyDummyModel) {
+                        dummyResponseContent += state.settings.dummyDummyModel;
+                    }
+                    if (state.settings.dummyErrorDebugMode) {
+                        const errorLog = errorRecovery.getErrorLogAsString();
+                        if (dummyResponseContent) {
+                            dummyResponseContent += '\n\n';
+                        }
+                        dummyResponseContent += errorLog;
+                    }
+
+                    if (isBackgroundProcess) {
+                        return { content: dummyResponseContent, metadata: { finishReason: 'stop' } };
+                    }
+
+                    uiUtils.setSendingState(true);
+                    if (isRetry) {
+                        if (retryUserMessageIndex + 1 < state.currentMessages.length) {
+                            state.currentMessages.splice(retryUserMessageIndex + 1);
+                        }
+                        uiUtils.renderChatMessages(true);
+                    } else {
+                        const userMessage = {
+                            role: 'user', content: text, timestamp: Date.now(),
+                            attachments: attachmentsToSend, generatedByApiProvider: null
+                        };
+                        state.currentMessages.push(userMessage);
+                        const userMessageIndex = state.currentMessages.length - 1;
+                        uiUtils.appendMessage(userMessage.role, userMessage.content, userMessageIndex, false, null, userMessage.attachments);
+                        elements.userInput.value = '';
+                        state.pendingAttachments = [];
+                        uiUtils.adjustTextareaHeight();
+                        uiUtils.updateAttachmentBadgeVisibility();
+                    }
+                    await dbUtils.saveChat();
+                    await sleep(300 + Math.random() * 400);
+                    
+                    const modelMessage = {
+                        role: 'model', content: dummyResponseContent, timestamp: Date.now(), generatedByApiProvider: 'dummy'
+                    };
+                    state.currentMessages.push(modelMessage);
+                    const modelMessageIndex = state.currentMessages.length - 1;
+                    uiUtils.appendMessage(modelMessage.role, modelMessage.content, modelMessageIndex);
+                    await dbUtils.saveChat();
+                    uiUtils.setSendingState(false);
+                    if (state.settings.autoScrollOnNewMessage) uiUtils.scrollToBottom();
+                    return;
+                }
+
                 let currentContextSessionId = isBackgroundProcess ? sourceSessionContext.sessionId : state.currentChatId;
                 let currentContextMessages = isBackgroundProcess ? [...sourceSessionContext.messages] : [...state.currentMessages];
                 let currentContextSystemPrompt = '';
-
-                const selectedApiProvider = isBackgroundProcess ? (sourceSessionContext.apiProvider || state.settings.apiProvider) : state.settings.apiProvider;
 
                 if (isBackgroundProcess) {
                     currentContextSystemPrompt = sourceSessionContext.systemPrompt || '';
@@ -9781,6 +9975,21 @@
                         contextDummyModel = sourceSessionContext.dummyModel ?? state.settings.deepSeekDummyModel;
                         contextEnableDummyModel = sourceSessionContext.enableDummyModel ?? state.settings.deepSeekEnableDummyModel;
                         contextConcatDummyModel = sourceSessionContext.concatDummyModel ?? state.settings.deepSeekConcatDummyModel;
+                    } else if (providerForSettingsB === 'llmaggregator') {
+                        contextTemperature = sourceSessionContext.temperature ?? state.settings.llmAggregatorTemperature;
+                        contextMaxTokens = sourceSessionContext.maxTokens ?? state.settings.llmAggregatorMaxTokens;
+                        contextTopP = sourceSessionContext.topP ?? state.settings.llmAggregatorTopP;
+                        contextLlmAggregatorTopK = sourceSessionContext.topK ?? state.settings.llmAggregatorTopK;
+                        contextPresencePenalty = sourceSessionContext.presencePenalty ?? state.settings.llmAggregatorPresencePenalty;
+                        contextFrequencyPenalty = sourceSessionContext.frequencyPenalty ?? state.settings.llmAggregatorFrequencyPenalty;
+                        contextDeepSeekIncludeThoughts = sourceSessionContext.includeThoughts ?? state.settings.llmAggregatorIncludeThoughts;
+                        contextStreamingOutput = sourceSessionContext.streamingOutput ?? state.settings.llmAggregatorStreamingOutput;
+                        contextStreamingSpeed = sourceSessionContext.streamingSpeed ?? state.settings.llmAggregatorStreamingSpeed;
+                        contextDummyUser = sourceSessionContext.dummyUser ?? state.settings.llmAggregatorDummyUser;
+                        contextEnableDummyUser = sourceSessionContext.enableDummyUser ?? state.settings.llmAggregatorEnableDummyUser;
+                        contextDummyModel = sourceSessionContext.dummyModel ?? state.settings.llmAggregatorDummyModel;
+                        contextEnableDummyModel = sourceSessionContext.enableDummyModel ?? state.settings.llmAggregatorEnableDummyModel;
+                        contextConcatDummyModel = sourceSessionContext.concatDummyModel ?? state.settings.llmAggregatorConcatDummyModel;
                     } else if (providerForSettingsB === 'claude') {
                         contextTemperature = sourceSessionContext.temperature ?? state.settings.claudeTemperature;
                         contextMaxTokens = sourceSessionContext.maxTokens ?? state.settings.claudeMaxTokens;
@@ -9825,21 +10034,6 @@
                         contextXaiVisionEnable = sourceSessionContext.visionEnable ?? state.settings.xaiVisionEnable;
                         contextXaiIncludeThoughts = sourceSessionContext.includeThoughts ?? state.settings.xaiIncludeThoughts;
                         contextXaiReasoningEffort = sourceSessionContext.reasoningEffort ?? state.settings.xaiReasoningEffort;
-                    } else if (providerForSettingsB === 'llmaggregator') {
-                        contextTemperature = sourceSessionContext.temperature ?? state.settings.llmAggregatorTemperature;
-                        contextMaxTokens = sourceSessionContext.maxTokens ?? state.settings.llmAggregatorMaxTokens;
-                        contextTopP = sourceSessionContext.topP ?? state.settings.llmAggregatorTopP;
-                        contextLlmAggregatorTopK = sourceSessionContext.topK ?? state.settings.llmAggregatorTopK;
-                        contextPresencePenalty = sourceSessionContext.presencePenalty ?? state.settings.llmAggregatorPresencePenalty;
-                        contextFrequencyPenalty = sourceSessionContext.frequencyPenalty ?? state.settings.llmAggregatorFrequencyPenalty;
-                        contextDeepSeekIncludeThoughts = sourceSessionContext.includeThoughts ?? state.settings.llmAggregatorIncludeThoughts;
-                        contextStreamingOutput = sourceSessionContext.streamingOutput ?? state.settings.llmAggregatorStreamingOutput;
-                        contextStreamingSpeed = sourceSessionContext.streamingSpeed ?? state.settings.llmAggregatorStreamingSpeed;
-                        contextDummyUser = sourceSessionContext.dummyUser ?? state.settings.llmAggregatorDummyUser;
-                        contextEnableDummyUser = sourceSessionContext.enableDummyUser ?? state.settings.llmAggregatorEnableDummyUser;
-                        contextDummyModel = sourceSessionContext.dummyModel ?? state.settings.llmAggregatorDummyModel;
-                        contextEnableDummyModel = sourceSessionContext.enableDummyModel ?? state.settings.llmAggregatorEnableDummyModel;
-                        contextConcatDummyModel = sourceSessionContext.concatDummyModel ?? state.settings.llmAggregatorConcatDummyModel;
                     }
                 } else {
                     if (selectedApiProvider === 'gemini') {
@@ -9934,34 +10128,6 @@
                         contextEnableDummyModel = state.settings.llmAggregatorEnableDummyModel;
                         contextConcatDummyModel = state.settings.llmAggregatorConcatDummyModel;
                     }
-                }
-
-                if (!isBackgroundProcess) {
-                    if (state.editingMessageIndex !== null) { await uiUtils.showCustomAlert("他のメッセージを編集中です。"); return; }
-                    if (state.isEditingSystemPrompt) { await uiUtils.showCustomAlert("システムプロンプト編集中です。"); return; }
-                }
-
-                let text = '';
-                let attachmentsToSend = [];
-
-                if (isBackgroundProcess) {
-                    text = sourceSessionContext.inputText || '';
-                    attachmentsToSend = sourceSessionContext.attachments ? [...sourceSessionContext.attachments] : [];
-                } else if (isRetry) {
-                    const retryUserMessage = currentContextMessages[retryUserMessageIndex];
-                    if (!retryUserMessage || retryUserMessage.role !== 'user') {
-                        if (!isBackgroundProcess) uiUtils.setSendingState(false);
-                        return;
-                    }
-                    text = retryUserMessage.content || '';
-                    attachmentsToSend = retryUserMessage.attachments ? [...retryUserMessage.attachments] : [];
-                } else {
-                    text = elements.userInput.value.trim();
-                    attachmentsToSend = [...state.pendingAttachments];
-                }
-
-                if (!isBackgroundProcess && (state.isSending || (!text && attachmentsToSend.length === 0))) {
-                    return;
                 }
                 
                 if ((selectedApiProvider === 'gemini' && !state.settings.apiKey) ||
@@ -10058,7 +10224,7 @@
                             currentContextSessionId = null;
                             state.currentChatId = null;
                         }
-                    } else if (isBackgroundProcess && sourceSessionContext.sessionId) {
+                    } else if (isBackgroundProcess && sourceSessionContext?.sessionId) {
                          existingChatForDBSave = await dbUtils.getChat(sourceSessionContext.sessionId);
                          if (existingChatForDBSave) {
                             titleToSave = existingChatForDBSave.title;
@@ -10099,7 +10265,7 @@
 
                     if (isNewChatForDBSave) {
                         chatToSave.createdAt = Date.now();
-                    } else {
+                    } else if (existingChatForDBSave) {
                         chatToSave.id = currentContextSessionId || sourceSessionContext?.sessionId;
                         chatToSave.createdAt = existingChatForDBSave.createdAt;
                     }
@@ -10738,6 +10904,7 @@
                     uiUtils.updateChatScreenElementVisibility();
                     uiUtils.toggleApiSettingsVisibility(state.settings.apiProvider);
                     this.updateSystemPromptBasedOnProvider();
+                    uiUtils.adjustTextareaHeight();
                 } catch (error) {
                     await uiUtils.showCustomAlert(`APIプロバイダー設定の保存に失敗しました: ${error.message}`);
                     state.settings.apiProvider = providersInCycle[currentIndex >= 0 ? currentIndex : 0];
@@ -11365,7 +11532,11 @@
                      openai: elements.apiProviderCycleOpenAICheckbox.checked,
                      xai: elements.apiProviderCycleXaiCheckbox.checked,
                      llmaggregator: elements.apiProviderCycleLlmAggregatorCheckbox.checked,
+                     dummy: elements.apiProviderCycleDummyCheckbox.checked,
                  };
+                 newSettings.dummyErrorDebugMode = elements.dummyErrorDebugModeCheckbox.checked;
+                 newSettings.dummyDummyModel = elements.dummyDummyModelInput.value.trim();
+                 newSettings.dummyEnableDummyModel = elements.dummyEnableDummyModelCheckbox.checked;
 
                 const validateNumeric = (value, defaultValue, min, max, isInteger = false) => {
                     let num = isInteger ? parseInt(value, 10) : parseFloat(value);
@@ -11668,8 +11839,11 @@
                         defaultSettingsCopy.settingsUIDetailsOpenStates = {};
                         defaultSettingsCopy.showApiProviderToggleHeader = false;
                         defaultSettingsCopy.showApiProviderToggleFooter = true;
-                        defaultSettingsCopy.apiProviderCycle = { gemini: true, deepseek: true, claude: true, openai: true, xai: true, llmaggregator: true };
+                        defaultSettingsCopy.apiProviderCycle = { gemini: true, deepseek: true, claude: true, openai: true, xai: true, llmaggregator: true, dummy: true };
                         defaultSettingsCopy.llmAggregatorTopK = null;
+                        defaultSettingsCopy.dummyErrorDebugMode = false;
+                        defaultSettingsCopy.dummyDummyModel = '';
+                        defaultSettingsCopy.dummyEnableDummyModel = false;
 
                         state.settings = defaultSettingsCopy;
 
@@ -11983,6 +12157,7 @@
                             uiUtils.processInteractiveTitles(tempDiv);
                             contentDiv.innerHTML = tempDiv.innerHTML;
                             uiUtils.addCopyButtonsToCodeBlocks(contentDiv, false);
+                            uiUtils.addImageClickListeners(contentDiv);
                         } catch (e) {
                             contentDiv.textContent = newRawContent;
                         }
@@ -13517,8 +13692,7 @@
                 } else {
                     requestBody.top_p = DEFAULT_CLAUDE_TOP_P;
                 }
-                
-                if (state.settings.claudeIncludeThoughts) {
+                                if (state.settings.claudeIncludeThoughts) {
                     requestBody.thinking = { "type": "enabled" };
                     const budget = state.settings.claudeThinkingBudget;
                     if (budget !== null && Number.isInteger(budget) && budget >= 1024) {
@@ -13930,6 +14104,51 @@
             maxErrors: 3,
             lastErrorTime: 0,
             isRecovering: false,
+            errorLog: [],
+            maxLogSize: 20,
+
+            logError(type, errorInfo) {
+                const now = new Date();
+                const logEntry = {
+                    timestamp: now.toISOString(),
+                    type: type,
+                    info: this.serializeErrorInfo(errorInfo)
+                };
+                this.errorLog.unshift(logEntry);
+                if (this.errorLog.length > this.maxLogSize) {
+                    this.errorLog.pop();
+                }
+            },
+
+            serializeErrorInfo(errorInfo) {
+                try {
+                    const cache = new Set();
+                    return JSON.stringify(errorInfo, (key, value) => {
+                        if (typeof value === 'object' && value !== null) {
+                            if (value instanceof Window) return '[Window Object]';
+                            if (cache.has(value)) {
+                                return '[Circular Reference]';
+                            }
+                            cache.add(value);
+                        }
+                        return value;
+                    }, 2);
+                } catch (e) {
+                    if (errorInfo instanceof Error) {
+                        return JSON.stringify({ message: errorInfo.message, stack: errorInfo.stack, name: errorInfo.name }, null, 2);
+                    }
+                    return `Failed to serialize error: ${e.message}`;
+                }
+            },
+
+            getErrorLogAsString() {
+                if (this.errorLog.length === 0) {
+                    return "これまでに記録されたエラーはありません。";
+                }
+                return this.errorLog.map(log => 
+                    `Timestamp: ${log.timestamp}\nType: ${log.type}\nInfo:\n${log.info}`
+                ).join('\n\n====================\n\n');
+            },
             
             init() {
                 window.addEventListener('error', (event) => {
@@ -13960,13 +14179,14 @@
                 if (this.isRecovering) return;
 
                 const now = Date.now();
-                
-                if (now - this.lastErrorTime > this.errorTimeWindow) {
+                                if (now - this.lastErrorTime > this.errorTimeWindow) {
                     this.errorCount = 0;
                 }
                 
                 this.errorCount++;
                 this.lastErrorTime = now;
+                
+                this.logError(type, errorInfo);
                 
                 const isCriticalError = this.isCriticalError(errorInfo);
                 
