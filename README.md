@@ -26,7 +26,7 @@ together.ai,console.groq.com,fireworks.ai,hugging face.co,deepinfra.comといっ
 *   ⚠️PWAでDeepSeek、Claude(Anthropic API)、grok(xAI)のAPIを利用できるようにアップデート致しました。使用するAPIプロバイダー:に選択肢として表示されない場合、その他設定>挙動調整>API切替ボタン設定から選択肢を設定してください
 *   本機能は試験的な実装です。 デバッグは全て便宜的な水準のみにとどまっており、完璧な動作を保証するものではありません。 不具合が生じた場合、予告なくロールバックいたします。
 * ⚠️ Claudeのインターネットから情報を取得する機能は未実装です。チャット以外の機能に対応する予定もございません
-* ※ Anthropic APIが提供するサービスは全て有料です。
+* ※DeepSeek、Anthropic API、xAIが提供するサービスは全て有料です。
 * Claudeの推論機能とダミーModelプロンプトは現在併用できません（推論を使わない場合は大丈夫です）
 -  自分用メモ:OpusはSonnetの5倍のコスト。SonnetはHaikuのおよそ4倍のコスト。DeepSeekはR1ですらHaikuよりも大幅に安い。Command AはSonnetより若干安い程度で、使う意味は薄い。
 -  Claudeの最新の料金表は　https://www.anthropic.com/pricing
