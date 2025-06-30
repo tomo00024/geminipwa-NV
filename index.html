@@ -19,6 +19,7 @@
             --bg-system-message: #f0f8ff;
             --bg-error-message: #ffebee;
             --bg-button: #4a90e2;
+            --bg-button-rgb: 74, 144, 226;
             --bg-button-hover: #357abd;
             --bg-button-disabled: #a0c3e8;
             --bg-button-action: #777777;
@@ -165,6 +166,7 @@
             --bg-system-message: #2a3a4a;
             --bg-error-message: #5c1c1c;
             --bg-button: #007aff;
+            --bg-button-rgb: 0, 122, 255;
             --bg-button-hover: #005ecb;
             --bg-button-disabled: #4a5a70;
             --bg-button-action: #666666;
@@ -251,6 +253,7 @@
             --bg-system-message: #ffeef2;
             --bg-error-message: #ffccd5;
             --bg-button: #ff8fab;
+            --bg-button-rgb: 255, 143, 171;
             --bg-button-hover: #ff7096;
             --bg-button-disabled: #fcc2d7;
             --bg-button-action: #ffb3c1;
@@ -354,6 +357,7 @@
             --bg-system-message: #e6f2ff;
             --bg-error-message: #d1e9ff;
             --bg-button: #87cefa;
+            --bg-button-rgb: 135, 206, 250;
             --bg-button-hover: #70b8e8;
             --bg-button-disabled: #b0dfff;
             --bg-button-action: #add8e6;
@@ -457,6 +461,7 @@
             --bg-system-message: #fffbea;
             --bg-error-message: #ffebcd;
             --bg-button: #ffd700;
+            --bg-button-rgb: 255, 215, 0;
             --bg-button-hover: #ffc700;
             --bg-button-disabled: #fff0b3;
             --bg-button-action: #ffec8b;
@@ -544,6 +549,7 @@
             --bg-system-message: #f3e8fd;
             --bg-error-message: #f8bbd0;
             --bg-button: #ab47bc;
+            --bg-button-rgb: 171, 71, 188;
             --bg-button-hover: #9c27b0;
             --bg-button-disabled: #ce93d8;
             --bg-button-action: #ba68c8;
@@ -631,6 +637,7 @@
             --bg-system-message: #fff0f8;
             --bg-error-message: #fff8e0;
             --bg-button: #ff80c0;
+            --bg-button-rgb: 255, 128, 192;
             --bg-button-hover: #ff60a0;
             --bg-button-disabled: #ffc0e0;
             --bg-button-action: #80d0ff;
@@ -1863,8 +1870,8 @@
         .app-header .api-provider-toggle-btn.openai { background-color: #10A37F !important; color: #ffffff !important; }
         .app-header .api-provider-toggle-btn.xai { background-color: #000000 !important; color: #ffffff !important; }
         .app-header .api-provider-toggle-btn.llmaggregator { background-color: #e53935 !important; color: #ffffff !important; }
-        .app-header .api-provider-toggle-btn.dummy { background-color: var(--bg-button-gold) !important; color: var(--text-button-gold) !important; }
-        .app-header .api-provider-toggle-btn.dummy:hover { background-color: var(--bg-button-gold-hover) !important; }
+        .app-header .api-provider-toggle-btn.dummy { background-color: #FFD700 !important; color: #ffffff !important; }
+        .app-header .api-provider-toggle-btn.dummy:hover { background-color: #FFC700 !important; }
         body.dark-mode .app-header .api-provider-toggle-btn.gemini:hover {
             background-color: rgba(255, 255, 255, 0.9) !important;
             color: #8A75D2 !important;
@@ -1894,8 +1901,8 @@
         .chat-input-area .api-provider-toggle-btn.openai { background-color: #10A37F !important; color: #ffffff !important; }
         .chat-input-area .api-provider-toggle-btn.xai { background-color: #000000 !important; color: #ffffff !important; }
         .chat-input-area .api-provider-toggle-btn.llmaggregator { background-color: #e53935 !important; color: #ffffff !important; }
-        .chat-input-area .api-provider-toggle-btn.dummy { background-color: var(--bg-button-gold) !important; color: var(--text-button-gold) !important; }
-        
+        .chat-input-area .api-provider-toggle-btn.dummy { background-color: #FFD700 !important; color: #ffffff !important; }
+       
         .attachment-badge {
             position: absolute;
             top: -4px;
@@ -3181,6 +3188,99 @@
         #imagePreviewDialog .dialog-actions {
             margin-top: 15px;
         }
+        .api-keys-list {
+            margin-bottom: 15px;
+        }
+        .api-key-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 5px;
+            padding: 5px;
+            border: 1px solid var(--border-secondary);
+            border-radius: 5px;
+            background-color: var(--bg-tertiary);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .api-key-item:last-child {
+        margin-bottom: 0;
+        }
+        .api-key-item.active {
+            border-color: var(--bg-button);
+            background-color: rgba(var(--bg-button-rgb, 74, 144, 226), 0.1);
+        }
+        .api-key-item-label {
+            flex: 0 0 100px;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--text-secondary);
+            min-width: 0;
+            padding: 6px 8px;
+            border: 1px solid var(--border-primary);
+            border-radius: 3px;
+            background-color: var(--bg-input);
+        }
+        .api-key-item-input {
+            flex: 1;
+            min-width: 0;
+            padding: 6px 8px;
+            font-size: 13px;
+            border: 1px solid var(--border-primary);
+            border-radius: 3px;
+            background-color: var(--bg-input);
+            color: var(--text-primary);
+            margin-bottom: 0;
+        }
+        .api-key-item-actions {
+            display: flex;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+        .api-key-item-actions button {
+            padding: 4px 8px;
+            font-size: 11px;
+            min-width: auto;
+            line-height: 1.2;
+        }
+        .api-key-select-btn {
+            background-color: var(--bg-button-save);
+            color: var(--text-light);
+        }
+        .api-key-select-btn:hover {
+            background-color: var(--bg-button-save-hover);
+        }
+        .api-key-select-btn.active {
+            background-color: var(--bg-button);
+            color: var(--text-light);
+        }
+        .api-key-select-btn.active:hover {
+            background-color: var(--bg-button-hover);
+        }
+        .api-key-delete-btn {
+            background-color: var(--bg-button-delete);
+            color: var(--text-light);
+        }
+        .api-key-delete-btn:hover {
+            background-color: var(--bg-button-delete-hover);
+        }
+        .add-api-key-btn {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 13px;
+            background-color: var(--bg-button-action);
+            color: var(--text-light);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .add-api-key-btn:hover {
+            background-color: var(--bg-button-action-hover);
+        }
+        .add-api-key-btn:disabled {
+            background-color: var(--bg-button-disabled);
+            cursor: not-allowed;
+        }
     </style>
     <script src="marked.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
@@ -3330,7 +3430,13 @@
                     <div style="margin-top:15px;">
                         <label for="gemini-api-key">Gemini APIキー:</label>
                         <input type="password" id="gemini-api-key" placeholder="APIキーを入力" aria-label="Gemini APIキー">
-
+                        <details id="gemini-multi-api-keys-section" style="margin-top: 10px;">
+                            <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor: pointer; font-weight: normal;">複数APIキー管理 (Gemini)</summary>
+                            <div style="padding-left: 15px; margin-top: 10px;">
+                                <div id="gemini-api-keys-list" class="api-keys-list"></div>
+                                <button type="button" id="add-gemini-api-key-btn" class="add-api-key-btn">新しいAPIキーを追加</button>
+                            </div>
+                        </details>
                         <label for="gemini-model-name">モデル名:</label>
                         <select id="gemini-model-name" aria-label="モデル名">
                             <optgroup label="無料">
@@ -3362,7 +3468,13 @@
                     <div style="margin-top:15px;">
                         <label for="deepseek-api-key">DeepSeek APIキー:</label>
                         <input type="password" id="deepseek-api-key" placeholder="DeepSeek APIキーを入力" aria-label="DeepSeek APIキー">
-
+                        <details id="deepseek-multi-api-keys-section" style="margin-top: 10px;">
+                            <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor: pointer; font-weight: normal;">複数APIキー管理 (DeepSeek)</summary>
+                            <div style="padding-left: 15px; margin-top: 10px;">
+                                <div id="deepseek-api-keys-list" class="api-keys-list"></div>
+                                <button type="button" id="add-deepseek-api-key-btn" class="add-api-key-btn">新しいAPIキーを追加</button>
+                            </div>
+                        </details>
                         <label for="deepseek-model-name">DeepSeek モデル名:</label>
                         <select id="deepseek-model-name" aria-label="DeepSeek モデル名">
                             <optgroup label="基本モデル (DeepSeek)">
@@ -3388,7 +3500,13 @@
                     <div style="margin-top:15px;">
                         <label for="claude-api-key">Claude APIキー:</label>
                         <input type="password" id="claude-api-key" placeholder="APIキーを入力" aria-label="Claude APIキー">
-
+                        <details id="claude-multi-api-keys-section" style="margin-top: 10px;">
+                            <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor: pointer; font-weight: normal;">複数APIキー管理 (Claude)</summary>
+                            <div style="padding-left: 15px; margin-top: 10px;">
+                                <div id="claude-api-keys-list" class="api-keys-list"></div>
+                                <button type="button" id="add-claude-api-key-btn" class="add-api-key-btn">新しいAPIキーを追加</button>
+                            </div>
+                        </details>
                         <label for="claude-model-name">モデル名:</label>
                         <select id="claude-model-name" aria-label="Claudeモデル名">
                             <optgroup label="Claude 4">
@@ -3430,6 +3548,13 @@
                     <div style="margin-top:15px;">
                         <label for="openai-api-key">ChatGPT APIキー:</label>
                         <input type="password" id="openai-api-key" placeholder="sk-..." aria-label="ChatGPT APIキー">
+                        <details id="openai-multi-api-keys-section" class="hidden" style="margin-top: 10px;">
+                            <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor: pointer; font-weight: normal;">複数APIキー管理 (OpenAI)</summary>
+                            <div style="padding-left: 15px; margin-top: 10px;">
+                                <div id="openai-api-keys-list" class="api-keys-list"></div>
+                                <button type="button" id="add-openai-api-key-btn" class="add-api-key-btn">新しいAPIキーを追加</button>
+                            </div>
+                        </details>
                         <label for="openai-model-name">モデル名:</label>
                         <select id="openai-model-name" aria-label="OpenAI モデル名">
                             <optgroup label="GPT-4.1">
@@ -3468,6 +3593,13 @@
                     <div style="margin-top:15px;">
                         <label for="xai-api-key">xAI APIキー:</label>
                         <input type="password" id="xai-api-key" placeholder="xai-..." aria-label="xAI APIキー">
+                        <details id="xai-multi-api-keys-section" class="hidden" style="margin-top: 10px;">
+                            <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor: pointer; font-weight: normal;">複数APIキー管理 (xAI)</summary>
+                            <div style="padding-left: 15px; margin-top: 10px;">
+                                <div id="xai-api-keys-list" class="api-keys-list"></div>
+                                <button type="button" id="add-xai-api-key-btn" class="add-api-key-btn">新しいAPIキーを追加</button>
+                            </div>
+                        </details>
                         <label for="xai-model-name">モデル名:</label>
                         <select id="xai-model-name" aria-label="xAI モデル名">
                             <optgroup label="Grok">
@@ -3494,7 +3626,13 @@
                         <div id="llmaggregator-url-error" style="color: red; font-size: 11px; margin-top: -5px; height: 14px;"></div>
                         <label for="llmaggregator-api-key">APIキー:</label>
                         <input type="password" id="llmaggregator-api-key" placeholder="APIキーを入力" aria-label="LLM Aggregator APIキー">
-
+                        <details id="llmaggregator-multi-api-keys-section" class="hidden" style="margin-top: 10px;">
+                            <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor: pointer; font-weight: normal;">複数APIキー管理 (LLM Aggregator)</summary>
+                            <div style="padding-left: 15px; margin-top: 10px;">
+                                <div id="llmaggregator-api-keys-list" class="api-keys-list"></div>
+                                <button type="button" id="add-llmaggregator-api-key-btn" class="add-api-key-btn">新しいAPIキーを追加</button>
+                            </div>
+                        </details>
                         <label for="llmaggregator-model-name">モデル名:</label>
                         <select id="llmaggregator-model-name" aria-label="LLM Aggregator モデル名">
                             <optgroup label="デフォルト">
@@ -4282,6 +4420,13 @@
                                    </label>
                                    <p style="height:10px"></p>
                                    <label class="checkbox-label">
+                                       <input type="checkbox" id="show-multi-api-keys-toggle">
+                                       複数APIキー管理機能を表示する
+                                   </label>
+                                   <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                                       ※ 複数のAPIキーを使い分けたい場合に使用。
+                                   </p>
+                                   <label class="checkbox-label">
                                        <input type="checkbox" id="hide-system-prompt-toggle">
                                        システムプロンプト非表示
                                    </label>
@@ -5035,6 +5180,7 @@
             disableDeleteMessageConfirmationToggle: document.getElementById('disable-delete-message-confirmation-toggle'),
             disableAttachmentConfirmationToggle: document.getElementById('disable-attachment-confirmation-toggle'),
             addPrefixOnImportToggle: document.getElementById('add-prefix-on-import-toggle'),
+            showMultiApiKeysToggle: document.getElementById('show-multi-api-keys-toggle'),
             showTopCollapseButtonToggle: document.getElementById('show-top-collapse-button-toggle'),
             showBottomCollapseButtonToggle: document.getElementById('show-bottom-collapse-button-toggle'),
             persistMessageCollapseStateCheckbox: document.getElementById('persist-message-collapse-state'),
@@ -5103,6 +5249,18 @@
             dummyErrorDebugModeCheckbox: document.getElementById('dummy-error-debug-mode'),
             dummyDummyModelInput: document.getElementById('dummy-dummy-model'),
             dummyEnableDummyModelCheckbox: document.getElementById('dummy-enable-dummy-model'),
+            geminiApiKeysList: document.getElementById('gemini-api-keys-list'),
+            addGeminiApiKeyBtn: document.getElementById('add-gemini-api-key-btn'),
+            deepseekApiKeysList: document.getElementById('deepseek-api-keys-list'),
+            addDeepseekApiKeyBtn: document.getElementById('add-deepseek-api-key-btn'),
+            claudeApiKeysList: document.getElementById('claude-api-keys-list'),
+            addClaudeApiKeyBtn: document.getElementById('add-claude-api-key-btn'),
+            openaiApiKeysList: document.getElementById('openai-api-keys-list'),
+            addOpenaiApiKeyBtn: document.getElementById('add-openai-api-key-btn'),
+            xaiApiKeysList: document.getElementById('xai-api-keys-list'),
+            addXaiApiKeyBtn: document.getElementById('add-xai-api-key-btn'),
+            llmaggregatorApiKeysList: document.getElementById('llmaggregator-api-keys-list'),
+            addLlmaggregatorApiKeyBtn: document.getElementById('add-llmaggregator-api-key-btn'),
         };
 
         const state = {
@@ -5291,6 +5449,8 @@
                 disableDeleteMessageConfirmation: false,
                 disableAttachmentConfirmation: false,
                 addPrefixOnImport: true,
+                showMultiApiKeys: false,
+                disableSaveSettingsConfirmation: false,
                 showTopCollapseButton: true,
                 showBottomCollapseButton: true,
                 persistMessageCollapseState: DEFAULT_PERSIST_MESSAGE_COLLAPSE_STATE,
@@ -5310,7 +5470,6 @@
                 apiProvider: 'gemini',
                 thoughtSummaryOpacity: DEFAULT_THOUGHT_SUMMARY_OPACITY,
                 settingsUIDetailsOpenStates: {},
-                disableSaveSettingsConfirmation: false,
                 showApiProviderToggleHeader: false,
                 showApiProviderToggleFooter: true,
                 apiProviderCycle: {
@@ -5325,6 +5484,18 @@
                 dummyErrorDebugMode: false,
                 dummyDummyModel: '',
                 dummyEnableDummyModel: false,
+                geminiApiKeys: [],
+                geminiActiveApiKeyIndex: -1,
+                deepseekApiKeys: [],
+                deepseekActiveApiKeyIndex: -1,
+                claudeApiKeys: [],
+                claudeActiveApiKeyIndex: -1,
+                openaiApiKeys: [],
+                openaiActiveApiKeyIndex: -1,
+                xaiApiKeys: [],
+                xaiActiveApiKeyIndex: -1,
+                llmaggregatorApiKeys: [],
+                llmaggregatorActiveApiKeyIndex: -1,
             },
             backgroundImageUrl: null,
             userIconUrl: null,
@@ -7272,6 +7443,14 @@
                 elements.llmAggregatorApiKeyInput.value = state.settings.llmAggregatorApiKey || '';
                 elements.llmAggregatorModelNameSelect.value = state.settings.llmAggregatorModelName || DEFAULT_LLMAGGREGATOR_MODEL;
                 elements.llmAggregatorAdditionalModelsTextarea.value = state.settings.llmAggregatorAdditionalModels || '';
+                
+                multiApiKeyUtils.renderAllApiKeyLists();
+                multiApiKeyUtils.updateMainApiKeyInput('gemini');
+                multiApiKeyUtils.updateMainApiKeyInput('deepseek');
+                multiApiKeyUtils.updateMainApiKeyInput('claude');
+                multiApiKeyUtils.updateMainApiKeyInput('openai');
+                multiApiKeyUtils.updateMainApiKeyInput('xai');
+                multiApiKeyUtils.updateMainApiKeyInput('llmaggregator');
 
                 elements.geminiSystemPromptDefaultTextarea.value = state.settings.geminiSystemPrompt || '';
                 elements.geminiEnableSystemPromptDefaultCheckbox.checked = state.settings.geminiEnableSystemPromptDefault;
@@ -7453,6 +7632,7 @@
                 elements.disableDeleteMessageConfirmationToggle.checked = state.settings.disableDeleteMessageConfirmation;
                 elements.disableAttachmentConfirmationToggle.checked = state.settings.disableAttachmentConfirmation;
                 elements.addPrefixOnImportToggle.checked = state.settings.addPrefixOnImport;
+                elements.showMultiApiKeysToggle.checked = state.settings.showMultiApiKeys;
                 elements.disableSaveSettingsConfirmationToggle.checked = state.settings.disableSaveSettingsConfirmation;
                 elements.showTopCollapseButtonToggle.checked = state.settings.showTopCollapseButton;
                 elements.showBottomCollapseButtonToggle.checked = state.settings.showBottomCollapseButton;
@@ -7498,6 +7678,7 @@
                 this.updateSessionLinkingUI();
                 this.updateApiProviderSelectOptions();
                 this.applyMinimizeUI();
+                this.toggleMultiApiKeysVisibility(state.settings.showMultiApiKeys);
             },
             applyMinimizeUI() {
                 elements.appContainer.classList.toggle('minimized-ui', state.settings.minimizeHeaderFooter);
@@ -8362,11 +8543,45 @@
                         window.open(newImg.src, '_blank', 'noopener,noreferrer');
                     });
                 });
-            }
+            },
+            toggleMultiApiKeysVisibility(show) {
+                const providers = ['gemini', 'deepseek', 'claude', 'openai', 'xai', 'llmaggregator'];
+                
+                providers.forEach(provider => {
+                    const multiKeySection = document.getElementById(`${provider}-multi-api-keys-section`);
+                    if (multiKeySection) {
+                        multiKeySection.classList.toggle('hidden', !show);
+                    }
+
+                    const singleKeyInputId = provider === 'gemini' ? 'gemini-api-key' : `${provider}-api-key`;
+                    const singleKeyInput = document.getElementById(singleKeyInputId);
+                    
+                    if (singleKeyInput) {
+                        const label = singleKeyInput.previousElementSibling;
+                        if (label?.tagName === 'LABEL' && label.htmlFor === singleKeyInputId) {
+                            label.classList.toggle('hidden', show);
+                        }
+                        singleKeyInput.classList.toggle('hidden', show);
+
+                        if (!show) {
+                            let singleKeyValue = '';
+                            switch(provider) {
+                                case 'gemini': singleKeyValue = state.settings.apiKey; break;
+                                case 'deepseek': singleKeyValue = state.settings.deepSeekApiKey; break;
+                                case 'claude': singleKeyValue = state.settings.claudeApiKey; break;
+                                case 'openai': singleKeyValue = state.settings.openaiApiKey; break;
+                                case 'xai': singleKeyValue = state.settings.xaiApiKey; break;
+                                case 'llmaggregator': singleKeyValue = state.settings.llmAggregatorApiKey; break;
+                            }
+                            singleKeyInput.value = singleKeyValue || '';
+                        }
+                    }
+                });
+            },
         };
 
         const appLogic = {
-            initializeApp() {
+            async initializeApp() {
                 if (typeof marked !== 'undefined') {
                     marked.setOptions({
                         breaks: true,
@@ -8399,55 +8614,55 @@
                 registerServiceWorker();
 
                 try {
-                    dbUtils.openDB().then(() => {
-                        dbUtils.loadSettings().then(() => {
-                            uiUtils.applyTheme();
-                            uiUtils.applyFontFamily();
-                            uiUtils.applySidePanelSettingsToUI();
+                    await dbUtils.openDB();
+                    await dbUtils.loadSettings();
+                    
+                    uiUtils.applyTheme();
+                    uiUtils.applyFontFamily();
+                    uiUtils.applySidePanelSettingsToUI();
     
-                            if (state.settings.backgroundImageBlob instanceof Blob) {
-                                uiUtils.revokeExistingObjectUrl();
-                                try {
-                                     state.backgroundImageUrl = URL.createObjectURL(state.settings.backgroundImageBlob);
-                                     document.documentElement.style.setProperty('--chat-background-image', `url(${state.backgroundImageUrl})`);
-                                } catch (e) {
-                                     document.documentElement.style.setProperty('--chat-background-image', 'none');
-                                }
-                            } else {
-                                document.documentElement.style.setProperty('--chat-background-image', 'none');
-                            }
-                            if (state.settings.userIconBlob instanceof Blob) {
-                                try { state.userIconUrl = URL.createObjectURL(state.settings.userIconBlob); } catch (e) { }
-                            }
-                            if (state.settings.aiIconBlob instanceof Blob) {
-                                try { state.aiIconUrl = URL.createObjectURL(state.settings.aiIconBlob); } catch (e) { }
-                            }
+                    if (state.settings.backgroundImageBlob instanceof Blob) {
+                        uiUtils.revokeExistingObjectUrl();
+                        try {
+                             state.backgroundImageUrl = URL.createObjectURL(state.settings.backgroundImageBlob);
+                             document.documentElement.style.setProperty('--chat-background-image', `url(${state.backgroundImageUrl})`);
+                        } catch (e) {
+                             document.documentElement.style.setProperty('--chat-background-image', 'none');
+                        }
+                    } else {
+                        document.documentElement.style.setProperty('--chat-background-image', 'none');
+                    }
+                    if (state.settings.userIconBlob instanceof Blob) {
+                        try { state.userIconUrl = URL.createObjectURL(state.settings.userIconBlob); } catch (e) { }
+                    }
+                    if (state.settings.aiIconBlob instanceof Blob) {
+                        try { state.aiIconUrl = URL.createObjectURL(state.settings.aiIconBlob); } catch (e) { }
+                    }
     
-                            uiUtils.applySettingsToUI();
+                    uiUtils.applySettingsToUI();
     
-                            dbUtils.getAllChats(state.settings.historySortOrder).then(chats => {
-                                if (chats && chats.length > 0) {
-                                    this.loadChat(chats[0].id);
-                                } else {
-                                    this.startNewChat();
-                                }
-                                history.replaceState({ screen: 'chat' }, '', '#chat');
-                                state.currentScreen = 'chat';
-    
-                            }).finally(() => {
-                                updateMessageMaxWidthVar();
-                                this.setupEventListeners();
-                                this.updateZoomState();
-                                uiUtils.adjustTextareaHeight();
-                                uiUtils.setSendingState(false);
-                                if (state.settings.autoScrollOnNewMessage) {
-                                    uiUtils.scrollToBottom();
-                                }
-                            });
-                        });
-                    });
+                    const chats = await dbUtils.getAllChats(state.settings.historySortOrder);
+                    if (chats && chats.length > 0) {
+                        await this.loadChat(chats[0].id);
+                    } else {
+                        this.startNewChat();
+                    }
+                    
+                    history.replaceState({ screen: 'chat' }, '', '#chat');
+                    state.currentScreen = 'chat';
+                    
+                    updateMessageMaxWidthVar();
+                    this.setupEventListeners();
+                    this.updateZoomState();
+                    uiUtils.adjustTextareaHeight();
+                    uiUtils.setSendingState(false);
+                    
+                    if (state.settings.autoScrollOnNewMessage) {
+                        uiUtils.scrollToBottom();
+                    }
+
                 } catch (error) {
-                    uiUtils.showCustomAlert(`アプリの初期化に失敗しました: ${error}`);
+                    await uiUtils.showCustomAlert(`アプリの初期化に失敗しました: ${error}`);
                     elements.appContainer.innerHTML = `<p style="padding: 20px; text-align: center; color: red;">アプリの起動に失敗しました。</p>`;
                 } 
             },
@@ -8882,6 +9097,10 @@
                 elements.persistMessageCollapseStateCheckbox.addEventListener('change', () => {
                     state.settings.persistMessageCollapseState = elements.persistMessageCollapseStateCheckbox.checked;
                 });
+                elements.showMultiApiKeysToggle.addEventListener('change', (e) => {
+                    state.settings.showMultiApiKeys = e.target.checked;
+                    uiUtils.toggleMultiApiKeysVisibility(e.target.checked);
+                });
 
                 elements.messageContainer.addEventListener('click', (event) => {
                     const clickedMessage = event.target.closest('.message');
@@ -8947,7 +9166,7 @@
                     }
                 });
 
-                document.querySelectorAll('#settings-screen details').forEach(details => {
+                document.querySelectorAll('#settings-screen details[id]').forEach(details => {
                     details.addEventListener('toggle', (event) => {
                         if (details.id) {
                             state.settings.settingsUIDetailsOpenStates[details.id] = details.open;
@@ -9003,6 +9222,17 @@
 
                 llmUrlInput.addEventListener('input', validateLlmUrl);
                 llmUrlInput.addEventListener('blur', validateLlmUrl);
+
+                multiApiKeyUtils.initializeMultiApiKeys();
+                elements.geminiApiKeyInput.addEventListener('input', () => multiApiKeyUtils.syncMainApiKeyInput('gemini'));
+                elements.deepSeekApiKeyInput.addEventListener('input', () => multiApiKeyUtils.syncMainApiKeyInput('deepseek'));
+                elements.claudeApiKeyInput.addEventListener('input', () => multiApiKeyUtils.syncMainApiKeyInput('claude'));
+                elements.openaiApiKeyInput.addEventListener('input', () => multiApiKeyUtils.syncMainApiKeyInput('openai'));
+                elements.xaiApiKeyInput.addEventListener('input', () => multiApiKeyUtils.syncMainApiKeyInput('xai'));
+                elements.llmAggregatorApiKeyInput.addEventListener('input', () => multiApiKeyUtils.syncMainApiKeyInput('llmaggregator'));
+                elements.showMultiApiKeysToggle.addEventListener('change', (e) => {
+                    uiUtils.toggleMultiApiKeysVisibility(e.target.checked);
+                });
             },
             handlePopState(event) {
                 const targetScreen = event.state?.screen || 'chat';
@@ -10130,12 +10360,12 @@
                     }
                 }
                 
-                if ((selectedApiProvider === 'gemini' && !state.settings.apiKey) ||
-                    (selectedApiProvider === 'deepseek' && !state.settings.deepSeekApiKey) ||
-                    (selectedApiProvider === 'claude' && !state.settings.claudeApiKey) ||
-                    (selectedApiProvider === 'openai' && !state.settings.openaiApiKey) ||
-                    (selectedApiProvider === 'xai' && !state.settings.xaiApiKey) ||
-                    (selectedApiProvider === 'llmaggregator' && !state.settings.llmAggregatorApiKey)) {
+                if ((selectedApiProvider === 'gemini' && !(multiApiKeyUtils.getActiveApiKey('gemini') || state.settings.apiKey)) ||
+                    (selectedApiProvider === 'deepseek' && !(multiApiKeyUtils.getActiveApiKey('deepseek') || state.settings.deepSeekApiKey)) ||
+                    (selectedApiProvider === 'claude' && !(multiApiKeyUtils.getActiveApiKey('claude') || state.settings.claudeApiKey)) ||
+                    (selectedApiProvider === 'openai' && !(multiApiKeyUtils.getActiveApiKey('openai') || state.settings.openaiApiKey)) ||
+                    (selectedApiProvider === 'xai' && !(multiApiKeyUtils.getActiveApiKey('xai') || state.settings.xaiApiKey)) ||
+                    (selectedApiProvider === 'llmaggregator' && !(multiApiKeyUtils.getActiveApiKey('llmaggregator') || state.settings.llmAggregatorApiKey))) {
                     if (!isBackgroundProcess) {
                         await uiUtils.showCustomAlert(`${selectedApiProvider} APIキーが設定されていません。設定画面を開きます。`);
                         uiUtils.showScreen('settings');
@@ -10175,7 +10405,7 @@
                     elements.userInput.value = '';
                     state.pendingAttachments = [];
                     uiUtils.adjustTextareaHeight();
-                    if (state.settings.autoScrollOnNewMessage) uiUtils.scrollToBottom();
+                    uiUtils.updateAttachmentBadgeVisibility();
                     currentContextMessages = [...state.currentMessages];
                 } else if (isBackgroundProcess && !isRetry) {
                     const userMessage = {
@@ -11317,30 +11547,49 @@
                  }
             },
             async saveSettings() {
-                 const currentProvider = elements.apiProviderSelect.value;
-                 const newSettings = { ...state.settings };
-                 newSettings.apiProvider = currentProvider;
-                 newSettings.apiKey = elements.geminiApiKeyInput.value.trim();
+                const newSettings = { ...state.settings };
+                newSettings.showMultiApiKeys = elements.showMultiApiKeysToggle.checked;
+                
+                if (newSettings.showMultiApiKeys) {
+                    const providers = ['gemini', 'deepseek', 'claude', 'openai', 'xai', 'llmaggregator'];
+                    providers.forEach(provider => {
+                        const keysKey = `${provider}ApiKeys`;
+                        const activeIndexKey = `${provider}ActiveApiKeyIndex`;
+                        const inputId = provider === 'gemini' ? 'gemini-api-key' : `${provider}-api-key`;
+                        const inputElement = document.getElementById(inputId);
+
+                        if (newSettings[keysKey] && newSettings[activeIndexKey] > -1) {
+                            const activeKey = newSettings[keysKey][newSettings[activeIndexKey]];
+                            if (activeKey && inputElement) {
+                                activeKey.value = inputElement.value.trim();
+                            }
+                        }
+                    });
+                } else {
+                    newSettings.apiKey = elements.geminiApiKeyInput.value.trim();
+                    newSettings.deepSeekApiKey = elements.deepSeekApiKeyInput.value.trim();
+                    newSettings.claudeApiKey = elements.claudeApiKeyInput.value.trim();
+                    newSettings.openaiApiKey = elements.openaiApiKeyInput.value.trim();
+                    newSettings.xaiApiKey = elements.xaiApiKeyInput.value.trim();
+                    newSettings.llmAggregatorApiKey = elements.llmAggregatorApiKeyInput.value.trim();
+                }
+
+                 newSettings.apiProvider = elements.apiProviderSelect.value;
                  newSettings.modelName = elements.geminiModelNameSelect.value;
                  newSettings.additionalModels = elements.geminiAdditionalModelsTextarea.value.trim();
                  newSettings.commonSystemPrompt = elements.commonSystemPromptDefaultTextarea.value.trim();
                  newSettings.enableCommonSystemPromptDefault = elements.enableCommonSystemPromptDefaultCheckbox.checked;
                  
-                 newSettings.deepSeekApiKey = elements.deepSeekApiKeyInput.value.trim();
                  newSettings.deepSeekModelName = elements.deepSeekModelNameSelect.value;
                  newSettings.deepSeekAdditionalModels = elements.deepSeekAdditionalModelsTextarea.value.trim();
                  newSettings.deepSeekApiEndpoint = elements.deepSeekApiEndpointInput.value.trim();
-                 newSettings.claudeApiKey = elements.claudeApiKeyInput.value.trim();
                  newSettings.claudeModelName = elements.claudeModelNameSelect.value;
                  newSettings.claudeAdditionalModels = elements.claudeAdditionalModelsTextarea.value.trim();
-                 newSettings.openaiApiKey = elements.openaiApiKeyInput.value.trim();
                  newSettings.openaiModelName = elements.openaiModelNameSelect.value;
                  newSettings.openaiAdditionalModels = elements.openaiAdditionalModelsTextarea.value.trim();
-                 newSettings.xaiApiKey = elements.xaiApiKeyInput.value.trim();
                  newSettings.xaiModelName = elements.xaiModelNameSelect.value;
                  newSettings.xaiAdditionalModels = elements.xaiAdditionalModelsTextarea.value.trim();
                  newSettings.llmAggregatorApiBackend = elements.llmAggregatorApiBackendInput.value.trim();
-                 newSettings.llmAggregatorApiKey = elements.llmAggregatorApiKeyInput.value.trim();
                  newSettings.llmAggregatorModelName = elements.llmAggregatorModelNameSelect.value;
                  newSettings.llmAggregatorAdditionalModels = elements.llmAggregatorAdditionalModelsTextarea.value.trim();
 
@@ -11818,6 +12067,7 @@
                         defaultSettingsCopy.disableDeleteMessageConfirmation = false;
                         defaultSettingsCopy.disableAttachmentConfirmation = false;
                         defaultSettingsCopy.addPrefixOnImport = true;
+                        defaultSettingsCopy.showMultiApiKeys = false;
                         defaultSettingsCopy.disableSaveSettingsConfirmation = false;
                         defaultSettingsCopy.showTopCollapseButton = true;
                         defaultSettingsCopy.showBottomCollapseButton = true;
@@ -11844,6 +12094,18 @@
                         defaultSettingsCopy.dummyErrorDebugMode = false;
                         defaultSettingsCopy.dummyDummyModel = '';
                         defaultSettingsCopy.dummyEnableDummyModel = false;
+                        defaultSettingsCopy.geminiApiKeys = [];
+                        defaultSettingsCopy.geminiActiveApiKeyIndex = -1;
+                        defaultSettingsCopy.deepseekApiKeys = [];
+                        defaultSettingsCopy.deepseekActiveApiKeyIndex = -1;
+                        defaultSettingsCopy.claudeApiKeys = [];
+                        defaultSettingsCopy.claudeActiveApiKeyIndex = -1;
+                        defaultSettingsCopy.openaiApiKeys = [];
+                        defaultSettingsCopy.openaiActiveApiKeyIndex = -1;
+                        defaultSettingsCopy.xaiApiKeys = [];
+                        defaultSettingsCopy.xaiActiveApiKeyIndex = -1;
+                        defaultSettingsCopy.llmaggregatorApiKeys = [];
+                        defaultSettingsCopy.llmaggregatorActiveApiKeyIndex = -1;
 
                         state.settings = defaultSettingsCopy;
 
@@ -12322,7 +12584,7 @@
                         }
                     });
 
-                    uiUtils.renderChatMessages();
+                    uiUtils.renderChatMessages(true);
 
                     const newFirstUserMsgIndex = state.currentMessages.findIndex(m => m.role === 'user');
                     let requiresTitleUpdate = indicesToDelete.includes(originalFirstUserMsgIndex);
@@ -12575,7 +12837,7 @@
                         }
                     }
 
-                    uiUtils.renderChatMessages();
+                    uiUtils.renderChatMessages(true);
 
                     requestAnimationFrame(() => {
                          if (newlySelectedIndex !== -1) {
@@ -13255,7 +13517,13 @@
 
         const apiUtils = {
             async callGeminiApi(messagesForApi, generationConfig, systemInstruction, useStreaming, usePseudo, enableGrounding) {
-                const apiKey = state.settings.apiKey;
+                let apiKey;
+                if (state.settings.showMultiApiKeys) {
+                    apiKey = multiApiKeyUtils.getActiveApiKey('gemini');
+                } else {
+                    apiKey = state.settings.apiKey;
+                }
+                
                 let baseUrl = GEMINI_API_BASE_URL;
                 
                 if (!apiKey) {
@@ -13292,7 +13560,7 @@
                      safetySettings : [
                          { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
                          { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
-                         { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },                         { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' }
+                                                  { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },                         { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' }
                      ]
                 };
 
@@ -13476,7 +13744,11 @@
             async callDeepSeekApi(messagesForApi, generationConfig, systemInstruction, useStreaming, provider = 'deepseek') {
                 let apiKey, model, baseUrl, topK;
                 if (provider === 'llmaggregator') {
-                    apiKey = state.settings.llmAggregatorApiKey;
+                    if (state.settings.showMultiApiKeys) {
+                        apiKey = multiApiKeyUtils.getActiveApiKey('llmaggregator');
+                    } else {
+                        apiKey = state.settings.llmAggregatorApiKey;
+                    }
                     model = state.settings.llmAggregatorModelName;
                     baseUrl = state.settings.llmAggregatorApiBackend;
                     topK = state.settings.llmAggregatorTopK;
@@ -13484,7 +13756,11 @@
                         throw new Error("LLM AggregatorのAPIバックエンドURLが設定されていません。");
                     }
                 } else {
-                    apiKey = state.settings.deepSeekApiKey;
+                    if (state.settings.showMultiApiKeys) {
+                        apiKey = multiApiKeyUtils.getActiveApiKey('deepseek');
+                    } else {
+                        apiKey = state.settings.deepSeekApiKey;
+                    }
                     model = state.settings.deepSeekModelName || DEFAULT_DEEPSEEK_MODEL;
                     baseUrl = state.settings.deepSeekApiEndpoint || DEEPSEEK_API_DEFAULT_BASE_URL;
                 }
@@ -13652,7 +13928,7 @@
                 }
             },
             async callClaudeApi(messagesForApi, generationConfig, systemInstruction, useStreaming) {
-                const apiKey = state.settings.claudeApiKey;
+                const apiKey = state.settings.showMultiApiKeys ? multiApiKeyUtils.getActiveApiKey('claude') : state.settings.claudeApiKey;
                 if (!apiKey) {
                     throw new Error("Claude APIキーが設定されていません。");
                 }
@@ -13904,11 +14180,11 @@
                 let apiKey, model, baseUrl;
                 
                 if (provider === 'openai') {
-                    apiKey = state.settings.openaiApiKey;
+                    apiKey = state.settings.showMultiApiKeys ? multiApiKeyUtils.getActiveApiKey('openai') : state.settings.openaiApiKey;
                     model = state.settings.openaiModelName || DEFAULT_OPENAI_MODEL;
                     baseUrl = OPENAI_API_BASE_URL;
                 } else if (provider === 'llmaggregator') {
-                    apiKey = state.settings.llmAggregatorApiKey;
+                    apiKey = state.settings.showMultiApiKeys ? multiApiKeyUtils.getActiveApiKey('llmaggregator') : state.settings.llmAggregatorApiKey;
                     model = state.settings.llmAggregatorModelName || DEFAULT_LLMAGGREGATOR_MODEL;
                     baseUrl = state.settings.llmAggregatorApiBackend;
                     if (!baseUrl) {
@@ -14039,7 +14315,7 @@
                 }
             },
             async callXaiApi(messagesForApi, generationConfig, systemInstruction, useStreaming, enableVision) {
-                const apiKey = state.settings.xaiApiKey;
+                const apiKey = state.settings.showMultiApiKeys ? multiApiKeyUtils.getActiveApiKey('xai') : state.settings.xaiApiKey;
                 if (!apiKey) {
                     throw new Error("xAI APIキーが設定されていません。");
                 }
@@ -14307,6 +14583,291 @@
                 this.triggerForceReload('Manual Recovery', { reason: 'User triggered' }, true);
             }
         };
+                const multiApiKeyUtils = {
+            MAX_API_KEYS: 10,
+
+            initializeMultiApiKeys() {
+                elements.addGeminiApiKeyBtn.addEventListener('click', () => this.addApiKey('gemini'));
+                elements.addDeepseekApiKeyBtn.addEventListener('click', () => this.addApiKey('deepseek'));
+                elements.addClaudeApiKeyBtn.addEventListener('click', () => this.addApiKey('claude'));
+                elements.addOpenaiApiKeyBtn.addEventListener('click', () => this.addApiKey('openai'));
+                elements.addXaiApiKeyBtn.addEventListener('click', () => this.addApiKey('xai'));
+                elements.addLlmaggregatorApiKeyBtn.addEventListener('click', () => this.addApiKey('llmaggregator'));
+
+                this.renderAllApiKeyLists();
+            },
+
+            addApiKey(provider) {
+                const keys = this.getApiKeysArray(provider);
+                if (keys.length >= this.MAX_API_KEYS) {
+                    uiUtils.showCustomAlert(`最大${this.MAX_API_KEYS}個までのAPIキーを設定できます。`);
+                    return;
+                }
+
+                const newKey = {
+                    id: Date.now().toString(),
+                    label: `キー ${keys.length + 1}`,
+                    value: '',
+                    isActive: keys.length === 0
+                };
+
+                keys.push(newKey);
+                
+                if (newKey.isActive) {
+                    this.setActiveApiKeyIndex(provider, keys.length - 1);
+                }
+
+                this.renderApiKeyList(provider);
+                this.updateMainApiKeyInput(provider);
+            },
+
+            async deleteApiKey(provider, keyId) {
+                const keys = this.getApiKeysArray(provider);
+                const keyIndex = keys.findIndex(key => key.id === keyId);
+                if (keyIndex === -1) return;
+
+                const keyToDelete = keys[keyIndex];
+                const confirmed = await uiUtils.showCustomConfirm(
+                    `APIキー「${keyToDelete.label}」を削除しますか？`
+                );
+                
+                if (!confirmed) return;
+
+                const wasActive = keyToDelete.isActive;
+                keys.splice(keyIndex, 1);
+
+                if (wasActive && keys.length > 0) {
+                    const newActiveIndex = Math.min(keyIndex, keys.length - 1);
+                    keys[newActiveIndex].isActive = true;
+                    this.setActiveApiKeyIndex(provider, newActiveIndex);
+                } else if (keys.length === 0) {
+                    this.setActiveApiKeyIndex(provider, -1);
+                }
+
+                this.renderApiKeyList(provider);
+                this.updateMainApiKeyInput(provider);
+            },
+
+            selectApiKey(provider, keyId) {
+                const keys = this.getApiKeysArray(provider);
+                const selectedIndex = keys.findIndex(key => key.id === keyId);
+                if (selectedIndex === -1) return;
+
+                keys.forEach((key, index) => {
+                    key.isActive = index === selectedIndex;
+                });
+
+                this.setActiveApiKeyIndex(provider, selectedIndex);
+                this.renderApiKeyList(provider);
+                this.updateMainApiKeyInput(provider);
+            },
+
+            updateApiKeyValue(provider, keyId, newValue) {
+                const keys = this.getApiKeysArray(provider);
+                const key = keys.find(k => k.id === keyId);
+                if (key) {
+                    key.value = newValue.trim();
+                    if (key.isActive) {
+                        this.updateMainApiKeyInput(provider);
+                    }
+                }
+            },
+
+            updateApiKeyLabel(provider, keyId, newLabel) {
+                const keys = this.getApiKeysArray(provider);
+                const key = keys.find(k => k.id === keyId);
+                if (key) {
+                    key.label = newLabel.trim() || `キー ${keys.indexOf(key) + 1}`;
+                }
+            },
+
+            getApiKeysArray(provider) {
+                switch (provider) {
+                    case 'gemini': return state.settings.geminiApiKeys;
+                    case 'deepseek': return state.settings.deepseekApiKeys;
+                    case 'claude': return state.settings.claudeApiKeys;
+                    case 'openai': return state.settings.openaiApiKeys;
+                    case 'xai': return state.settings.xaiApiKeys;
+                    case 'llmaggregator': return state.settings.llmaggregatorApiKeys;
+                    default: return [];
+                }
+            },
+
+            setActiveApiKeyIndex(provider, index) {
+                switch (provider) {
+                    case 'gemini': state.settings.geminiActiveApiKeyIndex = index; break;
+                    case 'deepseek': state.settings.deepseekActiveApiKeyIndex = index; break;
+                    case 'claude': state.settings.claudeActiveApiKeyIndex = index; break;
+                    case 'openai': state.settings.openaiActiveApiKeyIndex = index; break;
+                    case 'xai': state.settings.xaiActiveApiKeyIndex = index; break;
+                    case 'llmaggregator': state.settings.llmaggregatorActiveApiKeyIndex = index; break;
+                }
+            },
+
+            getActiveApiKey(provider) {
+                const keys = this.getApiKeysArray(provider);
+                const activeKey = keys.find(key => key.isActive);
+                return activeKey ? activeKey.value : '';
+            },
+
+            updateMainApiKeyInput(provider) {
+                if (!state.settings.showMultiApiKeys) {
+                    return;
+                }
+                const activeKey = this.getActiveApiKey(provider);
+                switch (provider) {
+                    case 'gemini':
+                        elements.geminiApiKeyInput.value = activeKey;
+                        break;
+                    case 'deepseek':
+                        elements.deepSeekApiKeyInput.value = activeKey;
+                        break;
+                    case 'claude':
+                        elements.claudeApiKeyInput.value = activeKey;
+                        break;
+                    case 'openai':
+                        elements.openaiApiKeyInput.value = activeKey;
+                        break;
+                    case 'xai':
+                        elements.xaiApiKeyInput.value = activeKey;
+                        break;
+                    case 'llmaggregator':
+                        elements.llmAggregatorApiKeyInput.value = activeKey;
+                        break;
+                }
+            },
+
+            renderApiKeyList(provider) {
+                const keys = this.getApiKeysArray(provider);
+                const container = this.getListContainer(provider);
+                const addButton = this.getAddButton(provider);
+
+                container.innerHTML = '';
+
+                if (keys.length === 0) {
+                    const emptyMsg = document.createElement('p');
+                    emptyMsg.textContent = 'APIキーが設定されていません。';
+                    emptyMsg.style.color = 'var(--text-secondary)';
+                    emptyMsg.style.fontSize = '13px';
+                    emptyMsg.style.textAlign = 'center';
+                    emptyMsg.style.margin = '10px 0';
+                    container.appendChild(emptyMsg);
+                } else {
+                    keys.forEach((key, index) => {
+                        const item = this.createApiKeyItem(provider, key, index);
+                        container.appendChild(item);
+                    });
+                }
+
+                addButton.disabled = keys.length >= this.MAX_API_KEYS;
+                addButton.textContent = keys.length >= this.MAX_API_KEYS 
+                    ? `最大${this.MAX_API_KEYS}個まで` 
+                    : '新しいAPIキーを追加';
+            },
+
+            createApiKeyItem(provider, key, index) {
+                const item = document.createElement('div');
+                item.className = `api-key-item ${key.isActive ? 'active' : ''}`;
+
+                const labelInput = document.createElement('input');
+                labelInput.type = 'text';
+                labelInput.className = 'api-key-item-label';
+                labelInput.value = key.label;
+                labelInput.placeholder = `キー ${index + 1}`;
+                labelInput.addEventListener('change', (e) => {
+                                    this.updateApiKeyLabel(provider, key.id, e.target.value);
+                });
+
+                const keyInput = document.createElement('input');
+                keyInput.type = 'password';
+                keyInput.className = 'api-key-item-input';
+                keyInput.value = key.value;
+                keyInput.placeholder = 'APIキーを入力...';
+                keyInput.addEventListener('input', (e) => {
+                    this.updateApiKeyValue(provider, key.id, e.target.value);
+                });
+
+                const actions = document.createElement('div');
+                actions.className = 'api-key-item-actions';
+
+                const selectBtn = document.createElement('button');
+                selectBtn.className = `api-key-select-btn ${key.isActive ? 'active' : ''}`;
+                selectBtn.textContent = key.isActive ? '使用中' : '未選択';
+                selectBtn.disabled = key.isActive;
+                selectBtn.addEventListener('click', () => {
+                    this.selectApiKey(provider, key.id);
+                });
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'api-key-delete-btn';
+                deleteBtn.textContent = '削';
+                deleteBtn.addEventListener('click', () => {
+                    this.deleteApiKey(provider, key.id);
+                });
+
+                actions.appendChild(selectBtn);
+                actions.appendChild(deleteBtn);
+
+                item.appendChild(labelInput);
+                item.appendChild(keyInput);
+                item.appendChild(actions);
+
+                return item;
+            },
+
+            getListContainer(provider) {
+                switch (provider) {
+                    case 'gemini': return elements.geminiApiKeysList;
+                    case 'deepseek': return elements.deepseekApiKeysList;
+                    case 'claude': return elements.claudeApiKeysList;
+                    case 'openai': return elements.openaiApiKeysList;
+                    case 'xai': return elements.xaiApiKeysList;
+                    case 'llmaggregator': return elements.llmaggregatorApiKeysList;
+                    default: return null;
+                }
+            },
+
+            getAddButton(provider) {
+                switch (provider) {
+                    case 'gemini': return elements.addGeminiApiKeyBtn;
+                    case 'deepseek': return elements.addDeepseekApiKeyBtn;
+                    case 'claude': return elements.addClaudeApiKeyBtn;
+                    case 'openai': return elements.addOpenaiApiKeyBtn;
+                    case 'xai': return elements.addXaiApiKeyBtn;
+                    case 'llmaggregator': return elements.addLlmaggregatorApiKeyBtn;
+                    default: return null;
+                }
+            },
+
+            renderAllApiKeyLists() {
+                this.renderApiKeyList('gemini');
+                this.renderApiKeyList('deepseek');
+                this.renderApiKeyList('claude');
+                this.renderApiKeyList('openai');
+                this.renderApiKeyList('xai');
+                this.renderApiKeyList('llmaggregator');
+            },
+
+            syncMainApiKeyInput(provider) {
+                let mainValue = '';
+                switch (provider) {
+                    case 'gemini': mainValue = elements.geminiApiKeyInput.value.trim(); break;
+                    case 'deepseek': mainValue = elements.deepSeekApiKeyInput.value.trim(); break;
+                    case 'claude': mainValue = elements.claudeApiKeyInput.value.trim(); break;
+                    case 'openai': mainValue = elements.openaiApiKeyInput.value.trim(); break;
+                    case 'xai': mainValue = elements.xaiApiKeyInput.value.trim(); break;
+                    case 'llmaggregator': mainValue = elements.llmAggregatorApiKeyInput.value.trim(); break;
+                }
+
+                const keys = this.getApiKeysArray(provider);
+                const activeKey = keys.find(key => key.isActive);
+                
+                if (activeKey && activeKey.value !== mainValue) {
+                    activeKey.value = mainValue;
+                    this.renderApiKeyList(provider);
+                }
+            }
+        };
 
         errorRecovery.init();
 
@@ -14316,3 +14877,4 @@
     </script>
 </body>
 </html>
+
