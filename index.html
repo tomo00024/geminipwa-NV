@@ -3281,6 +3281,10 @@
             background-color: var(--bg-button-disabled);
             cursor: not-allowed;
         }
+        #settings-screen.auto-save-mode .app-header #settings-save-notice,
+        #settings-screen.auto-save-mode .app-header .js-save-settings-btn {
+            display: none !important;
+        }
     </style>
     <script src="marked.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
@@ -4694,6 +4698,13 @@
                          <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
                              ※ 設定保存時の確認ダイアログを表示しません。
                          </p>
+                         <label class="checkbox-label" style="margin-top: 10px; margin-bottom: 5px;">
+                             <input type="checkbox" id="auto-save-settings-toggle">
+                             設定を即時反映する（「保存」不要）
+                         </label>
+                         <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                             ※ 設定を変更すると自動的に保存されます。
+                         </p>
                          <button id="force-recovery-btn" class="orange-button">🔄 強制復旧 (キャッシュクリア&リロード)</button>
                          <p style="font-size: 11px; color: var(--text-secondary); margin-top:5px; margin-bottom: 10px;">
                              ※ アプリが不安定な場合に使用。全キャッシュをクリアして強制的に再起動します。「アプリを更新」の処理に加えて、ブラウザが保持しているこの「GeminiPWA」アプリに関連する他の種類のキャッシュも可能な限り削除します。<br>
@@ -5234,6 +5245,7 @@
             xaiThoughtsParam: document.getElementById('xai-thoughts-param'),
             llmAggregatorThoughtsParam: document.getElementById('llmaggregator-thoughts-param'),
             disableSaveSettingsConfirmationToggle: document.getElementById('disable-save-settings-confirmation-toggle'),
+            autoSaveSettingsToggle: document.getElementById('auto-save-settings-toggle'),
             headerApiProviderToggleBtn: document.getElementById('header-api-provider-toggle-btn'),
             footerApiProviderToggleBtn: document.getElementById('footer-api-provider-toggle-btn'),
             showApiProviderToggleHeaderCheckbox: document.getElementById('show-api-provider-toggle-header'),
@@ -5451,6 +5463,7 @@
                 addPrefixOnImport: true,
                 showMultiApiKeys: false,
                 disableSaveSettingsConfirmation: false,
+                autoSaveSettings: false,
                 showTopCollapseButton: true,
                 showBottomCollapseButton: true,
                 persistMessageCollapseState: DEFAULT_PERSIST_MESSAGE_COLLAPSE_STATE,
@@ -7634,6 +7647,7 @@
                 elements.addPrefixOnImportToggle.checked = state.settings.addPrefixOnImport;
                 elements.showMultiApiKeysToggle.checked = state.settings.showMultiApiKeys;
                 elements.disableSaveSettingsConfirmationToggle.checked = state.settings.disableSaveSettingsConfirmation;
+                elements.autoSaveSettingsToggle.checked = state.settings.autoSaveSettings;
                 elements.showTopCollapseButtonToggle.checked = state.settings.showTopCollapseButton;
                 elements.showBottomCollapseButtonToggle.checked = state.settings.showBottomCollapseButton;
                 elements.persistMessageCollapseStateCheckbox.checked = state.settings.persistMessageCollapseState;
@@ -7679,6 +7693,7 @@
                 this.updateApiProviderSelectOptions();
                 this.applyMinimizeUI();
                 this.toggleMultiApiKeysVisibility(state.settings.showMultiApiKeys);
+                elements.settingsScreen.classList.toggle('auto-save-mode', state.settings.autoSaveSettings);
             },
             applyMinimizeUI() {
                 elements.appContainer.classList.toggle('minimized-ui', state.settings.minimizeHeaderFooter);
@@ -8749,7 +8764,7 @@
                 });
 
                 elements.saveSettingsBtns.forEach(button => {
-                    button.addEventListener('click', () => this.saveSettings());
+                    button.addEventListener('click', () => this.saveSettings(true));
                 });
                 elements.updateAppBtn.addEventListener('click', () => this.updateApp());
                 elements.clearDataBtn.addEventListener('click', () => this.confirmClearAllData());
@@ -9100,6 +9115,29 @@
                 elements.showMultiApiKeysToggle.addEventListener('change', (e) => {
                     state.settings.showMultiApiKeys = e.target.checked;
                     uiUtils.toggleMultiApiKeysVisibility(e.target.checked);
+                });
+
+                const settingsScreenElement = document.getElementById('settings-screen');
+                let autoSaveTimer;
+                const handleSettingsChange = () => {
+                    if (state.settings.autoSaveSettings) {
+                        clearTimeout(autoSaveTimer);
+                        autoSaveTimer = setTimeout(() => {
+                            this.saveSettings(false);
+                        }, 500);
+                    }
+                };
+
+                settingsScreenElement.addEventListener('change', (event) => {
+                    if (event.target.closest('.settings-group, .danger-zone')) {
+                        handleSettingsChange();
+                    }
+                });
+
+                settingsScreenElement.addEventListener('input', (event) => {
+                    if (event.target.matches('input[type="text"], input[type="password"], input[type="number"], textarea')) {
+                         handleSettingsChange();
+                    }
                 });
 
                 elements.messageContainer.addEventListener('click', (event) => {
@@ -11546,25 +11584,14 @@
                      await uiUtils.showCustomAlert(`${type === 'user' ? 'ユーザー' : 'AI'}アイコンの削除エラー: ${error}`);
                  }
             },
-            async saveSettings() {
+            async saveSettings(showNotice = true) {
                 const newSettings = { ...state.settings };
                 newSettings.showMultiApiKeys = elements.showMultiApiKeysToggle.checked;
-                
-                if (newSettings.showMultiApiKeys) {
-                    const providers = ['gemini', 'deepseek', 'claude', 'openai', 'xai', 'llmaggregator'];
-                    providers.forEach(provider => {
-                        const keysKey = `${provider}ApiKeys`;
-                        const activeIndexKey = `${provider}ActiveApiKeyIndex`;
-                        const inputId = provider === 'gemini' ? 'gemini-api-key' : `${provider}-api-key`;
-                        const inputElement = document.getElementById(inputId);
+                newSettings.disableSaveSettingsConfirmation = elements.disableSaveSettingsConfirmationToggle.checked;
+                newSettings.autoSaveSettings = elements.autoSaveSettingsToggle.checked;
 
-                        if (newSettings[keysKey] && newSettings[activeIndexKey] > -1) {
-                            const activeKey = newSettings[keysKey][newSettings[activeIndexKey]];
-                            if (activeKey && inputElement) {
-                                activeKey.value = inputElement.value.trim();
-                            }
-                        }
-                    });
+                if (newSettings.showMultiApiKeys) {
+                    // This block is now intentionally empty
                 } else {
                     newSettings.apiKey = elements.geminiApiKeyInput.value.trim();
                     newSettings.deepSeekApiKey = elements.deepSeekApiKeyInput.value.trim();
@@ -11754,7 +11781,6 @@
                  newSettings.disableDeleteMessageConfirmation = elements.disableDeleteMessageConfirmationToggle.checked;
                  newSettings.disableAttachmentConfirmation = elements.disableAttachmentConfirmationToggle.checked;
                  newSettings.addPrefixOnImport = elements.addPrefixOnImportToggle.checked;
-                 newSettings.disableSaveSettingsConfirmation = elements.disableSaveSettingsConfirmationToggle.checked;
                  newSettings.showTopCollapseButton = elements.showTopCollapseButtonToggle.checked;
                  newSettings.showBottomCollapseButton = elements.showBottomCollapseButtonToggle.checked;
                  newSettings.persistMessageCollapseState = elements.persistMessageCollapseStateCheckbox.checked;
@@ -11887,6 +11913,9 @@
 
                      await Promise.all(promises);
 
+                     state.settings.disableSaveSettingsConfirmation = newSettings.disableSaveSettingsConfirmation;
+                     state.settings.autoSaveSettings = newSettings.autoSaveSettings;
+                     
                      const currentBgBlob = state.settings.backgroundImageBlob;
                      const currentUserIconBlob = state.settings.userIconBlob;
                      const currentAiIconBlob = state.settings.aiIconBlob;
@@ -11896,7 +11925,6 @@
                      state.settings.backgroundImageBlob = currentBgBlob;
                      state.settings.userIconBlob = currentUserIconBlob;
                      state.settings.aiIconBlob = currentAiIconBlob;
-                     state.settings.disableSaveSettingsConfirmation = newSettings.disableSaveSettingsConfirmation;
 
                      if (!state.isSending && !state.isAiToAiChatProcessing) {
                         uiUtils.applySettingsToUI();
@@ -11911,9 +11939,9 @@
                         uiUtils.applySettingsUIDetailsOpenStates();
                     }
 
-                    if (!state.settings.disableSaveSettingsConfirmation) {
-                        await uiUtils.showCustomAlert("設定を保存しました。");
-                    }
+                     if (showNotice && !state.settings.disableSaveSettingsConfirmation) {
+                         await uiUtils.showCustomAlert("設定を保存しました。");
+                     }
 
                      if (newSettings.historySortOrder !== oldSortOrder && state.currentScreen === 'history') {
                          uiUtils.renderHistoryList();
@@ -12069,6 +12097,7 @@
                         defaultSettingsCopy.addPrefixOnImport = true;
                         defaultSettingsCopy.showMultiApiKeys = false;
                         defaultSettingsCopy.disableSaveSettingsConfirmation = false;
+                        defaultSettingsCopy.autoSaveSettings = false;
                         defaultSettingsCopy.showTopCollapseButton = true;
                         defaultSettingsCopy.showBottomCollapseButton = true;
                         defaultSettingsCopy.persistMessageCollapseState = DEFAULT_PERSIST_MESSAGE_COLLAPSE_STATE;
@@ -12573,7 +12602,7 @@
                     const oldThoughtOpenStates = new Map(state.thoughtSummaryOpenStates);
                     state.thoughtSummaryOpenStates.clear();
                      state.currentMessages.forEach((msg, newIdx) => {
-                        const oldIdxEquivalent = newIdx >= Math.min(...indicesToDelete) ? newIdx + 1 : newIdx;
+                        const oldIdxEquivalent = newIdx >= indexToDelete ? newIdx + 1 : newIdx;
                         if (oldThoughtOpenStates.has(oldIdxEquivalent)) {
                             state.thoughtSummaryOpenStates.set(newIdx, oldThoughtOpenStates.get(oldIdxEquivalent));
                         } else {
@@ -13247,7 +13276,7 @@
                         presencePenalty: presencePenaltyB, frequencyPenalty: frequencyPenaltyB,
                         streamingOutput: streamingOutputB, streamingSpeed: streamingSpeedB,
                         dummyUser: dummyUserB, enableDummyUser: enableDummyUserB,
-                        dummyModel: dummyModelB, enableDummyModel: enableDummyModelB, concatDummyModel: concatDummyModelB,
+                        dummyModel: dummyModelB, enableDummyModelB: enableDummyModelB, concatDummyModel: concatDummyModelB,
                         topK: providerForSettingsB === 'gemini' ? geminiTopKB :
                               providerForSettingsB === 'claude' ? claudeTopKB :
                               providerForSettingsB === 'llmaggregator' ? llmAggregatorTopKB : undefined,
@@ -14553,7 +14582,7 @@
                 } catch (error) {
                     window.location.href = window.location.href + '?recovery=' + Date.now();
                 }
-            },
+                            },
 
             clearStorageSelectively() {
                 try {
@@ -14740,7 +14769,7 @@
             renderApiKeyList(provider) {
                 const keys = this.getApiKeysArray(provider);
                 const container = this.getListContainer(provider);
-                const addButton = this.getAddButton(provider);
+                                const addButton = this.getAddButton(provider);
 
                 container.innerHTML = '';
 
@@ -14849,6 +14878,9 @@
             },
 
             syncMainApiKeyInput(provider) {
+                if (!state.settings.showMultiApiKeys) {
+                    return;
+                }
                 let mainValue = '';
                 switch (provider) {
                     case 'gemini': mainValue = elements.geminiApiKeyInput.value.trim(); break;
@@ -14877,4 +14909,3 @@
     </script>
 </body>
 </html>
-
