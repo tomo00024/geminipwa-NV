@@ -3304,8 +3304,8 @@
             </header>
             <main class="main-content">
                 <details open class="settings-group" id="settings-group-api-provider">
-                    <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">APIプロバイダー設定</summary>
-                    <div style="margin-top:15px;">
+                    <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">基礎設定</summary>
+                    <div style="margin-top:10px;">
                         <label for="api-provider-select">使用するAPIプロバイダー:</label>
                         <select id="api-provider-select" aria-label="APIプロバイダー選択">
                             <option value="gemini">Gemini (Google)</option>
@@ -3317,7 +3317,7 @@
                             <option value="dummy">Dummy AI</option>
                         </select>
                     </div>
-                    <details id="settings-group-common-system-prompt" style="margin-top:15px;">
+                    <details id="settings-group-common-system-prompt" style="margin-top:10px;">
                         <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">共通システムプロンプト設定</summary>
                         <div style="padding-top:10px; padding-left:15px;">
                             <label for="common-system-prompt-default">共通システムプロンプト (全API共通):</label>
@@ -3325,6 +3325,40 @@
                             <label class="checkbox-label" style="margin-top: -5px; margin-bottom: 15px;">
                                 <input type="checkbox" id="enable-common-system-prompt-default">
                                 この共通システムプロンプトを有効にする (API別システムプロンプトより優先度低)
+                            </label>
+                        </div>
+                    </details>
+                    <details id="api-provider-cycle-settings-group" style="margin-top: 10px;">
+                        <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">使用するAPIプロバイダーの選択</summary>
+                        <div id="api-provider-cycle-settings" style="padding-left: 15px; margin-top: 10px;">
+                            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 5px;">使用するAPIプロバイダーの候補およびAPI切替ボタンで巡回させるAPIプロバイダーを選択:</p>
+                            <label class="checkbox-label" style="font-size: 12px;">
+                                <input type="checkbox" id="api-provider-cycle-gemini">
+                                Gemini (Google)
+                            </label>
+                            <label class="checkbox-label" style="font-size: 12px;">
+                                <input type="checkbox" id="api-provider-cycle-deepseek">
+                                DeepSeek
+                            </label>
+                            <label class="checkbox-label" style="font-size: 12px;">
+                                <input type="checkbox" id="api-provider-cycle-claude">
+                                Claude (Anthropic API)
+                            </label>
+                            <label class="checkbox-label" style="font-size: 12px;">
+                                <input type="checkbox" id="api-provider-cycle-openai">
+                                OpenAI
+                            </label>
+                            <label class="checkbox-label" style="font-size: 12px;">
+                                <input type="checkbox" id="api-provider-cycle-xai">
+                                Grok (xAI API)
+                            </label>
+                            <label class="checkbox-label" style="font-size: 12px;">
+                                <input type="checkbox" id="api-provider-cycle-llmaggregator">
+                                LLM Aggregator
+                            </label>
+                            <label class="checkbox-label" style="font-size: 12px;">
+                                <input type="checkbox" id="api-provider-cycle-dummy">
+                                Dummy AI
                             </label>
                         </div>
                     </details>
@@ -4256,7 +4290,7 @@
                          </details>
                          <p style="font-size: 11px; color: var(--text-secondary); margin-top: 15px;">
                            ※ アイコン画像はブラウザ内のデータベースに保存されます。<br>
-                           ※ 表示時は円形に切り取られます。デフォルトサイズ: 28px。
+                           ※ 表示時は円形に切り取られます。gifも可、デフォルトサイズ: 28px。
                          </p>
                     </div>
                 </details>
@@ -4264,7 +4298,7 @@
                 <div class="settings-group" id="settings-group-other">
                    <details open id="settings-group-other-details">
                         <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">その他設定</summary>
-                        <div style="margin-top:15px;">
+                        <div style="margin-top:10px;">
                            <p style="height:10px"></p>
                            <label for="theme-select">表示テーマ:</label>
                            <select id="theme-select" aria-label="表示テーマ">
@@ -4278,8 +4312,8 @@
                            </select>
                            <p style="height:10px"></p>
                             <details id="settings-group-behavior-adjustment" open="">
-                                <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">挙動調整</summary>
-                                <div style="padding-top:10px; padding-left:15px;">
+                                <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">アプリの挙動を調整</summary>
+                               <div style="padding-left: 15px; margin-top: 10px;">
                                    <label class="checkbox-label">
                                        <input type="checkbox" id="enter-to-send">
                                        Enterキーで送信する
@@ -4331,62 +4365,6 @@
                                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
                                        ※ 複数のAPIキーを使い分けたい場合に使用。
                                    </p>
-                                   <p style="height:10px"></p>
-                                    <label for="history-sort-order">履歴のソート順:</label>
-                                    <select id="history-sort-order" aria-label="履歴のソート順">
-                                       <option value="updatedAt">更新日時 (新しい順)</option>
-                                       <option value="createdAt">作成日時 (新しい順)</option>
-                                    </select>
-                                    <details id="settings-group-api-provider-toggle" style="margin-top:20px;">
-                                       <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">API切替ボタン設定</summary>
-                                       <div style="padding-left: 15px;">
-                                           <label class="checkbox-label">
-                                               <input type="checkbox" id="show-api-provider-toggle-header">
-                                               ヘッダーにAPI切替ボタンを表示する
-                                           </label>
-                                           <label class="checkbox-label">
-                                               <input type="checkbox" id="show-api-provider-toggle-footer">
-                                               フッターにAPI切替ボタンを表示する
-                                           </label>
-                                           <div id="api-provider-cycle-settings" style="margin-left: 20px; border-left: 1px solid var(--border-secondary); padding-left: 15px; margin-top: 5px;">
-                                               <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 5px;">切替対象のAPI:</p>
-                                               <label class="checkbox-label" style="font-size: 12px;">
-                                                   <input type="checkbox" id="api-provider-cycle-gemini">
-                                                   Gemini (Google)
-                                               </label>
-                                               <label class="checkbox-label" style="font-size: 12px;">
-                                                   <input type="checkbox" id="api-provider-cycle-deepseek">
-                                                   DeepSeek
-                                               </label>
-                                               <label class="checkbox-label" style="font-size: 12px;">
-                                                   <input type="checkbox" id="api-provider-cycle-claude">
-                                                   Claude (Anthropic API)
-                                               </label>
-                                               <label class="checkbox-label" style="font-size: 12px;">
-                                                   <input type="checkbox" id="api-provider-cycle-openai">
-                                                   OpenAI
-                                               </label>
-                                               <label class="checkbox-label" style="font-size: 12px;">
-                                                    <input type="checkbox" id="api-provider-cycle-xai">
-                                                    Grok (xAI API)
-                                                </label>
-                                                <label class="checkbox-label" style="font-size: 12px;">
-                                                    <input type="checkbox" id="api-provider-cycle-llmaggregator">
-                                                    LLM Aggregator
-                                                </label>
-                                                <label class="checkbox-label" style="font-size: 12px;">
-                                                    <input type="checkbox" id="api-provider-cycle-dummy">
-                                                    Dummy AI
-                                                </label>
-                                           </div>
-                                       </div>
-                                   </details>
-                                </div>
-                           </details>
-
-                           <details id="settings-group-header-footer-buttons">
-                                <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">ヘッダー/フッターボタン・項目表示設定</summary>
-                                <div style="padding-top:10px; padding-left:15px;">
                                    <label class="checkbox-label">
                                        <input type="checkbox" id="minimize-header-footer-toggle">
                                        ヘッダー/フッターの縦幅を最小化する
@@ -4394,6 +4372,25 @@
                                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
                                        ※  ヘッダー/フッターの縦幅を切り詰め、表示領域を最大化します。画面が小型ないし横長の端末用
                                    </p>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="show-session-linking-settings-toggle">
+                                       AI間会話モード（セッション間リンク）設定を表示する
+                                   </label>
+                                   <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                                       ※ 高度な機能です。履歴画面で2つのチャットを連携させ、AI同士を会話させることができます。
+                                   </p>
+                                   <p style="height:10px"></p>
+                                    <label for="history-sort-order">履歴のソート順:</label>
+                                    <select id="history-sort-order" aria-label="履歴のソート順">
+                                       <option value="updatedAt">更新日時 (新しい順)</option>
+                                       <option value="createdAt">作成日時 (新しい順)</option>
+                                    </select>
+                                </div>
+                           </details>
+
+                           <details id="settings-group-header-footer-buttons">
+                                <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">ボタン類の表示/非表示切替</summary>
+                                <div style="padding-left: 15px; margin-top: 10px;">
                                    <label class="checkbox-label">
                                         <input type="checkbox" id="show-bulk-history-actions-toggle">
                                         履歴画面に「全出力」「全取込」ボタンを表示する
@@ -4434,13 +4431,15 @@
                                         <input type="checkbox" id="show-clipboard-stack-button-toggle">
                                         ヘッダーにクリップボードスタックボタン(🗒️)を表示する
                                     </label>
-                                    <div>
-                                        <label for="memo-height">メモ・スタックの縦の幅 (例: 200px, 30vh):</label>
-                                        <input type="text" id="memo-height" placeholder="例: 200px, 30vh" aria-label="メモ・スタックの縦の幅">
+                                    <div id="memo-stack-height-settings">
+                                        <div>
+                                            <label for="memo-height">メモ・スタックの縦の幅 (例: 200px, 30vh):</label>
+                                            <input type="text" id="memo-height" placeholder="例: 200px, 30vh" aria-label="メモ・スタックの縦の幅">
+                                        </div>
+                                        <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom:10px;">
+                                            ※ 各エリアは縦方向にリサイズ可能です。
+                                        </p>
                                     </div>
-                                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom:10px;">
-                                        ※ 各エリアは縦方向にリサイズ可能です。
-                                    </p>
                                    <label class="checkbox-label">
                                        <input type="checkbox" id="show-paste-button-in-footer-toggle">
                                        フッターに「貼付け」ボタンを表示する
@@ -4461,6 +4460,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="show-api-provider-toggle-header">
+                                       ヘッダーにAPI切替ボタンを表示する
+                                   </label>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="show-api-provider-toggle-footer">
+                                       フッターにAPI切替ボタンを表示する
+                                   </label>
                                     <label class="checkbox-label" style="margin-top: 15px;">
                                         <input type="checkbox" id="show-paste-button-in-edit-toggle">
                                         メッセージ編集ツールバーに「貼付け」ボタンを表示する
@@ -4503,11 +4510,10 @@
                                         </div>
                                    </details>
                                 </div>
-</p>
                            </details>
 
                            <details id="settings-group-font">
-                                <summary style="cursor: pointer; font-weight: normal; font-size: 14px; color: var(--text-link); list-style: revert; margin-top:10px;">フォント設定</summary>
+                                <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">フォント設定</summary>
                                 <div style="padding-left: 15px; margin-top: 10px;">
                                    <label for="font-family-input">アプリのフォント:</label>
                                    <input type="text" id="font-family-input" placeholder="例: 'Meiryo', sans-serif" aria-label="アプリ全体のフォント">
@@ -4532,7 +4538,7 @@
                                 </div>
                            </details>
                            <details id="settings-group-opacity">
-                                <summary style="cursor: pointer; font-weight: normal; font-size: 14px; color: var(--text-link); list-style: revert;">各種透明度設定</summary>
+                                <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">各種透明度設定</summary>
                                 <div style="padding-left: 15px; margin-top: 10px;">
                                     <label for="message-bubble-opacity">メッセージバブルの透明度 (0.0-1.0):</label>
                                     <input type="number" id="message-bubble-opacity" min="0" max="1" step="0.05" placeholder="例: 0.8" aria-label="メッセージバブルの透明度">
@@ -4555,8 +4561,8 @@
                    </details>
                 </div>
                  <details class="settings-group" id="settings-group-session-linking">
-<summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">AI間会話モード（セッション間リンク）</summary>
-                    <div style="margin-top:15px;">
+                    <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">AI間会話モード（セッション間リンク）</summary>
+                    <div style="margin-top:10px;">
                         <label class="checkbox-label">
                             <input type="checkbox" id="enable-session-linking">
                             セッション間リンク機能を有効にする
@@ -4599,6 +4605,7 @@
                          <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
                              ※ 「設定を保存」ボタンを押さずとも、設定の変更が直ちに適用されます。
                          </p>
+                         <hr style="margin: 15px 0;">
                          <button id="force-recovery-btn" class="orange-button">🔄 強制復旧 (キャッシュクリア&リロード)</button>
                          <p style="font-size: 11px; color: var(--text-secondary); margin-top:5px; margin-bottom: 10px;">
                              ※ アプリが不安定な場合に使用。全キャッシュをクリアして強制的に再起動します。「アプリを更新」の処理に加えて、ブラウザが保持しているこの「GeminiPWA」アプリに関連する他の種類のキャッシュも可能な限り削除します。<br>
@@ -5001,6 +5008,8 @@
             swipeNavigationToggle: document.getElementById('swipe-navigation-toggle'),
             preventZoomToggle: document.getElementById('prevent-zoom-toggle'),
             minimizeHeaderFooterToggle: document.getElementById('minimize-header-footer-toggle'),
+            showSessionLinkingSettingsToggle: document.getElementById('show-session-linking-settings-toggle'),
+            sessionLinkingSettingsGroup: document.getElementById('settings-group-session-linking'),
             showChatTitleToggle: document.getElementById('show-chat-title-toggle'),
             showNewChatButtonToggle: document.getElementById('show-new-chat-button-toggle'),
             showDeleteSessionButtonToggle: document.getElementById('show-delete-session-button-toggle'),
@@ -5072,6 +5081,7 @@
             pasteMemoBtn: document.getElementById('paste-memo-btn'),
             deleteMemoBtn: document.getElementById('delete-memo-btn'),
             showMemoButtonToggle: document.getElementById('show-memo-button-toggle'),
+            memoStackHeightSettings: document.getElementById('memo-stack-height-settings'),
             memoHeightInput: document.getElementById('memo-height'),
             disableRetryConfirmationToggle: document.getElementById('disable-retry-confirmation-toggle'),
             disableLoadChatConfirmationWhileSendingToggle: document.getElementById('disable-load-chat-confirmation-while-sending-toggle'),
@@ -5304,6 +5314,7 @@
                 enableSwipeNavigation: true,
                 preventZoom: true,
                 minimizeHeaderFooter: false,
+                showSessionLinkingSettings: false,
                 showChatTitle: true,
                 showNewChatButton: true,
                 showDeleteSessionButton: false,
@@ -6363,6 +6374,12 @@
                     messageDiv.id = `streaming-message-${index}`;
                 }
                 elements.messageContainer.appendChild(messageDiv);
+            },
+            updateMemoStackHeightSettingsVisibility() {
+                const showMemoBtn = elements.showMemoButtonToggle.checked;
+                const showClipboardStackBtn = elements.showClipboardStackButtonToggle.checked;
+                const shouldShow = showMemoBtn || showClipboardStackBtn;
+                elements.memoStackHeightSettings.classList.toggle('hidden', !shouldShow);
             },
             renderCitations(messageData, containerDiv) {
                 if (!containerDiv) return;
@@ -7469,6 +7486,10 @@
                  elements.swipeNavigationToggle.checked = state.settings.enableSwipeNavigation;
                  elements.preventZoomToggle.checked = state.settings.preventZoom;
                  elements.minimizeHeaderFooterToggle.checked = state.settings.minimizeHeaderFooter;
+                 elements.showSessionLinkingSettingsToggle.checked = state.settings.showSessionLinkingSettings;
+                 if (elements.sessionLinkingSettingsGroup) {
+                     elements.sessionLinkingSettingsGroup.classList.toggle('hidden', !state.settings.showSessionLinkingSettings);
+                 }
                  elements.showChatTitleToggle.checked = state.settings.showChatTitle;
                  elements.showNewChatButtonToggle.checked = state.settings.showNewChatButton;
                  elements.showDeleteSessionButtonToggle.checked = state.settings.showDeleteSessionButton;
@@ -7576,6 +7597,7 @@
                 this.applyMinimizeUI();
                 this.toggleMultiApiKeysVisibility(state.settings.showMultiApiKeys);
                 elements.settingsScreen.classList.toggle('auto-save-mode', state.settings.autoSaveSettings);
+                this.updateMemoStackHeightSettingsVisibility();
             },
             applyMinimizeUI() {
                 elements.appContainer.classList.toggle('minimized-ui', state.settings.minimizeHeaderFooter);
@@ -8799,10 +8821,12 @@
                 elements.showMemoButtonToggle.addEventListener('change', () => {
                     state.settings.showMemoButton = elements.showMemoButtonToggle.checked;
                     uiUtils.updateChatScreenElementVisibility();
+                    uiUtils.updateMemoStackHeightSettingsVisibility();
                 });
                 elements.showClipboardStackButtonToggle.addEventListener('change', () => {
                     state.settings.showClipboardStackButton = elements.showClipboardStackButtonToggle.checked;
                     uiUtils.updateChatScreenElementVisibility();
+                    uiUtils.updateMemoStackHeightSettingsVisibility();
                 });
                 elements.showNewChatButtonToggle.addEventListener('change', () => {
                     state.settings.showNewChatButton = elements.showNewChatButtonToggle.checked;
@@ -8851,6 +8875,11 @@
                 document.getElementById('minimize-header-footer-toggle').addEventListener('change', (e) => {
                     state.settings.minimizeHeaderFooter = e.target.checked;
                     uiUtils.applyMinimizeUI();
+                });
+                elements.showSessionLinkingSettingsToggle.addEventListener('change', (e) => {
+                    if (elements.sessionLinkingSettingsGroup) {
+                        elements.sessionLinkingSettingsGroup.classList.toggle('hidden', !e.target.checked);
+                    }
                 });
 
                 elements.memoHeightInput.addEventListener('input', () => {
@@ -11517,6 +11546,7 @@
              newSettings.enableSwipeNavigation = elements.swipeNavigationToggle.checked;
              newSettings.preventZoom = elements.preventZoomToggle.checked;
              newSettings.minimizeHeaderFooter = document.getElementById('minimize-header-footer-toggle').checked;
+             newSettings.showSessionLinkingSettings = elements.showSessionLinkingSettingsToggle.checked;
              newSettings.showChatTitle = elements.showChatTitleToggle.checked;
              newSettings.showNewChatButton = elements.showNewChatButtonToggle.checked;
              newSettings.showDeleteSessionButton = elements.showDeleteSessionButtonToggle.checked;
@@ -11824,6 +11854,7 @@
                     defaultSettingsCopy.codeBlockFontSize = DEFAULT_CODE_BLOCK_FONT_SIZE;
                     defaultSettingsCopy.thoughtSummaryFontSize = DEFAULT_THOUGHT_SUMMARY_FONT_SIZE;
                     defaultSettingsCopy.enableSessionLinking = false;
+                    defaultSettingsCopy.showSessionLinkingSettings = false;
                     defaultSettingsCopy.enableSwipeNavigation = true;
                     defaultSettingsCopy.preventZoom = true;
                     defaultSettingsCopy.minimizeHeaderFooter = false;
@@ -12344,14 +12375,17 @@
                 const oldThoughtOpenStates = new Map(state.thoughtSummaryOpenStates);
                 state.thoughtSummaryOpenStates.clear();
                  state.currentMessages.forEach((msg, newIdx) => {
-                    const oldIdxEquivalent = newIdx >= indexToDelete ? newIdx + 1 : newIdx;
+                    const minDeletedIndex = Math.min(...indicesToDelete);
+                    const oldIdxEquivalent = newIdx >= minDeletedIndex ? newIdx + indicesToDelete.filter(i => i <= newIdx).length : newIdx;
                     if (oldThoughtOpenStates.has(oldIdxEquivalent)) {
                         state.thoughtSummaryOpenStates.set(newIdx, oldThoughtOpenStates.get(oldIdxEquivalent));
                     } else {
                         const messageApiProvider = msg?.generatedByApiProvider || state.settings.apiProvider;
                         state.thoughtSummaryOpenStates.set(newIdx, (messageApiProvider === 'gemini' && state.settings.geminiExpandThoughtsByDefault) || 
                                                                    (messageApiProvider === 'deepseek' && state.settings.deepSeekExpandThoughtsByDefault) ||
-                                                                   (messageApiProvider === 'claude' && state.settings.claudeExpandThoughtsByDefault));
+                                                                   (messageApiProvider === 'claude' && state.settings.claudeExpandThoughtsByDefault) ||
+                                                                   (messageApiProvider === 'xai' && state.settings.xaiExpandThoughtsByDefault) ||
+                                                                   (messageApiProvider === 'llmaggregator' && state.settings.llmAggregatorExpandThoughtsByDefault));
                     }
                 });
 
@@ -14246,8 +14280,7 @@
                 /Failed to fetch/i,
                 /NetworkError/i
             ];
-            
-            const errorMessage = JSON.stringify(errorInfo).toLowerCase();
+                        const errorMessage = JSON.stringify(errorInfo).toLowerCase();
             return criticalPatterns.some(pattern => pattern.test(errorMessage));
         },
 
@@ -14487,7 +14520,7 @@
                 case 'claude':
                     elements.claudeApiKeyInput.value = activeKey;
                     break;
-                case 'openai':
+                                    case 'openai':
                     elements.openaiApiKeyInput.value = activeKey;
                     break;
                 case 'xai':
@@ -14607,7 +14640,7 @@
             this.renderApiKeyList('claude');
             this.renderApiKeyList('openai');
             this.renderApiKeyList('xai');
-            this.renderApiKeyList('llmaggregator');
+                        this.renderApiKeyList('llmaggregator');
         },
 
         syncMainApiKeyInput(provider) {
