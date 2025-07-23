@@ -5884,7 +5884,7 @@
                         .then(registration => {
                             navigator.serviceWorker.addEventListener('message', event => {
                                 if (event.data && event.data.action === 'reloadPage') {
-                                    alert('アプリが更新されました。ページをリロードします。');
+                                    alert('アプリが更新されました。仔細については“README.md”にてご査収ください。この後、ページをリロードいたします。');
                                     window.location.reload();
                                 }
                             });
