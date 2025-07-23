@@ -4595,7 +4595,7 @@
                                    <p style="height:10px"></p>
                                    <label class="checkbox-label">
                                        <input type="checkbox" id="show-multi-api-keys-toggle">
-                                       複数APIキー管理機能を表示する
+                                       複数APIキー管理機能を使用する
                                    </label>
                                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
                                        ※ 複数のAPIキーを使い分けたい場合に使用。
@@ -4623,7 +4623,7 @@
                                    </p>
                                    <label class="checkbox-label">
                                        <input type="checkbox" id="show-twin-engine-settings-toggle">
-                                       Twin-engine設定を表示する
+                                       Twin-engineを使用する
                                    </label>
                                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
                                        ※ 会話履歴の自動要約機能（Twin-engine）に関する設定項目を表示します。無効の場合、機能全体がオフになります。
@@ -4868,7 +4868,8 @@
                         <button type="button" id="add-twin-engine-api-config-btn" class="add-api-key-btn">新しいAPI設定を追加</button>
 
                         <p style="font-size: 11px; color: var(--text-secondary); margin-top: 15px;">
-                            ※ 参考:「セッションの過去の会話 → ある程度セッションが進んだ時点で別の AI で要約 → システムプロンプトとその要約だけを現在の AI に渡して続きの対話を開始する」というワークフローを、行う機能（予定）
+                            ※「セッションの過去の会話 → ある程度セッションが進んだ時点で別の AI で要約 → システムプロンプトとその要約だけを現在の AI に渡して続きの対話を開始する」というワークフローを行う機能。<br>
+                            ※要約内容がまだ存在しない（空の）場合は、要約機能を一時的にスキップし、セッションの全履歴をAIに送信
                         </p>
                         <hr style="margin: 20px 0;">
                         <h4 style="font-size: 14px; color: var(--text-link); margin-bottom: 10px;">アドバンスド (Twin-engine)</h4>
@@ -5884,7 +5885,7 @@
                         .then(registration => {
                             navigator.serviceWorker.addEventListener('message', event => {
                                 if (event.data && event.data.action === 'reloadPage') {
-                                    alert('アプリが更新されました。仔細については“README.md”にてご査収ください。この後、ページをリロードいたします。');
+                                    alert('アプリが更新されました。詳しい内容については “README.md” をご確認ください。この後、ページをリロードいたします。');
                                     window.location.reload();
                                 }
                             });
