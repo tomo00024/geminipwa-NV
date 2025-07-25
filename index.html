@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -3320,6 +3319,12 @@
             flex: 1;
             min-width: 120px;
         }
+        #footer-resummarize-btn {
+            background-color: var(--bg-button);
+        }
+        #footer-resummarize-btn:hover:not(:disabled) {
+            background-color: var(--bg-button-hover);
+        }
     </style>
     <script src="marked.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
@@ -3453,7 +3458,7 @@
                 <div class="twin-engine-summary-actions-container">
                     <button id="twin-engine-mode-toggle-btn" title="要約モードを切り替え"></button>
                     <button id="twin-engine-api-key-cycle-btn" title="要約に使用するAPIキーを切り替え">キー:</button>
-                    <button id="resummarize-btn" class="resummarize-btn" title="現在のチャット履歴を要約">要約実行</button>
+                    <button id="resummarize-btn" class="resummarize-btn" title="現在のチャット履歴を要約">要約実行♻️</button>
                     <button id="copy-twin-engine-summary-btn" class="copy-twin-engine-summary-btn" title="内容をコピー">コピー</button>
                     <button id="clear-twin-engine-summary-btn" class="clear-twin-engine-summary-btn" title="内容を全て削除">全削除</button>
                 </div>
@@ -3470,6 +3475,7 @@
                 <button id="roll-dice-btn" title="ランダム数値を入力" class="footer-action-button hidden">🎲</button>
                 <button id="ai-to-ai-chat-btn" title="AI間会話ステップ実行" class="footer-action-button hidden">👥</button>
                 <button id="footer-twin-engine-mode-toggle-btn" title="Twin-engineモード切替" class="footer-action-button hidden">🛞</button>
+                <button id="footer-resummarize-btn" title="現在のチャット履歴を要約" class="footer-action-button hidden">♻️</button>
                 <button id="paste-to-input-btn" title="入力欄に貼り付け" class="footer-action-button">貼</button>
                 <textarea id="user-input" placeholder="メッセージを入力..." rows="1" aria-label="メッセージ入力"></textarea>
                 <button id="attach-file-btn" title="ファイルを添付" class="footer-action-button">+<span class="attachment-badge"></span></button>
@@ -4546,97 +4552,122 @@
                                <option value="pastel-rainbow">パステルモード🌈</option>
                            </select>
                            <p style="height:10px"></p>
-                            <details id="settings-group-behavior-adjustment" open="">
-                                <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">アプリの挙動を調整</summary>
-                               <div style="padding-left: 15px; margin-top: 10px;">
-                                   <label class="checkbox-label">
-                                       <input type="checkbox" id="enter-to-send">
-                                       Enterキーで送信する
-                                   </label>
-                                   <label class="checkbox-label">
-                                       <input type="checkbox" id="auto-scroll-on-new-message">
-                                       メッセージ送受信時に自動スクロールする
-                                   </label>
-                                   <label class="checkbox-label">
-                                       <input type="checkbox" id="auto-scroll-on-thought">
-                                       思考プロセス受信時に自動スクロールする
-                                   </label>
-                                   <p style="height:10px"></p>
-                                   <label class="checkbox-label">
-                                       <input type="checkbox" id="swipe-navigation-toggle">
-                                       チャット画面から左右スワイプで画面移動
-                                   </label>
-                                   <label class="checkbox-label">
-                                       <input type="checkbox" id="prevent-zoom-toggle">
-                                       ズームを禁止する (テキスト入力時の自動ズーム防止)
-                                   </label>
-                                   <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                                       ※ スマホ等でテキスト入力時に意図せずズームするのを防ぎます。
-                                   </p>
-                                   <label class="checkbox-label">
-                                       <input type="checkbox" id="disable-retry-confirmation-toggle">
-                                       リトライ時の確認ダイアログを無効にする
-                                   </label>
-                                   <p style="height:10px"></p>
-                                   <label class="checkbox-label">
-                                       <input type="checkbox" id="disable-delete-message-confirmation-toggle">
-                                       メッセージ削除時の確認ダイアログを無効にする
-                                   </label>
-                                   <p style="height:10px"></p>
-                                   <label class="checkbox-label">
-                                       <input type="checkbox" id="disable-attachment-confirmation-toggle">
-                                       添付ファイル削除時の確認ダイアログを無効にする
-                                   </label>
-                                   <p style="height:10px"></p>
-                                   <label class="checkbox-label">
-                                       <input type="checkbox" id="add-prefix-on-import-toggle">
-                                       履歴インポート時にタイトルへ接頭辞「(取込)」を付与する
-                                   </label>
-                                   <p style="height:10px"></p>
-                                   <label class="checkbox-label">
-                                       <input type="checkbox" id="show-multi-api-keys-toggle">
-                                       複数APIキー管理機能を使用する
-                                   </label>
-                                   <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                                       ※ 複数のAPIキーを使い分けたい場合に使用。
-                                   </p>
-                                   <label class="checkbox-label">
-                                       <input type="checkbox" id="minimize-header-footer-toggle">
-                                       ヘッダー/フッターの縦幅を最小化する
-                                   </label>
-                                   <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                                       ※  ヘッダー/フッターの縦幅を切り詰め、表示領域を最大化します。画面が小型ないし横長の端末用
-                                   </p>
-                                   <label class="checkbox-label">
-                                       <input type="checkbox" id="extend-ai-bubble-width-toggle">
-                                       AI応答バブルの横幅を拡張する
-                                   </label>
-                                   <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                                       ※ AIの応答メッセージの最大幅を広げ、画面をより広く使います。
-                                   </p>
-                                   <label class="checkbox-label">
-                                       <input type="checkbox" id="show-session-linking-settings-toggle">
-                                       AI間会話モード（セッション間リンク）設定を表示する
-                                   </label>
-                                   <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                                       ※ 履歴画面から2つのチャットを連携させ、AI同士を会話させることができます。👥ボタンを用いた入出力のみ。
-                                   </p>
-                                   <label class="checkbox-label">
-                                       <input type="checkbox" id="show-twin-engine-settings-toggle">
-                                       Twin-engineを使用する
-                                   </label>
-                                   <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                                       ※ 会話履歴の自動要約機能（Twin-engine）に関する設定項目を表示します。無効の場合、機能全体がオフになります。
-                                   </p>
-                                   <p style="height:10px"></p>
-                                    <label for="history-sort-order">履歴のソート順:</label>
-                                    <select id="history-sort-order" aria-label="履歴のソート順">
-                                       <option value="updatedAt">更新日時 (新しい順)</option>
-                                       <option value="createdAt">作成日時 (新しい順)</option>
-                                    </select>
-                                </div>
-                           </details>
+<details id="settings-group-behavior-adjustment" open>
+    <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">アプリの挙動を調整</summary>
+    <div style="padding-left: 15px; margin-top: 10px;">
 
+        <!-- ファクター: 操作の変更 -->
+        <details open>
+            <summary style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">ファクター: 操作の変更</summary>
+            <div style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="enter-to-send">
+                    Enterキーで送信する
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="auto-scroll-on-new-message">
+                    メッセージ送受信時に自動スクロールする
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="auto-scroll-on-thought">
+                    思考プロセス受信時に自動スクロールする
+                </label>
+                <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="swipe-navigation-toggle">
+                    チャット画面から左右スワイプで画面移動
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="prevent-zoom-toggle">
+                    ズームを禁止する (テキスト入力時の自動ズーム防止)
+                </label>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                    ※ スマホ等でテキスト入力時に意図せずズームするのを防ぎます。
+                </p>
+                <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
+                <label for="history-sort-order" style="display: block; margin-bottom: 5px;">履歴のソート順:</label>
+                <select id="history-sort-order" aria-label="履歴のソート順" style="margin-bottom: 10px;">
+                   <option value="updatedAt">更新日時 (新しい順)</option>
+                   <option value="createdAt">作成日時 (新しい順)</option>
+                </select>
+            </div>
+        </details>
+
+        <!-- ファクター: 様式の変更 -->
+        <details open>
+            <summary style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">ファクター: 様式の変更</summary>
+            <div style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="minimize-header-footer-toggle">
+                    ヘッダー/フッターの縦幅を最小化する
+                </label>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                    ※ 表示領域を最大化します。画面が小型の端末向け。
+                </p>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="extend-ai-bubble-width-toggle">
+                    AI応答バブルの横幅を拡張する
+                </label>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                    ※ AIの応答メッセージの最大幅を広げ、画面をより広く使います。
+                </p>
+            </div>
+        </details>
+
+        <!-- ファクター: 確認ダイアログのスキップ -->
+        <details>
+            <summary style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">ファクター: 確認ダイアログのスキップ</summary>
+            <div style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="disable-retry-confirmation-toggle">
+                    リトライ時の確認を無効にする
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="disable-delete-message-confirmation-toggle">
+                    メッセージ削除時の確認を無効にする
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="disable-attachment-confirmation-toggle">
+                    添付ファイル削除時の確認を無効にする
+                </label>
+            </div>
+        </details>
+
+        <!-- ファクター: 上級ユーザー向けオプション -->
+        <details>
+            <summary style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">ファクター: 上級ユーザー向けオプション</summary>
+            <div style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="add-prefix-on-import-toggle">
+                    履歴インポート時にタイトルへ接頭辞を付与する
+                </label>
+                <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="show-multi-api-keys-toggle">
+                    複数APIキー管理機能を使用する
+                </label>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                    ※ 複数のAPIキーを使い分けたい場合に使用。
+                </p>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="show-session-linking-settings-toggle">
+                    AI間会話モード（セッション間リンク）設定を表示する
+                </label>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                    ※ 履歴画面から2つのチャットを連携させ、AI同士を会話させることができます。
+                </p>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="show-twin-engine-settings-toggle">
+                    Twin-engine（自動要約）を使用する
+                </label>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                    ※ 会話履歴の自動要約機能に関する設定項目を表示します。
+                </p>
+            </div>
+        </details>
+    </div>
+</details>
+        <hr style="margin: 15px 0 15px 0; border: none; border-top: 1px solid var(--border-secondary);">
                            <details id="settings-group-header-footer-buttons">
                                 <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">ボタン類の表示/非表示切替</summary>
                                 <div style="padding-left: 15px; margin-top: 10px;">
@@ -4810,7 +4841,7 @@
                    </details>
                 </div>
                 <details class="settings-group" id="settings-group-twin-engine">
-                    <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">Twin-engine</summary>
+                    <summary style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">Twin-engine (experimental)</summary>
                     <div style="margin-top:10px;">
                         <label class="checkbox-label" style="margin-bottom: 5px;">
                             <input type="checkbox" id="show-twin-engine-summary-button-toggle">
@@ -4837,6 +4868,18 @@
                                 ※ Twin-engineが有効な場合にのみ、フッターに自動/手動モードを切り替えるボタンを表示します。
                             </p>
                         </div>
+                        <div style="padding-left: 20px; margin-top: 5px;">
+                            <label class="checkbox-label" style="margin-bottom: 5px;">
+                                <input type="checkbox" id="show-footer-resummarize-button-toggle">
+                                フッターに「要約実行(♻️)」ボタンを表示する
+                            </label>
+                            <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                                ※ Twin-engineが有効な場合にのみ、フッターに手動で要約を実行するボタンを表示します。
+                            </p>
+                        </div>
+                        <div id="twin-engine-inclusion-settings" style="margin-top: 15px; border: 1px solid var(--border-tertiary); padding: 10px; border-radius: 5px;">
+                            <h4 style="font-size: 13px; color: var(--text-secondary); margin-top: 0; margin-bottom: 10px;">要約送信時に含める会話履歴</h4>
+                            
                         <label for="twin-engine-summarize-after-turns" style="margin-top: 15px;">要約開始ターン数:</label>
                         <input type="number" id="twin-engine-summarize-after-turns" min="0" step="1" placeholder="例: 5 (0で即時要約)">
                         <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
@@ -4844,7 +4887,8 @@
                             ※ それまでは、要約ではなく全ての会話履歴をAIに送信します。<br>
                             ※ 0を指定すると、最初の応答から要約を開始します。
                         </p>
-
+                        </div>
+                        
                         <div id="twin-engine-inclusion-settings" style="margin-top: 15px; border: 1px solid var(--border-tertiary); padding: 10px; border-radius: 5px;">
                             <h4 style="font-size: 13px; color: var(--text-secondary); margin-top: 0; margin-bottom: 10px;">要約送信時に含める会話履歴</h4>
                             
@@ -5454,8 +5498,10 @@
             twinEngineModeToggleBtn: document.getElementById('twin-engine-mode-toggle-btn'),
             twinEngineApiKeyCycleBtn: document.getElementById('twin-engine-api-key-cycle-btn'),
             footerTwinEngineModeToggleBtn: document.getElementById('footer-twin-engine-mode-toggle-btn'),
+            footerResummarizeBtn: document.getElementById('footer-resummarize-btn'),
             twinEngineEnableFullAutoToggle: document.getElementById('twin-engine-enable-full-auto-toggle'),
             showFooterTwinEngineToggleButtonToggle: document.getElementById('show-footer-twin-engine-toggle-button-toggle'),
+            showFooterResummarizeButtonToggle: document.getElementById('show-footer-resummarize-button-toggle'),
             twinEngineFullAutoSettingContainer: document.getElementById('twin-engine-full-auto-setting-container'),
             copyTwinEngineSummaryBtn: document.getElementById('copy-twin-engine-summary-btn'),
             clearTwinEngineSummaryBtn: document.getElementById('clear-twin-engine-summary-btn'),
@@ -5785,6 +5831,7 @@
                 llmaggregatorActiveApiKeyIndex: -1,
                 twinEngineEnableFullAuto: false,
                 showFooterTwinEngineToggleButton: false,
+                showFooterResummarizeButton: false,
                 twinEngineSummarizeAfterTurns: DEFAULT_TWIN_ENGINE_SUMMARIZE_AFTER_TURNS,
                 twinEngineInitialTurnsToInclude: 1,
                 twinEngineSummaryPrompt: '以下の会話を、重要なポイントを箇条書きで簡潔に要約してください。',
@@ -5885,7 +5932,7 @@
                         .then(registration => {
                             navigator.serviceWorker.addEventListener('message', event => {
                                 if (event.data && event.data.action === 'reloadPage') {
-                                    alert('アプリが更新されました。詳しい内容については “README.md” をご確認ください。この後、ページをリロードいたします。');
+                                    alert('アプリが更新されました。この表示の後、ページがロードされます。');
                                     window.location.reload();
                                 }
                             });
@@ -7781,6 +7828,7 @@
                 elements.enableCommonSystemPromptDefaultCheckbox.checked = state.settings.enableCommonSystemPromptDefault;
                 elements.twinEngineEnableFullAutoToggle.checked = state.settings.twinEngineEnableFullAuto;
                 elements.showFooterTwinEngineToggleButtonToggle.checked = state.settings.showFooterTwinEngineToggleButton;
+                elements.showFooterResummarizeButtonToggle.checked = state.settings.showFooterResummarizeButton;
                 elements.twinEngineFullAutoSettingContainer.classList.toggle('hidden', !state.settings.showTwinEngineSettings);
                 elements.twinEngineSummarizeAfterTurnsInput.value = state.settings.twinEngineSummarizeAfterTurns ?? DEFAULT_TWIN_ENGINE_SUMMARIZE_AFTER_TURNS;
                 document.getElementById('twin-engine-initial-turns-to-include').value = state.settings.twinEngineInitialTurnsToInclude ?? 1;
@@ -8174,6 +8222,10 @@
                     if (elements.footerTwinEngineModeToggleBtn) {
                         const showButton = state.settings.showTwinEngineSettings && state.settings.showFooterTwinEngineToggleButton;
                         elements.footerTwinEngineModeToggleBtn.classList.toggle('hidden', !showButton);
+                    }
+                    if (elements.footerResummarizeBtn) {
+                        const showButton = state.settings.showTwinEngineSettings && state.settings.showFooterResummarizeButton;
+                        elements.footerResummarizeBtn.classList.toggle('hidden', !showButton);
                     }
 
                     this.adjustHeaderLayout();
@@ -9188,6 +9240,7 @@
             elements.copyTwinEngineSummaryBtn.addEventListener('click', () => this.copyTwinEngineSummaryText());
             elements.clearTwinEngineSummaryBtn.addEventListener('click', () => this.clearTwinEngineSummary());
             elements.resummarizeBtn.addEventListener('click', () => this.manualResummarize());
+            elements.footerResummarizeBtn.addEventListener('click', () => this.manualResummarize());
             elements.twinEngineModeToggleBtn.addEventListener('click', () => this.toggleTwinEngineMode());
             elements.footerTwinEngineModeToggleBtn.addEventListener('click', () => this.toggleTwinEngineMode());
 
@@ -10216,7 +10269,7 @@
                 await uiUtils.showCustomAlert("Twin-engine機能が無効です。設定画面から有効にしてください。");
                 return;
             }
-            if (state.isSending || state.isAiToAiChatProcessing) {
+            if (state.isSending || state.isAiToAiChatProcessing || state.isSummarizing) {
                 await uiUtils.showCustomAlert("現在他の処理を実行中です。完了後に再試行してください。");
                 return;
             }
@@ -10225,47 +10278,44 @@
                 return;
             }
 
-            const resummarizeBtn = elements.resummarizeBtn;
+            const buttonsToUpdate = [elements.resummarizeBtn, elements.footerResummarizeBtn];
+            const originalPanelBtnText = elements.resummarizeBtn.textContent;
 
-            const originalText = resummarizeBtn.textContent;
-            resummarizeBtn.disabled = true;
-            resummarizeBtn.textContent = "要約中...";
+            state.isSummarizing = true;
+            uiUtils.updateLoadingIndicator();
+            buttonsToUpdate.forEach(btn => {
+                btn.disabled = true;
+                if (btn.id === 'resummarize-btn') {
+                    btn.textContent = "要約中...";
+                }
+            });
 
             try {
                 const response = await this.summarizeCurrentSession([...state.currentMessages]);
 
                 if (response && response.content) {
                     const newSummaryContent = response.content.trim() + "\n\n";
-
                     state.twinEngineSummaryContent = newSummaryContent;
                     elements.twinEngineSummaryEditor.value = state.twinEngineSummaryContent;
 
                     if (state.isTwinEngineSummaryVisible) {
                         elements.twinEngineSummaryEditor.scrollTop = 0;
                     }
-
-                    resummarizeBtn.textContent = "要約完了";
-                    setTimeout(() => {
-                        resummarizeBtn.textContent = originalText;
-                    }, 2000);
-
+                    elements.resummarizeBtn.textContent = "要約完了";
                 } else {
-                     resummarizeBtn.textContent = "失敗";
-                     setTimeout(() => {
-                         resummarizeBtn.textContent = originalText;
-                     }, 2000);
+                    elements.resummarizeBtn.textContent = "失敗";
                 }
             } catch (error) {
                 await uiUtils.showCustomAlert(`再要約エラー: ${error.message}`);
-                 resummarizeBtn.textContent = "エラー";
-                 setTimeout(() => {
-                     resummarizeBtn.textContent = originalText;
-                 }, 2000);
+                elements.resummarizeBtn.textContent = "エラー";
             } finally {
-                resummarizeBtn.disabled = false;
-                if(resummarizeBtn.textContent.includes("要約中")) {
-                    resummarizeBtn.textContent = originalText;
-                }
+                state.isSummarizing = false;
+                uiUtils.updateLoadingIndicator();
+                buttonsToUpdate.forEach(btn => btn.disabled = false);
+                
+                setTimeout(() => {
+                    elements.resummarizeBtn.textContent = originalPanelBtnText;
+                }, 2000);
             }
         },
         async triggerTwinEngineSummaryInBackground() {
@@ -12401,6 +12451,7 @@
              newSettings.enableCommonSystemPromptDefault = elements.enableCommonSystemPromptDefaultCheckbox.checked;
              newSettings.twinEngineEnableFullAuto = elements.twinEngineEnableFullAutoToggle.checked;
              newSettings.showFooterTwinEngineToggleButton = elements.showFooterTwinEngineToggleButtonToggle.checked;
+             newSettings.showFooterResummarizeButton = elements.showFooterResummarizeButtonToggle.checked;
              newSettings.twinEngineSummarizeAfterTurns = elements.twinEngineSummarizeAfterTurnsInput.value === '' 
                 ? DEFAULT_TWIN_ENGINE_SUMMARIZE_AFTER_TURNS 
                 : parseInt(elements.twinEngineSummarizeAfterTurnsInput.value, 10);
@@ -12735,19 +12786,15 @@
                  state.settings.backgroundImageBlob = currentBgBlob;
                  state.settings.userIconBlob = currentUserIconBlob;
                  state.settings.aiIconBlob = currentAiIconBlob;
-
-                 if (!state.isSending && !state.isAiToAiChatProcessing) {
-                    uiUtils.applySettingsToUI();
-                    uiUtils.renderChatMessages(true);
-                } else {
-                    uiUtils.applyTheme();
-                    uiUtils.applyFontFamily();
-                    uiUtils.applySidePanelSettingsToUI();
-                    uiUtils.updateChatScreenElementVisibility();
-                    uiUtils.updateHistoryHeaderButtonVisibility();
-                    uiUtils.toggleApiSettingsVisibility(state.settings.apiProvider);
-                    uiUtils.applySettingsUIDetailsOpenStates();
-                }
+                 
+                 uiUtils.updateApiProviderSelectOptions(); 
+                 uiUtils.applyTheme(); 
+                 uiUtils.applyFontFamily(); 
+                 uiUtils.applySidePanelSettingsToUI(); 
+                 uiUtils.updateChatScreenElementVisibility();
+                 uiUtils.applyMinimizeUI();
+                 uiUtils.applyAiBubbleWidthSetting();
+                 elements.settingsScreen.classList.toggle('auto-save-mode', state.settings.autoSaveSettings);
 
                  if (showNotice && !state.settings.disableSaveSettingsConfirmation) {
                      await uiUtils.showCustomAlert("設定を保存しました。");
@@ -13968,7 +14015,30 @@
                     throw new Error(`セッションB (${sessionB_Id}) のデータが取得できませんでした。`);
                 }
 
-                let providerForSettingsB = state.settings.apiProvider;
+                let apiKeyForB, modelNameForB;
+                const providerForSettingsB = state.settings.apiProvider;
+
+                if (state.settings.showMultiApiKeys) {
+                    apiKeyForB = multiApiKeyUtils.getActiveApiKey(providerForSettingsB);
+                } else {
+                    switch(providerForSettingsB) {
+                        case 'gemini': apiKeyForB = state.settings.apiKey; break;
+                        case 'deepseek': apiKeyForB = state.settings.deepSeekApiKey; break;
+                        case 'claude': apiKeyForB = state.settings.claudeApiKey; break;
+                        case 'openai': apiKeyForB = state.settings.openaiApiKey; break;
+                        case 'xai': apiKeyForB = state.settings.xaiApiKey; break;
+                        case 'llmaggregator': apiKeyForB = state.settings.llmAggregatorApiKey; break;
+                    }
+                }
+
+                switch(providerForSettingsB) {
+                    case 'gemini': modelNameForB = state.settings.modelName; break;
+                    case 'deepseek': modelNameForB = state.settings.deepSeekModelName; break;
+                    case 'claude': modelNameForB = state.settings.claudeModelName; break;
+                    case 'openai': modelNameForB = state.settings.openaiModelName; break;
+                    case 'xai': modelNameForB = state.settings.xaiModelName; break;
+                    case 'llmaggregator': modelNameForB = state.settings.llmAggregatorModelName; break;
+                }
                 let systemPromptB, enableSystemPromptDefaultB, dummyUserB, enableDummyUserB, dummyModelB, enableDummyModelB,
                     temperatureB, maxTokensB, topPB,
                     streamingOutputB, streamingSpeedB, concatDummyModelB,
@@ -14112,7 +14182,9 @@
                     visionEnable: providerForSettingsB === 'xai' ? xaiVisionEnableB : undefined,
                     inputText: inputForB,
                     attachments: [],
-                    apiProvider: providerForSettingsB
+                    apiProvider: providerForSettingsB,
+                    _apiKeyOverride: apiKeyForB,
+                    _modelNameOverride: modelNameForB
                 };
 
                 const responseFromB = await this.handleSend(false, -1, contextForB);
