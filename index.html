@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -1441,10 +1440,6 @@
             z-index: 1;
             box-shadow: 0 1px 2px var(--shadow-primary);
         }
-        .app-container.reduced-message-spacing .message {
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
         .message-icon {
             width: var(--message-icon-size);
             height: var(--message-icon-size);
@@ -1560,9 +1555,6 @@
             max-width: 90%;
         }
         body.ai-bubble-extended .message.model {
-            max-width: 100%;
-        }
-        body.user-bubble-extended .message.user {
             max-width: 100%;
         }
         .message.error {
@@ -4619,20 +4611,6 @@
                 <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
                     ※ AIの応答メッセージの最大幅を広げ、画面をより広く使います。
                 </p>
-                <label class="checkbox-label">
-                    <input type="checkbox" id="extend-user-bubble-width-toggle">
-                    ユーザーメッセージの横幅を拡張する
-                </label>
-                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                    ※ ユーザーのメッセージの最大幅を広げ、画面をより広く使います。
-                </p>
-                <label class="checkbox-label">
-                    <input type="checkbox" id="reduce-message-spacing-toggle">
-                    メッセージ間の余白を縮小する
-                </label>
-                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                    ※ チャット画面のメッセージ間の縦の空白を切り詰めます。
-                </p>
             </div>
         </details>
 
@@ -4665,19 +4643,6 @@
                 </label>
                 <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
                 <label class="checkbox-label">
-                    <input type="checkbox" id="enable-webhook-notification-toggle">
-                    AIの応答内容を指定URLに転送する
-                </label>
-<div id="webhook-settings-container" class="hidden">
-    <div id="webhooks-list" class="api-keys-list" style="margin-bottom: 15px;">
-    </div>
-    <button type="button" id="add-webhook-btn" class="add-api-key-btn">新しいWebhookを追加</button>
-    <p style="font-size: 11px; color: var(--text-secondary); margin-top: 15px;">
-        ※ AIの応答完了時に、有効化されたすべてのURLへPOSTリクエストを自動転送します。
-    </p>
-</div>
-                <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                <label class="checkbox-label">
                     <input type="checkbox" id="show-multi-api-keys-toggle">
                     複数APIキー管理機能を使用する
                 </label>
@@ -4703,162 +4668,127 @@
     </div>
 </details>
         <hr style="margin: 15px 0 15px 0; border: none; border-top: 1px solid var(--border-secondary);">
-
                            <details id="settings-group-header-footer-buttons">
                                 <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">ボタン類の表示/非表示切替</summary>
                                 <div style="padding-left: 15px; margin-top: 10px;">
-
-                                    <!-- ファクター: 履歴画面のボタン -->
-                                    <details open id="settings-group-factor-history-buttons">
-                                        <summary style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">ファクター: 履歴画面のボタン</summary>
-                                        <div style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-bulk-history-actions-toggle">
-                                                履歴画面に「全出力」「全取込」ボタンを表示する
-                                            </label>
+                                   <label class="checkbox-label">
+                                        <input type="checkbox" id="show-bulk-history-actions-toggle">
+                                        履歴画面に「全出力」「全取込」ボタンを表示する
+                                   </label>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="show-chat-title-toggle">
+                                       ヘッダーにチャットタイトルを表示する
+                                   </label>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="show-new-chat-button-toggle">
+                                       ヘッダーに「新規」ボタンを表示する（「新」ボタン）
+                                   </label>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="show-delete-session-button-toggle">
+                                       ヘッダーに「全削除」ボタンを表示する（「削」ボタン）
+                                   </label>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="show-copy-session-button-toggle">
+                                       ヘッダーに「全コピー」ボタンを表示する（「コ」ボタン）
+                                   </label>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="show-scroll-to-top-button-toggle">
+                                       ヘッダーに「最上部へ(🔼)」ボタンを表示する
+                                   </label>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="show-scroll-to-bottom-button-toggle">
+                                       ヘッダーに「最下部へ(🔽)」ボタンを表示する
+                                   </label>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="show-toggle-all-content-button-toggle">
+                                       ヘッダーに「全表示/非表示(🖼️)」ボタンを表示する
+                                   </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-memo-button-toggle">
+                                        ヘッダーにメモボタン(📝)を表示する
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-clipboard-stack-button-toggle">
+                                        ヘッダーにクリップボードスタックボタン(🗒️)を表示する
+                                    </label>
+                                    <div id="memo-stack-height-settings">
+                                        <div>
+                                            <label for="memo-height">メモ・スタックの縦の幅 (例: 200px, 30vh):</label>
+                                            <input type="text" id="memo-height" placeholder="例: 200px, 30vh" aria-label="メモ・スタックの縦の幅">
                                         </div>
-                                    </details>
-
-                                    <!-- ファクター: ヘッダーのボタン -->
-                                    <details open id="settings-group-factor-header-buttons">
-                                        <summary style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">ファクター: ヘッダーのボタン</summary>
-                                        <div style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-chat-title-toggle">
-                                                チャットタイトルを表示する
-                                            </label>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-new-chat-button-toggle">
-                                                「新規」ボタンを表示する（「新」ボタン）
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-delete-session-button-toggle">
-                                                「全削除」ボタンを表示する（「削」ボタン）
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-copy-session-button-toggle">
-                                                「全コピー」ボタンを表示する（「コ」ボタン）
-                                            </label>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-api-provider-toggle-header">
-                                                ヘッダーにAPI切替ボタンを表示する
-                                            </label>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-scroll-to-top-button-toggle">
-                                                「最上部へ(🔼)」ボタンを表示する
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-scroll-to-bottom-button-toggle">
-                                                「最下部へ(🔽)」ボタンを表示する
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-toggle-all-content-button-toggle">
-                                                「全表示/非表示(🖼️)」ボタンを表示する
-                                            </label>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                             <label class="checkbox-label">
-                                                 <input type="checkbox" id="show-memo-button-toggle">
-                                                 メモボタン(📝)を表示する
-                                             </label>
-                                             <label class="checkbox-label">
-                                                 <input type="checkbox" id="show-clipboard-stack-button-toggle">
-                                                 クリップボードスタックボタン(🗒️)を表示する
-                                             </label>
-                                             <div id="memo-stack-height-settings">
-                                                 <div>
-                                                     <label for="memo-height">メモ・スタックの縦の幅 (例: 200px, 30vh):</label>
-                                                     <input type="text" id="memo-height" placeholder="例: 200px, 30vh" aria-label="メモ・スタックの縦の幅">
-                                                 </div>
-                                                 <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom:10px;">
-                                                     ※ 各エリアは縦方向にリサイズ可能です。
-                                                 </p>
-                                             </div>
+                                        <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom:10px;">
+                                            ※ 各エリアは縦方向にリサイズ可能です。
+                                        </p>
+                                    </div>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="show-paste-button-in-footer-toggle">
+                                       フッターに「貼付け」ボタンを表示する
+                                   </label>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="show-dice-button-toggle">
+                                       フッターにダイスボタン(🎲)を表示する
+                                   </label>
+                                    <div id="dice-value-settings" class="hidden" style="margin-top:5px;">
+                                        <div class="param-grid">
+                                            <div>
+                                                <label for="dice-min-value">ダイス最小値:</label>
+                                                <input type="number" id="dice-min-value" min="0" step="1" placeholder="例: 1">
+                                            </div>
+                                            <div>
+                                                <label for="dice-max-value">ダイス最大値:</label>
+                                                <input type="number" id="dice-max-value" min="0" step="1" placeholder="例: 100">
+                                            </div>
                                         </div>
-                                    </details>
+                                    </div>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="show-api-provider-toggle-header">
+                                       ヘッダーにAPI切替ボタンを表示する
+                                   </label>
+                                   <label class="checkbox-label">
+                                       <input type="checkbox" id="show-api-provider-toggle-footer">
+                                       フッターにAPI切替ボタンを表示する
+                                   </label>
+                                    <label class="checkbox-label" style="margin-top: 15px;">
+                                        <input type="checkbox" id="show-paste-button-in-edit-toggle">
+                                        メッセージ編集ツールバーに「貼付け」ボタンを表示する
+                                    </label>
+                                    <label class="checkbox-label" style="margin-top: 15px;">
+                                       <input type="checkbox" id="show-top-collapse-button-toggle">
+                                       メッセージ右上に折りたたみボタンを表示する
+                                   </label>
+                                    <label class="checkbox-label">
+                                       <input type="checkbox" id="show-bottom-collapse-button-toggle">
+                                       メッセージツールバーに折りたたみボタンを表示する
+                                   </label>
+                                   <details id="settings-group-collapse-button-details">
+                                        <summary style="cursor: pointer; font-weight: normal; font-size: 14px; color: var(--text-link); list-style: revert;">折りたたみボタン詳細設定</summary>
+                                        <div style="padding-left: 15px; margin-top: 10px;">
+                                            <label class="checkbox-label" style="margin-top: 10px; margin-bottom: 15px;">
+                                                <input type="checkbox" id="persist-message-collapse-state">
+                                                メッセージの折り畳み状態を記憶する
+                                            </label>
+                                            <hr style="margin-bottom: 15px;">
+                                            <label for="toggle-button-top-width">右上ボタン 横幅 (px):</label>
+                                            <input type="number" id="toggle-button-top-width" min="1" max="100" step="1" placeholder="例: 6">
+                                            <label for="toggle-button-top-height">右上ボタン 縦幅 (px):</label>
+                                            <input type="number" id="toggle-button-top-height" min="1" max="100" step="1" placeholder="例: 40">
+                                            <label for="toggle-button-top-font-size">右上ボタン フォントサイズ (px):</label>
+                                            <input type="number" id="toggle-button-top-font-size" min="1" max="50" step="1" placeholder="例: 12">
+                                            <label for="toggle-button-top-text-collapse">右上ボタン 折りたたみ時テキスト:</label>
+                                            <input type="text" id="toggle-button-top-text-collapse" placeholder="例: -">
+                                            <label for="toggle-button-top-text-expand">右上ボタン 展開時テキスト:</label>
+                                            <input type="text" id="toggle-button-top-text-expand" placeholder="例: □">
 
-                                    <!-- ファクター: フッターのボタン -->
-                                    <details open id="settings-group-factor-footer-buttons">
-                                        <summary style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">ファクター: フッターのボタン</summary>
-                                        <div style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-api-provider-toggle-footer">
-                                                フッターにAPI切替ボタンを表示する
-                                            </label>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-paste-button-in-footer-toggle">
-                                                「貼付け」ボタンを表示する
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-dice-button-toggle">
-                                                ダイスボタン(🎲)を表示する
-                                            </label>
-                                             <div id="dice-value-settings" class="hidden" style="margin-top:5px;">
-                                                 <div class="param-grid">
-                                                     <div>
-                                                         <label for="dice-min-value">ダイス最小値:</label>
-                                                         <input type="number" id="dice-min-value" min="0" step="1" placeholder="例: 1">
-                                                     </div>
-                                                     <div>
-                                                         <label for="dice-max-value">ダイス最大値:</label>
-                                                         <input type="number" id="dice-max-value" min="0" step="1" placeholder="例: 100">
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                        </div>
-                                    </details>
+                                            <hr style="margin: 15px 0;">
 
-                                    <!-- ファクター: メッセージ要素のボタン -->
-                                    <details open id="settings-group-factor-message-buttons">
-                                        <summary style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">ファクター: メッセージ要素のボタン</summary>
-                                        <div style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
-                                             <label class="checkbox-label">
-                                                 <input type="checkbox" id="show-paste-button-in-edit-toggle">
-                                                 メッセージ編集ツールバーに「貼付け」ボタンを表示する
-                                             </label>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-top-collapse-button-toggle">
-                                                メッセージ右上に折りたたみボタンを表示する
-                                            </label>
-                                             <label class="checkbox-label">
-                                                <input type="checkbox" id="show-bottom-collapse-button-toggle">
-                                                メッセージツールバーに折りたたみボタンを表示する
-                                            </label>
-                                            <details id="settings-group-collapse-button-details" style="margin-bottom: 15px;">
-                                                 <summary style="cursor: pointer; font-weight: normal; font-size: 14px; color: var(--text-link); list-style: revert;">折りたたみボタン詳細設定</summary>
-                                                 <div style="padding-left: 15px; margin-top: 10px;">
-                                                     <label class="checkbox-label" style="margin-top: 10px; margin-bottom: 15px;">
-                                                         <input type="checkbox" id="persist-message-collapse-state">
-                                                         メッセージの折り畳み状態を記憶する
-                                                     </label>
-                                                     <hr style="margin-bottom: 15px;">
-                                                     <label for="toggle-button-top-width">右上ボタン 横幅 (px):</label>
-                                                     <input type="number" id="toggle-button-top-width" min="1" max="100" step="1" placeholder="例: 6">
-                                                     <label for="toggle-button-top-height">右上ボタン 縦幅 (px):</label>
-                                                     <input type="number" id="toggle-button-top-height" min="1" max="100" step="1" placeholder="例: 40">
-                                                     <label for="toggle-button-top-font-size">右上ボタン フォントサイズ (px):</label>
-                                                     <input type="number" id="toggle-button-top-font-size" min="1" max="50" step="1" placeholder="例: 12">
-                                                     <label for="toggle-button-top-text-collapse">右上ボタン 折りたたみ時テキスト:</label>
-                                                     <input type="text" id="toggle-button-top-text-collapse" placeholder="例: -">
-                                                     <label for="toggle-button-top-text-expand">右上ボタン 展開時テキスト:</label>
-                                                     <input type="text" id="toggle-button-top-text-expand" placeholder="例: □">
-         
-                                                     <hr style="margin: 15px 0;">
-         
-                                                     <label for="toggle-button-bottom-font-size">下部ボタン フォントサイズ (px):</label>
-                                                     <input type="number" id="toggle-button-bottom-font-size" min="1" max="34" step="1" placeholder="例: 14">
-                                                     <label for="toggle-button-bottom-text-collapse">下部ボタン 折りたたみ時テキスト:</label>
-                                                     <input type="text" id="toggle-button-bottom-text-collapse" placeholder="例: 非表示">
-                                                     <label for="toggle-button-bottom-text-expand">下部ボタン 展開時テキスト:</label>
-                                                     <input type="text" id="toggle-button-bottom-text-expand" placeholder="例: 表示">
-                                                 </div>
-                                            </details>
+                                            <label for="toggle-button-bottom-font-size">下部ボタン フォントサイズ (px):</label>
+                                            <input type="number" id="toggle-button-bottom-font-size" min="1" max="34" step="1" placeholder="例: 14">
+                                            <label for="toggle-button-bottom-text-collapse">下部ボタン 折りたたみ時テキスト:</label>
+                                            <input type="text" id="toggle-button-bottom-text-collapse" placeholder="例: 非表示">
+                                            <label for="toggle-button-bottom-text-expand">下部ボタン 展開時テキスト:</label>
+                                            <input type="text" id="toggle-button-bottom-text-expand" placeholder="例: 表示">
                                         </div>
-                                    </details>
+                                   </details>
                                 </div>
                            </details>
 
@@ -4976,19 +4906,15 @@
                             ※ ここに入力した内容が、会話履歴とともにTwin-engine用AIへの指示として送信されます。
                         </p>
                         <hr style="margin: 20px 0;">
-                        <details open>
-                            <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">Twin-engine用 API設定</summary>
-                            <div style="padding-left: 15px; margin-top: 10px;">
-                                <div id="twin-engine-api-configs-list" class="api-keys-list" style="margin-top:10px; margin-bottom: 15px;">
-                                </div>
-                                <button type="button" id="add-twin-engine-api-config-btn" class="add-api-key-btn">新しいAPI設定を追加</button>
-        
-                                <p style="font-size: 11px; color: var(--text-secondary); margin-top: 15px;">
-                                    ※「セッションの過去の会話 → ある程度セッションが進んだ時点で別の AI で要約 → システムプロンプトとその要約だけを現在の AI に渡して続きの対話を開始する」というワークフローを行う機能。<br>
-                                    ※要約内容がまだ存在しない（空の）場合は、要約機能を一時的にスキップし、セッションの全履歴をAIに送信
-                                </p>
-                            </div>
-                        </details>
+                        <h4 style="font-size: 14px; color: var(--text-link); margin-bottom: 10px;">Twin-engine用 API設定</h4>
+                        <div id="twin-engine-api-configs-list" class="api-keys-list" style="margin-top:10px; margin-bottom: 15px;">
+                        </div>
+                        <button type="button" id="add-twin-engine-api-config-btn" class="add-api-key-btn">新しいAPI設定を追加</button>
+
+                        <p style="font-size: 11px; color: var(--text-secondary); margin-top: 15px;">
+                            ※「セッションの過去の会話 → ある程度セッションが進んだ時点で別の AI で要約 → システムプロンプトとその要約だけを現在の AI に渡して続きの対話を開始する」というワークフローを行う機能。<br>
+                            ※要約内容がまだ存在しない（空の）場合は、要約機能を一時的にスキップし、セッションの全履歴をAIに送信
+                        </p>
                         <hr style="margin: 20px 0;">
                         <h4 style="font-size: 14px; color: var(--text-link); margin-bottom: 10px;">アドバンスド (Twin-engine)</h4>
 
@@ -5473,8 +5399,6 @@
             preventZoomToggle: document.getElementById('prevent-zoom-toggle'),
             minimizeHeaderFooterToggle: document.getElementById('minimize-header-footer-toggle'),
             extendAiBubbleWidthToggle: document.getElementById('extend-ai-bubble-width-toggle'),
-            extendUserBubbleWidthToggle: document.getElementById('extend-user-bubble-width-toggle'),
-            reduceMessageSpacingToggle: document.getElementById('reduce-message-spacing-toggle'),
             showSessionLinkingSettingsToggle: document.getElementById('show-session-linking-settings-toggle'),
             sessionLinkingSettingsGroup: document.getElementById('settings-group-session-linking'),
             showTwinEngineSettingsToggle: document.getElementById('show-twin-engine-settings-toggle'),
@@ -5664,13 +5588,6 @@
             twinEngineDummyModelInput: document.getElementById('twin-engine-dummy-model'),
             twinEngineEnableDummyModelCheckbox: document.getElementById('twin-engine-enable-dummy-model'),
             twinEngineConcatDummyModelCheckbox: document.getElementById('twin-engine-concat-dummy-model'),
-            enableWebhookNotificationToggle: document.getElementById('enable-webhook-notification-toggle'),
-            webhookUrlInput: document.getElementById('webhook-url-input'),
-            webhookSettingsContainer: document.getElementById('webhook-settings-container'),
-            webhookFormatJsonRadio: document.getElementById('webhook-format-json'),
-            webhookFormatTextRadio: document.getElementById('webhook-format-text'),
-            webhooksList: document.getElementById('webhooks-list'),
-addWebhookBtn: document.getElementById('add-webhook-btn'),
         };
 
         const state = {
@@ -5816,8 +5733,6 @@ addWebhookBtn: document.getElementById('add-webhook-btn'),
                 preventZoom: true,
                 minimizeHeaderFooter: false,
                 extendAiBubbleWidth: false,
-                extendUserBubbleWidth: false,
-                reduceMessageSpacing: false,
                 showSessionLinkingSettings: false,
                 showTwinEngineSettings: false,
                 showChatTitle: true,
@@ -5925,8 +5840,6 @@ addWebhookBtn: document.getElementById('add-webhook-btn'),
                 twinEngineDummyModel: '',
                 twinEngineEnableDummyModel: false,
                 twinEngineConcatDummyModel: false,
-enableWebhookNotification: false,
-webhooks: [],
             },
             backgroundImageUrl: null,
             userIconUrl: null,
@@ -6040,20 +5953,7 @@ webhooks: [],
                     request.onerror = (event) => reject(`IndexedDBエラー: ${event.target.error}`);
                     request.onsuccess = (event) => {
                         state.db = event.target.result;
-                        state.db.onclose = () => {
-                            state.db = null;
-                        };
-                        state.db.onversionchange = () => {
-                            if (state.db) {
-                                state.db.close();
-                                state.db = null;
-                            }
-                            uiUtils.showCustomAlert("アプリの新しいバージョンが利用可能です。データを保護するため、ページをリロードしてください。")
-                                .then(() => window.location.reload());
-                        };
-                        state.db.onerror = (event) => {
-                            console.error(`IndexedDBの予期せぬエラー: ${event.target.error}`);
-                        };
+                        state.db.onerror = (event) => { };
                         resolve(state.db);
                     };
                     request.onupgradeneeded = (event) => {
@@ -6157,17 +6057,7 @@ webhooks: [],
                         if (loadedSettings.hasOwnProperty('expandDeepSeekThoughtsByDefault') && !loadedSettings.hasOwnProperty('deepSeekExpandThoughtsByDefault') && state.settings.hasOwnProperty('deepSeekExpandThoughtsByDefault')) {
                             state.settings.deepSeekExpandThoughtsByDefault = loadedSettings.expandDeepSeekThoughtsByDefault;
                         }
-if (loadedSettings.webhookUrl && !loadedSettings.webhooks) {
-    loadedSettings.webhooks = [{
-        id: 'migrated-' + Date.now(),
-        label: '以前の設定',
-        url: loadedSettings.webhookUrl,
-        enabled: loadedSettings.enableWebhookNotification,
-        format: loadedSettings.webhookFormat || 'json'
-    }];
-    delete loadedSettings.webhookUrl;
-    delete loadedSettings.webhookFormat;
-}
+
                         for (const key in loadedSettings) {
                              if (key === 'darkMode') continue;
                              if (key === 'memoWidth') continue;
@@ -8099,8 +7989,6 @@ if (loadedSettings.webhookUrl && !loadedSettings.webhooks) {
                  elements.preventZoomToggle.checked = state.settings.preventZoom;
                  elements.minimizeHeaderFooterToggle.checked = state.settings.minimizeHeaderFooter;
                  elements.extendAiBubbleWidthToggle.checked = state.settings.extendAiBubbleWidth;
-                 elements.extendUserBubbleWidthToggle.checked = state.settings.extendUserBubbleWidth;
-                 elements.reduceMessageSpacingToggle.checked = state.settings.reduceMessageSpacing;
                  elements.showSessionLinkingSettingsToggle.checked = state.settings.showSessionLinkingSettings;
                  if (elements.sessionLinkingSettingsGroup) {
                      elements.sessionLinkingSettingsGroup.classList.toggle('hidden', !state.settings.showSessionLinkingSettings);
@@ -8227,14 +8115,8 @@ if (loadedSettings.webhookUrl && !loadedSettings.webhooks) {
             applyMinimizeUI() {
                 elements.appContainer.classList.toggle('minimized-ui', state.settings.minimizeHeaderFooter);
             },
-            applyMessageSpacingSetting() {
-                elements.appContainer.classList.toggle('reduced-message-spacing', state.settings.reduceMessageSpacing);
-            },
             applyAiBubbleWidthSetting() {
                 document.body.classList.toggle('ai-bubble-extended', state.settings.extendAiBubbleWidth);
-            },
-            applyUserBubbleWidthSetting() {
-                document.body.classList.toggle('user-bubble-extended', state.settings.extendUserBubbleWidth);
             },
             applySettingsUIDetailsOpenStates() {
                 const detailsElements = document.querySelectorAll('#settings-screen details[id]');
@@ -9183,113 +9065,64 @@ if (loadedSettings.webhookUrl && !loadedSettings.webhooks) {
         };
 
     const appLogic = {
-
-
-async sendWebhookNotification(responseMessage) {
-    if (!state.settings.enableWebhookNotification || !state.settings.webhooks || state.settings.webhooks.length === 0) {
-        return;
-    }
-
-    const enabledWebhooks = state.settings.webhooks.filter(w => w.enabled && w.url && w.url.trim());
-    if (enabledWebhooks.length === 0) {
-        return;
-    }
-
-    const promises = enabledWebhooks.map(webhook => {
-        return (async () => {
-            try {
-                new URL(webhook.url);
-            } catch (e) {
-                console.error(`Webhook送信失敗 (無効なURL: ${webhook.label}):`, webhook.url);
-                return;
-            }
-
-            const format = webhook.format || 'json';
-            let body;
-            let headers;
-
-            if (format === 'text') {
-                body = responseMessage.content;
-                headers = { 'Content-Type': 'text/plain' };
-            } else {
-                const payload = {
-                    type: "ai_response",
-                    timestamp: new Date().toISOString(),
-                    sessionId: state.currentChatId,
-                    sessionTitle: elements.chatTitle.textContent.replace(/^: /, ''),
-                    content: responseMessage.content,
-                    provider: responseMessage.generatedByApiProvider,
-                    webhookLabel: webhook.label
-                };
-                body = JSON.stringify(payload);
-                headers = { 'Content-Type': 'application/json' };
-            }
-
-            const fetchOptions = {
-                method: 'POST',
-                headers: headers,
-                body: body,
-                mode: 'cors'
-            };
-
-            if (format === 'json') {
-                fetchOptions.mode = 'no-cors';
-            }
-
-            try {
-                const response = await fetch(webhook.url, fetchOptions);
-                if (fetchOptions.mode === 'cors' && !response.ok) {
-                    console.error(`Webhook送信失敗 (${webhook.label}): サーバーがエラーステータス ${response.status} を返しました`);
-                }
-            } catch (error) {
-                console.error(`Webhook送信中にネットワークエラー (${webhook.label}):`, error);
-            }
-        })();
-    });
-
-    await Promise.allSettled(promises);
-},
         async initializeApp() {
             try {
                 if (typeof marked !== 'undefined') {
-                    marked.setOptions({ breaks: true, gfm: true, sanitize: false, smartypants: false });
+                    marked.setOptions({
+                        breaks: true,
+                        gfm: true,
+                        sanitize: false,
+                        smartypants: false
+                    });
                 }
                 if (typeof mermaid !== 'undefined') {
-                    mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'var(--font-family)', flowchart: { useMaxWidth: true, htmlLabels: true }, sequence: { useMaxWidth: true }, gantt: { useMaxWidth: true }, journey: { useMaxWidth: true }, pie: { useMaxWidth: true } });
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'default',
+                        securityLevel: 'loose',
+                        fontFamily: 'var(--font-family)',
+                        flowchart: { useMaxWidth: true, htmlLabels: true },
+                        sequence: { useMaxWidth: true },
+                        gantt: { useMaxWidth: true },
+                        journey: { useMaxWidth: true },
+                        pie: { useMaxWidth: true }
+                    });
                 }
+
                 elements.appVersionSpan.textContent = APP_VERSION;
-                window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); });
+
+                window.addEventListener('beforeinstallprompt', (event) => {
+                    event.preventDefault();
+                });
+
+                uiUtils.showScreen('chat');
                 registerServiceWorker();
 
                 await dbUtils.openDB();
                 await dbUtils.loadSettings();
-
+                
                 uiUtils.applyTheme();
                 uiUtils.applyFontFamily();
                 uiUtils.applySidePanelSettingsToUI();
-                uiUtils.applyMinimizeUI();
-                uiUtils.applyAiBubbleWidthSetting();
-                uiUtils.applyUserBubbleWidthSetting();
-                uiUtils.applyMessageSpacingSetting();
-                
+
                 if (state.settings.backgroundImageBlob instanceof Blob) {
                     uiUtils.revokeExistingObjectUrl();
                     try {
-                        state.backgroundImageUrl = URL.createObjectURL(state.settings.backgroundImageBlob);
-                        document.documentElement.style.setProperty('--chat-background-image', `url(${state.backgroundImageUrl})`);
+                         state.backgroundImageUrl = URL.createObjectURL(state.settings.backgroundImageBlob);
+                         document.documentElement.style.setProperty('--chat-background-image', `url(${state.backgroundImageUrl})`);
                     } catch (e) {
-                        document.documentElement.style.setProperty('--chat-background-image', 'none');
+                         document.documentElement.style.setProperty('--chat-background-image', 'none');
                     }
                 } else {
                     document.documentElement.style.setProperty('--chat-background-image', 'none');
                 }
                 if (state.settings.userIconBlob instanceof Blob) {
-                    try { state.userIconUrl = URL.createObjectURL(state.settings.userIconBlob); } catch (e) {}
+                    try { state.userIconUrl = URL.createObjectURL(state.settings.userIconBlob); } catch (e) { }
                 }
                 if (state.settings.aiIconBlob instanceof Blob) {
-                    try { state.aiIconUrl = URL.createObjectURL(state.settings.aiIconBlob); } catch (e) {}
+                    try { state.aiIconUrl = URL.createObjectURL(state.settings.aiIconBlob); } catch (e) { }
                 }
-                
+
                 uiUtils.applySettingsToUI();
 
                 const chats = await dbUtils.getAllChats(state.settings.historySortOrder);
@@ -9299,12 +9132,10 @@ async sendWebhookNotification(responseMessage) {
                     this.startNewChat();
                 }
                 
-                uiUtils.showScreen('chat');
                 history.replaceState({ screen: 'chat' }, '', '#chat');
                 state.currentScreen = 'chat';
                 
                 updateMessageMaxWidthVar();
-                webhookUtils.initialize();
                 this.setupEventListeners();
                 this.updateZoomState();
                 uiUtils.adjustTextareaHeight();
@@ -9741,14 +9572,6 @@ async sendWebhookNotification(responseMessage) {
                 state.settings.extendAiBubbleWidth = e.target.checked;
                 uiUtils.applyAiBubbleWidthSetting();
             });
-            elements.extendUserBubbleWidthToggle.addEventListener('change', (e) => {
-                state.settings.extendUserBubbleWidth = e.target.checked;
-                uiUtils.applyUserBubbleWidthSetting();
-            });
-            elements.reduceMessageSpacingToggle.addEventListener('change', (e) => {
-                state.settings.reduceMessageSpacing = e.target.checked;
-                uiUtils.applyMessageSpacingSetting();
-            });
             elements.showSessionLinkingSettingsToggle.addEventListener('change', (e) => {
                 if (elements.sessionLinkingSettingsGroup) {
                     elements.sessionLinkingSettingsGroup.classList.toggle('hidden', !e.target.checked);
@@ -10021,9 +9844,6 @@ async sendWebhookNotification(responseMessage) {
                 uiUtils.toggleMultiApiKeysVisibility(e.target.checked);
             });
             twinEngineApiConfigUtils.initialize();
-            elements.enableWebhookNotificationToggle.addEventListener('change', (e) => {
-                elements.webhookSettingsContainer.classList.toggle('hidden', !e.target.checked);
-            });
         },
         handlePopState(event) {
             const targetScreen = event.state?.screen || 'chat';
@@ -12085,10 +11905,6 @@ async sendWebhookNotification(responseMessage) {
                          uiUtils.renderChatMessages();
                          await dbUtils.saveChat();
                     }
-                    const lastMessage = state.currentMessages[state.currentMessages.length - 1];
-                    if (lastMessage && lastMessage.role === 'model') {
-                        this.sendWebhookNotification(lastMessage).catch(console.error);
-                    }
                 } else {
                      if (useStreamingForThisCall && !isBackgroundProcess && modelMessageObjectForStream) {
                         const tempPlaceholderIndex = state.currentMessages.indexOf(modelMessageObjectForStream);
@@ -12782,8 +12598,6 @@ async sendWebhookNotification(responseMessage) {
              newSettings.preventZoom = elements.preventZoomToggle.checked;
              newSettings.minimizeHeaderFooter = document.getElementById('minimize-header-footer-toggle').checked;
              newSettings.extendAiBubbleWidth = elements.extendAiBubbleWidthToggle.checked;
-             newSettings.extendUserBubbleWidth = elements.extendUserBubbleWidthToggle.checked;
-             newSettings.reduceMessageSpacing = elements.reduceMessageSpacingToggle.checked;
              newSettings.showSessionLinkingSettings = elements.showSessionLinkingSettingsToggle.checked;
              newSettings.showTwinEngineSettings = elements.showTwinEngineSettingsToggle.checked;
              newSettings.showChatTitle = elements.showChatTitleToggle.checked;
@@ -12859,20 +12673,6 @@ async sendWebhookNotification(responseMessage) {
              newSettings.dummyTwinEngineDebugMode = elements.dummyTwinEngineDebugModeCheckbox.checked;
              newSettings.dummyDummyModel = elements.dummyDummyModelInput.value.trim();
              newSettings.dummyEnableDummyModel = elements.dummyEnableDummyModelCheckbox.checked;
-newSettings.webhooks = state.settings.webhooks.map(webhook => {
-    const itemElement = elements.webhooksList.querySelector(`[data-webhook-id="${webhook.id}"]`);
-    if (itemElement) {
-        return {
-            ...webhook,
-            enabled: itemElement.querySelector('input[type="checkbox"]').checked,
-            label: itemElement.querySelector('.api-key-item-label').value.trim(),
-            url: itemElement.querySelector('.api-key-item-input').value.trim(),
-            format: itemElement.querySelector('select').value
-        };
-    }
-    return webhook;
-});
-newSettings.enableWebhookNotification = elements.enableWebhookNotificationToggle.checked;
 
             const validateNumeric = (value, defaultValue, min, max, isInteger = false) => {
                 let num = isInteger ? parseInt(value, 10) : parseFloat(value);
@@ -12994,9 +12794,6 @@ newSettings.enableWebhookNotification = elements.enableWebhookNotificationToggle
                  uiUtils.updateChatScreenElementVisibility();
                  uiUtils.applyMinimizeUI();
                  uiUtils.applyAiBubbleWidthSetting();
-                 uiUtils.applyUserBubbleWidthSetting();
-                 uiUtils.applyMessageSpacingSetting();
-                 uiUtils.updateSessionLinkingUI();
                  elements.settingsScreen.classList.toggle('auto-save-mode', state.settings.autoSaveSettings);
 
                  if (showNotice && !state.settings.disableSaveSettingsConfirmation) {
@@ -14633,118 +14430,7 @@ newSettings.enableWebhookNotification = elements.enableWebhookNotificationToggle
             dialog.showModal();
         },
     };
-const webhookUtils = {
-    MAX_WEBHOOKS: 10,
 
-    initialize() {
-        elements.addWebhookBtn.addEventListener('click', () => this.addWebhook());
-        this.renderList();
-    },
-
-    addWebhook() {
-        if (state.settings.webhooks.length >= this.MAX_WEBHOOKS) {
-            uiUtils.showCustomAlert(`最大${this.MAX_WEBHOOKS}個までのWebhook URLを登録できます。`);
-            return;
-        }
-        const newWebhook = {
-            id: Date.now().toString(),
-            label: `Webhook ${state.settings.webhooks.length + 1}`,
-            url: '',
-            enabled: true,
-            format: 'text'
-        };
-        state.settings.webhooks.push(newWebhook);
-        this.renderList();
-    },
-
-    async deleteWebhook(webhookId) {
-        const webhook = state.settings.webhooks.find(w => w.id === webhookId);
-        if (!webhook) return;
-
-        const confirmed = await uiUtils.showCustomConfirm(`Webhook「${webhook.label}」を削除しますか？`);
-        if (confirmed) {
-            state.settings.webhooks = state.settings.webhooks.filter(w => w.id !== webhookId);
-            this.renderList();
-        }
-    },
-
-    updateWebhookValue(webhookId, key, value) {
-        const webhook = state.settings.webhooks.find(w => w.id === webhookId);
-        if (webhook) {
-            webhook[key] = value;
-        }
-    },
-
-    renderList() {
-        const container = elements.webhooksList;
-        container.innerHTML = '';
-        state.settings.webhooks.forEach(webhook => {
-            container.appendChild(this.createWebhookItem(webhook));
-        });
-        elements.addWebhookBtn.disabled = state.settings.webhooks.length >= this.MAX_WEBHOOKS;
-    },
-
-    createWebhookItem(webhook) {
-        const item = document.createElement('div');
-        item.className = 'api-key-item';
-        item.style.flexDirection = 'column';
-        item.dataset.webhookId = webhook.id;
-
-        const row1 = document.createElement('div');
-        row1.style.display = 'flex';
-        row1.style.gap = '8px';
-        row1.style.alignItems = 'center';
-
-        const enabledCheckbox = document.createElement('input');
-        enabledCheckbox.type = 'checkbox';
-        enabledCheckbox.checked = webhook.enabled;
-        enabledCheckbox.title = 'このWebhookを有効/無効にする';
-        enabledCheckbox.addEventListener('change', (e) => this.updateWebhookValue(webhook.id, 'enabled', e.target.checked));
-        
-        const labelInput = document.createElement('input');
-        labelInput.type = 'text';
-        labelInput.value = webhook.label;
-        labelInput.placeholder = 'ラベル (例: Slack通知)';
-        labelInput.className = 'api-key-item-label';
-        labelInput.addEventListener('change', (e) => this.updateWebhookValue(webhook.id, 'label', e.target.value));
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = '削';
-        deleteBtn.className = 'api-key-delete-btn';
-        deleteBtn.addEventListener('click', () => this.deleteWebhook(webhook.id));
-
-        row1.appendChild(enabledCheckbox);
-        row1.appendChild(labelInput);
-        row1.appendChild(deleteBtn);
-
-        const row2 = document.createElement('div');
-        row2.style.display = 'flex';
-        row2.style.gap = '8px';
-        row2.style.marginTop = '5px';
-        
-        const urlInput = document.createElement('input');
-        urlInput.type = 'text';
-        urlInput.value = webhook.url;
-        urlInput.placeholder = 'https://...';
-        urlInput.className = 'api-key-item-input';
-        urlInput.style.flexGrow = '1';
-        urlInput.addEventListener('change', (e) => this.updateWebhookValue(webhook.id, 'url', e.target.value));
-
-        const formatSelect = document.createElement('select');
-        formatSelect.innerHTML = `<option value="json">JSON</option><option value="text">Text</option>`;
-        formatSelect.value = webhook.format;
-        formatSelect.style.width = '80px';
-        formatSelect.className = 'api-key-item-input';
-        formatSelect.addEventListener('change', (e) => this.updateWebhookValue(webhook.id, 'format', e.target.value));
-
-        row2.appendChild(urlInput);
-        row2.appendChild(formatSelect);
-        
-        item.appendChild(row1);
-        item.appendChild(row2);
-        return item;
-    }
-};
     const apiUtils = {
         async callGeminiApi(apiKey, model, messagesForApi, generationConfig, systemInstruction, useStreaming, usePseudo, enableGrounding) {
             if (!apiKey) {
@@ -16169,9 +15855,6 @@ const webhookUtils = {
                 ? `最大${this.MAX_CONFIGS}個まで` 
                 : '新しいAPI設定を追加';
             uiUtils.updateTwinEngineApiKeyCycleButton();
-            elements.enableWebhookNotificationToggle.checked = state.settings.enableWebhookNotification;
-elements.webhookSettingsContainer.classList.toggle('hidden', !state.settings.enableWebhookNotification);
-webhookUtils.renderList();
         },
     
         createConfigItem(config) {
