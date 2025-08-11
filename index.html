@@ -12424,15 +12424,21 @@ if (!isBackgroundProcess && state.settings.showProofreadingSettings && state.set
                         finalModelMessageIndex = state.currentMessages.indexOf(modelMessageObjectForStream);
                     } else {
                         const newModelMessage = { role: 'model', content: '', timestamp: Date.now(), ...finalMetadata, usageMetadata: finalUsage, generatedByApiProvider: selectedApiProvider };
-                        const targetUserIndexForCascade = userMessageIndex;
-                        if (targetUserIndexForCascade !== -1 && !isBackgroundProcess) {
-                            if (siblingGroupIdToUse === null) siblingGroupIdToUse = `gid-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-                            newModelMessage.isCascaded = true;
-                            newModelMessage.isSelected = true;
-                            newModelMessage.siblingGroupId = siblingGroupIdToUse;
-                            if (isRetry && firstResponseIndexForRetry !== -1 && state.currentMessages[firstResponseIndexForRetry] && !state.currentMessages[firstResponseIndexForRetry].isCascaded) {
-                                state.currentMessages[firstResponseIndexForRetry].isCascaded = true;
-                                state.currentMessages[firstResponseIndexForRetry].siblingGroupId = siblingGroupIdToUse;
+                        if (isRetry) {
+                            const targetUserIndexForCascade = userMessageIndex;
+                            if (targetUserIndexForCascade !== -1 && !isBackgroundProcess && firstResponseIndexForRetry !== -1) {
+                                if (siblingGroupIdToUse === null) {
+                                    siblingGroupIdToUse = `gid-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+
+                                    const firstResponse = state.currentMessages[firstResponseIndexForRetry];
+                                    if (firstResponse && !firstResponse.isCascaded) {
+                                        firstResponse.isCascaded = true;
+                                        firstResponse.siblingGroupId = siblingGroupIdToUse;
+                                    }
+                                }
+                                newModelMessage.isCascaded = true;
+                                newModelMessage.isSelected = true;
+                                newModelMessage.siblingGroupId = siblingGroupIdToUse;
                             }
                         }
                         finalModelMessageIndex = state.currentMessages.length;
