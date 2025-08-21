@@ -4987,7 +4987,7 @@
                             ※校正処理にもAPIコストが発生します。
                         </p>
                         <div id="proofreading-options" class="hidden" style="margin-top: 15px;">
-                            <details open id="proofreading-api-settings-details">
+                            <details open>
                                 <summary style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">校正用 API設定</summary>
                                 <div style="padding-left: 15px; margin-top: 10px;">
                                     <div id="proofreading-api-configs-list" class="api-keys-list" style="margin-top:10px; margin-bottom: 15px;">
@@ -12424,21 +12424,15 @@ if (!isBackgroundProcess && state.settings.showProofreadingSettings && state.set
                         finalModelMessageIndex = state.currentMessages.indexOf(modelMessageObjectForStream);
                     } else {
                         const newModelMessage = { role: 'model', content: '', timestamp: Date.now(), ...finalMetadata, usageMetadata: finalUsage, generatedByApiProvider: selectedApiProvider };
-                        if (isRetry) {
-                            const targetUserIndexForCascade = userMessageIndex;
-                            if (targetUserIndexForCascade !== -1 && !isBackgroundProcess && firstResponseIndexForRetry !== -1) {
-                                if (siblingGroupIdToUse === null) {
-                                    siblingGroupIdToUse = `gid-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-
-                                    const firstResponse = state.currentMessages[firstResponseIndexForRetry];
-                                    if (firstResponse && !firstResponse.isCascaded) {
-                                        firstResponse.isCascaded = true;
-                                        firstResponse.siblingGroupId = siblingGroupIdToUse;
-                                    }
-                                }
-                                newModelMessage.isCascaded = true;
-                                newModelMessage.isSelected = true;
-                                newModelMessage.siblingGroupId = siblingGroupIdToUse;
+                        const targetUserIndexForCascade = userMessageIndex;
+                        if (targetUserIndexForCascade !== -1 && !isBackgroundProcess) {
+                            if (siblingGroupIdToUse === null) siblingGroupIdToUse = `gid-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+                            newModelMessage.isCascaded = true;
+                            newModelMessage.isSelected = true;
+                            newModelMessage.siblingGroupId = siblingGroupIdToUse;
+                            if (isRetry && firstResponseIndexForRetry !== -1 && state.currentMessages[firstResponseIndexForRetry] && !state.currentMessages[firstResponseIndexForRetry].isCascaded) {
+                                state.currentMessages[firstResponseIndexForRetry].isCascaded = true;
+                                state.currentMessages[firstResponseIndexForRetry].siblingGroupId = siblingGroupIdToUse;
                             }
                         }
                         finalModelMessageIndex = state.currentMessages.length;
