@@ -4981,7 +4981,9 @@
                             <input type="checkbox" id="gemini-enable-dummy-user">
                             このダミーUserプロンプトを有効にする
                         </label>
-
+                        <p style="font-size: 11px; color: var(--text-secondary); margin-top: 0px; margin-bottom: 15px;">
+                            ※ 小説ビジュアライザー使用時、ここに「display_novel_imageを必ず選択してください。」と入力すると、画像が生成されやすくなります。
+                        </p>
                         <label for="gemini-dummy-model">ダミー Model プロンプト (送信時のみ追加):</label>
                         <textarea id="gemini-dummy-model" placeholder="API送信直前に model ロールとして履歴最末尾に追加されます"
                             aria-label="Gemini ダミー Model プロンプト"></textarea>
@@ -5279,11 +5281,30 @@
                         <textarea id="gemini-novel-visualizer-config" rows="10" placeholder='{
   "urlTemplate": "https://example.com/{character}/{outfit}/{expression}.avif",
   "parameters": {
-    "character": ["ゆず", "アオイ"],
-    "outfit": ["制服", "私服", "パジャマ", "水着"],
-    "expression": ["笑顔", "怒り", "悲しみ", "通常", "困惑"]
+    "character": [
+      "ゆず"
+    ],
+    "outfit": [
+      "制服",
+      "私服",
+      "パジャマ"
+    ],
+    "expression": [
+      "笑顔",
+      "怒り",
+      "悲しみ",
+      "通常"
+    ]
   }
 }' aria-label="小説シーンビジュアライザー設定"></textarea>
+                        <div style="margin-top: 15px;">
+                            <label for="gemini-image-position-select">画像の表示位置:</label>
+                            <select id="gemini-image-position-select" aria-label="画像の表示位置">
+                                <option value="head">先頭に表示</option>
+                                <option value="middle">中間（文章の切れ目）に表示</option>
+                                <option value="tail">文末に表示</option>
+                            </select>
+                        </div>
                         <button id="gemini-validate-config-btn" type="button" class="settings-action-button"
                             style="width: 100%; margin-top: -5px; margin-bottom: 5px;">設定を検証</button>
                         <p id="gemini-config-validation-result"
@@ -6421,6 +6442,7 @@
             geminiNovelVisualizerConfigTextarea: document.getElementById('gemini-novel-visualizer-config'),
             geminiValidateConfigBtn: document.getElementById('gemini-validate-config-btn'),
             geminiConfigValidationResult: document.getElementById('gemini-config-validation-result'),
+            geminiImagePositionSelect: document.getElementById('gemini-image-position-select'),
 
             deepSeekSystemPromptDefaultTextarea: document.getElementById('deepseek-system-prompt-default'),
             deepSeekEnableSystemPromptDefaultCheckbox: document.getElementById('deepseek-enable-system-prompt-default'),
@@ -6762,6 +6784,7 @@
                 geminiEnableGrounding: false,
                 geminiEnableNovelVisualizer: false,
                 geminiNovelVisualizerConfig: '',
+                geminiNovelVisualizerImagePosition: 'head',
                 deepSeekApiKey: '',
                 deepSeekModelName: DEFAULT_DEEPSEEK_MODEL,
                 deepSeekAdditionalModels: '',
@@ -9113,6 +9136,7 @@
                 elements.geminiEnableGroundingToggle.checked = state.settings.geminiEnableGrounding;
                 elements.geminiEnableNovelVisualizerCheckbox.checked = state.settings.geminiEnableNovelVisualizer;
                 elements.geminiNovelVisualizerConfigTextarea.value = state.settings.geminiNovelVisualizerConfig || '';
+                elements.geminiImagePositionSelect.value = state.settings.geminiNovelVisualizerImagePosition || 'head';
                 elements.geminiConfigValidationResult.textContent = ''; // 初期化時は検証結果をクリア
 
                 elements.deepSeekSystemPromptDefaultTextarea.value = state.settings.deepSeekSystemPrompt || '';
@@ -13505,11 +13529,18 @@
                         console.log("[Debug] ステップD: rawContentFromApiからfinalContentを生成:", `「${finalContent.substring(0, 100)}...」`);
 
 
+                        // ▼▼▼ ここから変更 ▼▼▼
                         if (imageUrlMarkdown) {
-                            finalContent = `${imageUrlMarkdown}\n\n${finalContent}`;
-                            // ★ログ4: imageUrlを結合した直後
+                            // ステップ1で保存した設定値を取得
+                            const imagePosition = state.settings.geminiNovelVisualizerImagePosition || 'head';
+                            // ステップ2で作成した関数を呼び出す
+                            finalContent = imageInsertionUtils.insertImageMarkdown(imageUrlMarkdown, finalContent, imagePosition);
+                            // ログを出力して確認
+                            console.log(`[handleSend] 画像を '${imagePosition}' の位置に挿入しました。`);
+                            // ★ログ4: imageUrlを結合した直後（内容は変わりますが、確認のために残します）
                             console.log("[Debug] ステップE: imageUrlを結合後のfinalContent:", `「${finalContent.substring(0, 100)}...」`);
                         }
+                        // ▲▲▲ ここまで変更 ▲▲▲
                     }
 
                     const finishReasonForProofreading = finalMetadata.finishReason;
@@ -14223,6 +14254,7 @@
                 newSettings.geminiEnableGrounding = elements.geminiEnableGroundingToggle.checked;
                 newSettings.geminiEnableNovelVisualizer = elements.geminiEnableNovelVisualizerCheckbox.checked;
                 newSettings.geminiNovelVisualizerConfig = elements.geminiNovelVisualizerConfigTextarea.value;
+                newSettings.geminiNovelVisualizerImagePosition = elements.geminiImagePositionSelect.value;
 
                 newSettings.deepSeekSystemPrompt = elements.deepSeekSystemPromptDefaultTextarea.value.trim();
                 newSettings.deepSeekEnableSystemPromptDefault = elements.deepSeekEnableSystemPromptDefaultCheckbox.checked;
@@ -17234,6 +17266,68 @@
                 return response;
             },
         };
+
+        // ▼▼▼ ここから追加 ▼▼▼
+        const imageInsertionUtils = {
+            /**
+             * 画像のMarkdownを指定されたテキスト本文の中間に挿入します。
+             * 自然な切れ目（連続した改行）を探して挿入を試みます。
+             * @param {string} imageMarkdown - 挿入する画像のMarkdown文字列。
+             * @param {string} bodyText - 挿入先のテキスト本文。
+             * @returns {string} 画像が挿入された新しいテキスト。
+             */
+            insertInMiddle(imageMarkdown, bodyText) {
+                // 2つ以上の連続した改行を区切り文字として段落に分割
+                const paragraphs = bodyText.split(/\n\n+/);
+
+                // 段落が1つ以下（切れ目がない）場合は、文末に挿入するフォールバック処理
+                if (paragraphs.length <= 1) {
+                    return `${bodyText}\n\n${imageMarkdown}`;
+                }
+
+                // 配列の中央のインデックスを計算
+                const middleIndex = Math.floor(paragraphs.length / 2);
+
+                // 前半部分の段落を結合
+                const firstHalf = paragraphs.slice(0, middleIndex).join('\n\n');
+                // 後半部分の段落を結合
+                const secondHalf = paragraphs.slice(middleIndex).join('\n\n');
+
+                // 前半、画像、後半の順で結合して返す
+                return `${firstHalf}\n\n${imageMarkdown}\n\n${secondHalf}`;
+            },
+
+            /**
+             * 指定された位置に画像のMarkdownをテキスト本文に挿入します。
+             * @param {string} imageMarkdown - 挿入する画像のMarkdown文字列。
+             * @param {string} bodyText - 挿入先のテキスト本文。
+             * @param {string} position - 挿入位置 ('head', 'middle', 'tail')。
+             * @returns {string} 画像が挿入された最終的なテキスト。
+             */
+            insertImageMarkdown(imageMarkdown, bodyText, position) {
+                // 本文が空の場合は、画像Markdownだけを返す
+                if (!bodyText || bodyText.trim() === '') {
+                    return imageMarkdown;
+                }
+
+                switch (position) {
+                    case 'head':
+                        // 先頭に挿入
+                        return `${imageMarkdown}\n\n${bodyText}`;
+                    case 'tail':
+                        // 文末に挿入
+                        return `${bodyText}\n\n${imageMarkdown}`;
+                    case 'middle':
+                        // 中間に挿入する専用の関数を呼び出す
+                        return this.insertInMiddle(imageMarkdown, bodyText);
+                    default:
+                        // 不明な値が来た場合の安全策として先頭に挿入
+                        console.warn(`不明な画像表示位置'${position}'が指定されました。先頭に表示します。`);
+                        return `${imageMarkdown}\n\n${bodyText}`;
+                }
+            }
+        };
+        // ▲▲▲ ここまで追加 ▲▲▲
         const proofreadingApiConfigUtils = {
             MAX_CONFIGS: 10,
 
