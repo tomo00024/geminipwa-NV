@@ -6299,6 +6299,7 @@
         const DEFAULT_THOUGHT_SUMMARY_OPACITY = 0.65;
         const DEFAULT_THOUGHT_SUMMARY_FONT_SIZE = 13;
         const DEFAULT_TWIN_ENGINE_SUMMARIZE_AFTER_TURNS = 3;
+        const BASE_IMAGE_URL = 'https://dashing-fenglisu-4c8446.netlify.app';
 
         const ALLOWED_LLMAGGREGATOR_DOMAINS = [
             'openrouter.ai',
@@ -6666,11 +6667,6 @@
             toggleButtonBottomTextExpandInput: document.getElementById('toggle-button-bottom-text-expand'),
             toggleButtonTopOpacityInput: document.getElementById('toggle-button-top-opacity'),
             geminiGroundingParam: document.getElementById('gemini-grounding-param'),
-            // ▼ここから追加▼
-            enableImageUrlReplacementCheckbox: document.getElementById('enable-image-url-replacement'),
-            imageUrlReplacementOptionsDiv: document.getElementById('image-url-replacement-options'),
-            imageUrlReplacementBaseInput: document.getElementById('image-url-replacement-base'),
-            // ▲ここまで追加▲
             geminiThoughtsParam: document.getElementById('gemini-thoughts-param'),
             geminiPseudoStreamingParam: document.getElementById('gemini-pseudo-streaming-param'),
             deepSeekThoughtsParam: document.getElementById('deepseek-thoughts-param'),
@@ -6754,10 +6750,6 @@
                 geminiConcatDummyModel: false,
                 geminiPseudoStreaming: false,
                 geminiEnableGrounding: false,
-                // ▼ここから追加▼
-                enableImageUrlReplacement: false, // デフォルトは無効
-                imageUrlReplacementBase: '',      // ベースURLは空
-                // ▲ここまで追加▲
                 deepSeekApiKey: '',
                 deepSeekModelName: DEFAULT_DEEPSEEK_MODEL,
                 deepSeekAdditionalModels: '',
@@ -7623,10 +7615,9 @@
         const uiUtils = {
             _sanitizeAndParseMarkdown(content) {
                 // ▼ここから変更▼
-                if (typeof content === 'string' && state.settings.enableImageUrlReplacement && state.settings.imageUrlReplacementBase) {
-                    // {{画像URL}} というプレースホルダーを、設定されたベースURLに置換する
-                    const baseUrl = state.settings.imageUrlReplacementBase;
-                    content = content.replace(/\{\{画像URL\}\}/g, baseUrl);
+                if (typeof content === 'string') {
+                    // {{画像URL}} というプレースホルダーを実際のベースURLに置換する
+                    content = content.replace(/\{\{画像URL\}\}/g, BASE_IMAGE_URL);
                 }
                 // ▲ここまで変更▲
                 if (typeof DOMPurify === 'undefined') {
@@ -9113,10 +9104,6 @@
                 elements.geminiConcatDummyModelCheckbox.checked = state.settings.geminiConcatDummyModel;
                 elements.geminiPseudoStreamingCheckbox.checked = state.settings.geminiPseudoStreaming;
                 elements.geminiEnableGroundingToggle.checked = state.settings.geminiEnableGrounding;
-                // ▼「elements.geminiEnableGroundingToggle.checked = ...」の行の下あたりに追加▼
-                elements.enableImageUrlReplacementCheckbox.checked = state.settings.enableImageUrlReplacement;
-                elements.imageUrlReplacementBaseInput.value = state.settings.imageUrlReplacementBase || '';
-                elements.imageUrlReplacementOptionsDiv.classList.toggle('hidden', !state.settings.enableImageUrlReplacement);
 
                 elements.deepSeekSystemPromptDefaultTextarea.value = state.settings.deepSeekSystemPrompt || '';
                 elements.deepSeekEnableSystemPromptDefaultCheckbox.checked = state.settings.deepSeekEnableSystemPromptDefault;
@@ -11213,10 +11200,6 @@
                 });
                 elements.enableProofreadingCheckbox.addEventListener('change', () => {
                     elements.proofreadingOptionsDiv.classList.toggle('hidden', !elements.enableProofreadingCheckbox.checked);
-                });
-                // ▼「elements.geminiEnableGroundingToggle.addEventListener(...)」の(もしあれば)下あたりに追加▼
-                elements.enableImageUrlReplacementCheckbox.addEventListener('change', () => {
-                    elements.imageUrlReplacementOptionsDiv.classList.toggle('hidden', !elements.enableImageUrlReplacementCheckbox.checked);
                 });
             },
             handlePopState(event) {
@@ -14041,9 +14024,6 @@
                 newSettings.geminiConcatDummyModel = elements.geminiConcatDummyModelCheckbox.checked;
                 newSettings.geminiPseudoStreaming = elements.geminiPseudoStreamingCheckbox.checked;
                 newSettings.geminiEnableGrounding = elements.geminiEnableGroundingToggle.checked;
-                // ▼「newSettings.geminiEnableGrounding = ...」の行の下あたりに追加▼
-                newSettings.enableImageUrlReplacement = elements.enableImageUrlReplacementCheckbox.checked;
-                newSettings.imageUrlReplacementBase = elements.imageUrlReplacementBaseInput.value.trim();
 
                 newSettings.deepSeekSystemPrompt = elements.deepSeekSystemPromptDefaultTextarea.value.trim();
                 newSettings.deepSeekEnableSystemPromptDefault = elements.deepSeekEnableSystemPromptDefaultCheckbox.checked;
