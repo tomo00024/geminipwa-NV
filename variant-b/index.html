@@ -7624,9 +7624,18 @@
             _sanitizeAndParseMarkdown(content) {
                 // ▼ここから変更▼
                 if (typeof content === 'string' && state.settings.enableImageUrlReplacement && state.settings.imageUrlReplacementBase) {
-                    // {{画像URL}} というプレースホルダーを、設定されたベースURLに置換する
                     const baseUrl = state.settings.imageUrlReplacementBase;
-                    content = content.replace(/\{\{画像URL\}\}/g, baseUrl);
+
+                    // 正規表現で、考えられる複数のプレースホルダーパターンに一致させる
+                    // パターン解説:
+                    // /\{\{ ... \}\}/g : グローバルで {{...}} を探す
+                    // \s* : 0個以上のスペース
+                    // (?: ... ) : グループ化するが、キャプチャはしない
+                    // 画像URL|image[-_]?url : 「画像URL」または「image」「-か_が0か1個」「url」
+                    // i : 大文字・小文字を区別しない
+                    const placeholderRegex = /\{\{\s*(?:画像URL|image[-_]?url)\s*\}\}/gi;
+
+                    content = content.replace(placeholderRegex, baseUrl);
                 }
                 // ▲ここまで変更▲
                 if (typeof DOMPurify === 'undefined') {
