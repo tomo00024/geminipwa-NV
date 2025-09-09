@@ -7624,14 +7624,9 @@
             _sanitizeAndParseMarkdown(content) {
                 // ▼ここから変更▼
                 if (typeof content === 'string' && state.settings.enableImageUrlReplacement && state.settings.imageUrlReplacementBase) {
-                    // {{...}} というプレースホルダーを、設定されたベースURLに置換する
+                    // {{IMG}} というプレースホルダーを、設定されたベースURLに置換する
                     const baseUrl = state.settings.imageUrlReplacementBase;
-
-                    // 正規表現で表記揺れを吸収する
-                    // {{img_url}}, {{Image URL}}, {{画像 URL}} などに対応
-                    const placeholderRegex = /\{\{\s*(?:画像|image|img|url)[-_ ]*(?:url)?\s*\}\}/gi;
-
-                    content = content.replace(placeholderRegex, baseUrl);
+                    content = content.replace(/\{\{IMG\}\}/g, baseUrl);
                 }
                 // ▲ここまで変更▲
 
