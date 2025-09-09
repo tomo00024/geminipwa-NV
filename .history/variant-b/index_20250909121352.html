@@ -7624,10 +7624,10 @@
             _sanitizeAndParseMarkdown(content) {
                 // ▼ここから変更▼
                 if (typeof content === 'string' && state.settings.enableImageUrlReplacement && state.settings.imageUrlReplacementBase) {
-                    // {{IMG}} や {{画像}} といったプレースホルダーを、設定されたベースURLに置換する
-                    // /\{\{(img|画像)\}\}/gi という正規表現で、大文字・小文字を区別せずにマッチさせる
+                    // {{image}} や {{画像}} といったプレースホルダー（大文字・小文字を区別しない）を、設定されたベースURLに置換する
                     const baseUrl = state.settings.imageUrlReplacementBase;
-                    content = content.replace(/\{\{(img|画像)\}\}/gi, baseUrl);
+                    // 正規表現を /\{\{(?:image|画像)\}\}/gi に変更
+                    content = content.replace(/\{\{(?:image|画像|img)\}\}/gi, baseUrl);
                 }
                 // ▲ここまで変更▲
 
@@ -7637,7 +7637,7 @@
                     return div.innerHTML;
                 }
 
-                // ※元のコードに重複していたため、片方を削除しました
+                // ※元コードで重複していたため、片方を削除しました
                 const rawHtml = marked.parse(content || '');
                 const cleanHtml = DOMPurify.sanitize(rawHtml, {
                     ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'pre', 'code', 'a', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'hr', 'img'],
@@ -7645,6 +7645,7 @@
                 });
                 return cleanHtml;
             },
+
             renderChatMessages(maintainScroll = false) {
                 const mainContent = elements.chatScreen.querySelector('.main-content');
                 const oldScrollTop = maintainScroll ? mainContent.scrollTop : null;
