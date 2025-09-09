@@ -7638,7 +7638,7 @@
                     // --- ステップ2: プレースホルダーを正しいベースURLに置換 ---
                     content = content.replace(/\{\{(img|画像|asset|image)\}\}/gi, baseUrl);
 
-                    // --- ステップ3: Markdownを対象に、パスをクリーニング ---
+                    // --- ステップ3: Markdownの画像URLを対象に、パスをクリーニング ---
                     content = content.replace(/!\[(.*?)\]\((.*?)\)/g, (match, altText, url) => {
                         try {
                             const urlObject = new URL(url);
