@@ -7625,7 +7625,7 @@
                 if (typeof content === 'string' && state.settings.enableImageUrlReplacement && state.settings.imageUrlReplacementBase) {
                     const baseUrl = state.settings.imageUrlReplacementBase;
                     // {{img}}, {{画像}}, {{asset}} のいずれにも対応するよう正規表現を修正
-                    content = content.replace(/\{\{(img|画像|asset|image)\}\}/gi, baseUrl);
+                    content = content.replace(/\{\{(img|画像|asset)\}\}/gi, baseUrl);
                     // Markdownの画像URLを対象に、パスをクリーニングする処理
                     content = content.replace(/!\[(.*?)\]\((.*?)\)/g, (match, altText, url) => {
                         try {

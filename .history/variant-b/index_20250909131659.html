@@ -7625,60 +7625,38 @@
                 if (typeof content === 'string' && state.settings.enableImageUrlReplacement && state.settings.imageUrlReplacementBase) {
                     const baseUrl = state.settings.imageUrlReplacementBase;
                     // {{img}}, {{画像}}, {{asset}} のいずれにも対応するよう正規表現を修正
-                    content = content.replace(/\{\{(img|画像|asset|image)\}\}/gi, baseUrl);
+                    content = content.replace(/\{\{(img|画像|asset)\}\}/gi, baseUrl);
                     // Markdownの画像URLを対象に、パスをクリーニングする処理
                     content = content.replace(/!\[(.*?)\]\((.*?)\)/g, (match, altText, url) => {
                         try {
+                            // URLオブジェクトを使って、パスとファイル名を安全に分離
                             const urlObject = new URL(url);
-                            let pathname = urlObject.pathname; // 例: /黒.髪/私-服/笑顔avif
+                            const pathname = urlObject.pathname; // 例: /黒-髪/私 服/笑顔.avif
 
-                            // --- クリーニング処理 ---
+                            // 1. パス部分のクリーニング処理
+                            let cleanedPathname = pathname
+                                .replace(/[\s　-]/g, '')   // パターン1: 半角・全角スペースとハイフンを全て削除
+                                .replace(/\/{2,}/g, '/')   // パターン2: 連続するスラッシュを1つに正規化
+                                .replace(/／/g, '/');      // パターン2: 全角スラッシュを半角に置換
 
-                            // 1. ファイル名とパスを分離
-                            const lastSlashIndex = pathname.lastIndexOf('/');
-                            let pathPart = (lastSlashIndex !== -1) ? pathname.substring(0, lastSlashIndex) : '';
-                            let filenamePart = (lastSlashIndex !== -1) ? pathname.substring(lastSlashIndex + 1) : pathname;
-
-                            // 2. パス部分のクリーニング（ハイフン、スペース、ドットを除去）
-                            pathPart = pathPart
-                                .replace(/[\s　.-]/g, '')   // パターン1: 半角・全角スペース、ハイフン、ドットを全て削除
-                                .replace(/\/{2,}/g, '/')   // パターン2: 連続スラッシュを正規化
-                                .replace(/／/g, '/');      // パターン2: 全角スラッシュを半角に
-
-                            // 3. ファイル名部分のクリーニング
-                            // 3a. 拡張子部分を特定し、それ以外のドットを除去
-                            const lastDotIndex = filenamePart.lastIndexOf('.');
-                            let nameWithoutExt, extension;
-                            if (lastDotIndex !== -1) {
-                                nameWithoutExt = filenamePart.substring(0, lastDotIndex);
-                                extension = filenamePart.substring(lastDotIndex); // .avif
+                            // 2. 拡張子部分のクリーニング処理（小文字化）
+                            const lastSlashIndex = cleanedPathname.lastIndexOf('/');
+                            if (lastSlashIndex !== -1) {
+                                const filename = cleanedPathname.substring(lastSlashIndex + 1);
+                                const path = cleanedPathname.substring(0, lastSlashIndex + 1);
+                                cleanedPathname = path + filename.toLowerCase(); // ファイル名（拡張子含む）を小文字に統一
                             } else {
-                                // 拡張子がない場合（例: 笑顔avif）、ファイル名の末尾から拡張子らしき部分を分離
-                                const potentialExt = filenamePart.slice(-4);
-                                if (potentialExt.toLowerCase() === 'avif' || potentialExt.toLowerCase() === 'webp' || potentialExt.toLowerCase() === 'png' || potentialExt.toLowerCase() === 'jpg') {
-                                    nameWithoutExt = filenamePart.slice(0, -4);
-                                    extension = '.' + potentialExt;
-                                } else {
-                                    nameWithoutExt = filenamePart;
-                                    extension = '.avif'; // ドットも拡張子もない場合はデフォルトを付与
-                                }
+                                cleanedPathname = cleanedPathname.toLowerCase();
                             }
 
-                            // 3b. 拡張子を除いたファイル名から不要な文字を除去
-                            nameWithoutExt = nameWithoutExt.replace(/[\s　.-]/g, '');
+                            // 3. 新しいURLを再構築
+                            const newUrl = urlObject.origin + cleanedPathname;
 
-                            // 3c. クリーンなファイル名を再構築
-                            const cleanedFilename = (nameWithoutExt + extension).toLowerCase();
-
-                            // 4. 新しいパス名を構築
-                            const cleanedPathname = pathPart + '/' + cleanedFilename;
-
-                            // 5. 新しいURLを再構築
-                            const newUrl = urlObject.origin + cleanedPathname.replace(/\/{2,}/g, '/'); // 念のため重複スラッシュを再度除去
-
+                            // 4. 正しいMarkdown形式で返す
                             return `![${altText}](${newUrl})`;
 
                         } catch (e) {
+                            // URLの形式が不正で解析に失敗した場合は、元の文字列をそのまま返す
                             return match;
                         }
                     });
