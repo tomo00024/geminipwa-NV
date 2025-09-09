@@ -7623,12 +7623,13 @@
         const uiUtils = {
             _sanitizeAndParseMarkdown(content) {
                 // ▼▼▼ デバッグ用のコードを追加 ▼▼▼
-                console.log("--- Image Replacement Check ---");
-                if (window.state && window.state.settings) {
-                    console.log("enableImageUrlReplacement の値:", state.settings.enableImageUrlReplacement);
-                    console.log("imageUrlReplacementBase の値:", state.settings.imageUrlReplacementBase);
+                console.log("--- Debugging Image Replacement ---");
+                console.log("Content type:", typeof content);
+                if (window.state && window.state.settings) { // stateが存在するか確認
+                    console.log("Enable replacement:", state.settings.enableImageUrlReplacement);
+                    console.log("Base URL:", state.settings.imageUrlReplacementBase);
                 } else {
-                    console.log("state.settings オブジェクトが見つかりません。");
+                    console.log("state.settings is not available.");
                 }
                 // ▲▲▲ デバッグ用のコードを追加 ▲▲▲
 
