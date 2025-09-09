@@ -7634,8 +7634,7 @@
                     // IMG : 「IMG」
                     // 画像(?:URL)? : 「画像」または「画像URL」
                     // image(?:[-_]?url)? : 「image」「image_url」「image-url」「imageurl」
-                    // assetを基本とし、以前のパターンも保険として残す正規表現
-                    const placeholderRegex = /\{\{\s*(?:asset|media|IMG|画像(?:URL)?|image(?:[-_]?url)?)\s*\}\}/gi;
+                    const placeholderRegex = /\{\{\s*(?:IMG|画像(?:URL)?|image(?:[-_]?url)?)\s*\}\}/gi;
 
                     content = content.replace(placeholderRegex, baseUrl);
                 }
