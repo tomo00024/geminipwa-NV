@@ -7797,153 +7797,142 @@
         // ▲▲▲ ここまで追加 ▲▲▲
         const uiUtils = {
             _sanitizeAndParseMarkdown(content) {
-                // state.settings.enableImageUrlReplacement と state.settings.imageUrlReplacementBase のチェックを修正
-                if (typeof content === 'string' && state.settings.enableImageUrlReplacement) {
+                if (typeof content === 'string' && state.settings.enableImageUrlReplacement && state.settings.imageUrlReplacementBase) {
+                    const baseUrl = state.settings.imageUrlReplacementBase;
 
-                    // ▼▼▼ ここから変更 ▼▼▼
-                    // 優先順位に従ってベースURLを決定
-                    // 1. チャット固有のベースURL (state.currentChatBaseUrl)
-                    // 2. グローバル設定のベースURL (state.settings.imageUrlReplacementBase)
-                    const baseUrl = state.currentChatBaseUrl || state.settings.imageUrlReplacementBase;
+                    // --- ステップ0: Markdown構文の軽微なエラーを修正 ---
+                    // ![alt text]-(...) のような、角括弧と丸括弧の間の不要な文字を除去する
+                    content = content.replace(/(\!\[.*?\])\s*[-_.,:;*]?\s*(\(.*?\))/g, '$1$2');
 
-                    // ベースURLが確定した場合のみ置換処理を実行
-                    if (baseUrl) {
-                        console.log(`[Markdown Img] Using Base URL for replacement: ${baseUrl}`);
-                        // --- ステップ0: Markdown構文の軽微なエラーを修正 ---
-                        // ![alt text]-(...) のような、角括弧と丸括弧の間の不要な文字を除去する
-                        content = content.replace(/(\!\[.*?\])\s*[-_.,:;*]?\s*(\(.*?\))/g, '$1$2');
+                    // --- ステップ1: AIが生成したフルURLをプレースホルダー形式に強制変換 ---
+                    // AIが生成する多様なURLの崩れに対応するための修正
+                    content = content.replace(/!\[(.*?)\]\((https?)([:.\/\s　-]*)(.*?)\)/gi, (match, altText, protocol, separator, restOfUrl) => {
+                        // separator には ":", "://", "-", ".-", "s" など、プロトコルとホスト名の間のあらゆる文字が入る
+                        // restOfUrl には "example.com/image.png" のような、ホスト名以降の部分が入る
 
-                        // --- ステップ1: AIが生成したフルURLをプレースホルダー形式に強制変換 ---
-                        // AIが生成する多様なURLの崩れに対応するための修正
-                        content = content.replace(/!\[(.*?)\]\((https?)([:.\/\s　-]*)(.*?)\)/gi, (match, altText, protocol, separator, restOfUrl) => {
-                            // separator には ":", "://", "-", ".-", "s" など、プロトコルとホスト名の間のあらゆる文字が入る
-                            // restOfUrl には "example.com/image.png" のような、ホスト名以降の部分が入る
+                        let cleanRestOfUrl = restOfUrl;
 
-                            let cleanRestOfUrl = restOfUrl;
+                        // 先頭にある可能性のある不要なスラッシュや文字を削除
+                        // 例: "//example.com" -> "example.com"
+                        cleanRestOfUrl = cleanRestOfUrl.replace(/^[\/.\s　-]+/, '');
 
-                            // 先頭にある可能性のある不要なスラッシュや文字を削除
-                            // 例: "//example.com" -> "example.com"
-                            cleanRestOfUrl = cleanRestOfUrl.replace(/^[\/.\s　-]+/, '');
+                        // ホスト名以降のパス部分を取得
+                        const slashIndex = cleanRestOfUrl.indexOf('/');
 
-                            // ホスト名以降のパス部分を取得
-                            const slashIndex = cleanRestOfUrl.indexOf('/');
+                        // AIがホスト名を省略してパスだけを生成した場合の対策 (例: /れな/部屋着/通常.avif)
+                        // パスから始まり、ドットを含まない場合はホスト名がないと判断
+                        if (cleanRestOfUrl.startsWith('/') && !cleanRestOfUrl.substring(1).includes('.')) {
+                            const pathWithQuery = cleanRestOfUrl;
+                            return `![${altText}]({{img}}${pathWithQuery})`;
+                        }
 
-                            // AIがホスト名を省略してパスだけを生成した場合の対策 (例: /れな/部屋着/通常.avif)
-                            // パスから始まり、ドットを含まない場合はホスト名がないと判断
-                            if (cleanRestOfUrl.startsWith('/') && !cleanRestOfUrl.substring(1).includes('.')) {
-                                const pathWithQuery = cleanRestOfUrl;
-                                return `![${altText}]({{img}}${pathWithQuery})`;
-                            }
+                        // 通常のホスト名を含む場合の処理
+                        if (slashIndex !== -1) {
+                            const pathWithQuery = cleanRestOfUrl.substring(slashIndex);
+                            return `![${altText}]({{img}}${pathWithQuery})`;
+                        } else {
+                            // パスがなくファイル名(またはホスト名)だけの場合 (例: image.png や example.com)
+                            // これをパスと見なして先頭にスラッシュを追加する
+                            return `![${altText}]({{img}}/${cleanRestOfUrl})`;
+                        }
+                    });
+                    // --- ステップ2: プレースホルダーを正しいベースURLに置換 ---
+                    content = content.replace(/\{\{(img|画像|asset|image)\}\}/gi, baseUrl);
 
-                            // 通常のホスト名を含む場合の処理
-                            if (slashIndex !== -1) {
-                                const pathWithQuery = cleanRestOfUrl.substring(slashIndex);
-                                return `![${altText}]({{img}}${pathWithQuery})`;
+                    // --- ステップ3: Markdownを対象に、パスをクリーニング ---
+                    content = content.replace(/!\[(.*?)\]\((.*?)(?:\s+"(.*?)")?\)/g, (match, altText, url, title) => {
+                        // ▼▼▼ ここから変更 ▼▼▼
+                        console.groupCollapsed(`[Markdown Img] Processing URL: ${url}`);
+                        try {
+                            const characterNames = state.settings.characterNamesList;
+                            const normalizationMap = getNormalizationMap(characterNames);
+
+                            const urlObject = new URL(url);
+                            // パス名を取得した直後にデコードする
+                            let pathname = decodeURIComponent(urlObject.pathname);
+                            // ▲▲▲ ここまで変更 ▲▲▲
+
+                            const lastSlashIndex = pathname.lastIndexOf('/');
+                            let pathPart = (lastSlashIndex > 0) ? pathname.substring(0, lastSlashIndex) : '';
+                            let filenamePart = (lastSlashIndex !== -1) ? pathname.substring(lastSlashIndex + 1) : pathname;
+
+                            console.log("Original Path:", pathPart);
+                            console.log("Original Filename:", filenamePart);
+
+                            // 3a. まずパスとファイル名から不要な記号をクリーニング
+                            pathPart = pathPart
+                                .replace(/[\s　.-]/g, '')
+                                .replace(/\/{2,}/g, '/')
+                                .replace(/／/g, '/');
+
+                            let nameWithoutExt, extension;
+                            const lastDotIndex = filenamePart.lastIndexOf('.');
+
+                            if (lastDotIndex !== -1) {
+                                nameWithoutExt = filenamePart.substring(0, lastDotIndex);
+                                extension = filenamePart.substring(lastDotIndex);
                             } else {
-                                // パスがなくファイル名(またはホスト名)だけの場合 (例: image.png や example.com)
-                                // これをパスと見なして先頭にスラッシュを追加する
-                                return `![${altText}]({{img}}/${cleanRestOfUrl})`;
-                            }
-                        });
-                        // --- ステップ2: プレースホルダーを正しいベースURLに置換 ---
-                        content = content.replace(/\{\{(img|画像|asset|image)\}\}/gi, baseUrl);
-
-                        // --- ステップ3: Markdownを対象に、パスをクリーニング ---
-                        content = content.replace(/!\[(.*?)\]\((.*?)(?:\s+"(.*?)")?\)/g, (match, altText, url, title) => {
-                            // ▼▼▼ ここから変更 ▼▼▼
-                            console.groupCollapsed(`[Markdown Img] Processing URL: ${url}`);
-                            try {
-                                const characterNames = state.settings.characterNamesList;
-                                const normalizationMap = getNormalizationMap(characterNames);
-
-                                const urlObject = new URL(url);
-                                // パス名を取得した直後にデコードする
-                                let pathname = decodeURIComponent(urlObject.pathname);
-                                // ▲▲▲ ここまで変更 ▲▲▲
-
-                                const lastSlashIndex = pathname.lastIndexOf('/');
-                                let pathPart = (lastSlashIndex > 0) ? pathname.substring(0, lastSlashIndex) : '';
-                                let filenamePart = (lastSlashIndex !== -1) ? pathname.substring(lastSlashIndex + 1) : pathname;
-
-                                console.log("Original Path:", pathPart);
-                                console.log("Original Filename:", filenamePart);
-
-                                // 3a. まずパスとファイル名から不要な記号をクリーニング
-                                pathPart = pathPart
-                                    .replace(/[\s　.-]/g, '')
-                                    .replace(/\/{2,}/g, '/')
-                                    .replace(/／/g, '/');
-
-                                let nameWithoutExt, extension;
-                                const lastDotIndex = filenamePart.lastIndexOf('.');
-
-                                if (lastDotIndex !== -1) {
-                                    nameWithoutExt = filenamePart.substring(0, lastDotIndex);
-                                    extension = filenamePart.substring(lastDotIndex);
+                                const knownExtensions = ['.avif', '.webp', '.png', '.jpg', '.jpeg', '.gif'];
+                                let foundExt = '';
+                                for (const ext of knownExtensions) {
+                                    if (filenamePart.toLowerCase().endsWith(ext.substring(1))) {
+                                        foundExt = ext;
+                                        break;
+                                    }
+                                }
+                                if (foundExt) {
+                                    nameWithoutExt = filenamePart.slice(0, -foundExt.length);
+                                    extension = foundExt;
                                 } else {
-                                    const knownExtensions = ['.avif', '.webp', '.png', '.jpg', '.jpeg', '.gif'];
-                                    let foundExt = '';
-                                    for (const ext of knownExtensions) {
-                                        if (filenamePart.toLowerCase().endsWith(ext.substring(1))) {
-                                            foundExt = ext;
-                                            break;
-                                        }
-                                    }
-                                    if (foundExt) {
-                                        nameWithoutExt = filenamePart.slice(0, -foundExt.length);
-                                        extension = foundExt;
-                                    } else {
-                                        nameWithoutExt = filenamePart;
-                                        extension = '.avif';
-                                    }
+                                    nameWithoutExt = filenamePart;
+                                    extension = '.avif';
                                 }
-
-                                nameWithoutExt = nameWithoutExt.replace(/[\s　.-]/g, '');
-                                extension = extension.replace(/[\s　.-]/g, '');
-
-                                console.log("Cleaned Path for normalization:", pathPart);
-                                console.log("Cleaned Filename (no ext) for normalization:", nameWithoutExt);
-
-                                // 3b. クリーニング後の文字列を固有名詞リストと照合して正規化
-                                if (pathPart && normalizationMap.size > 0) {
-                                    pathPart = pathPart.split('/')
-                                        // ▼▼▼ ここを変更 ▼▼▼
-                                        .map(segment => normalizeName(segment, normalizationMap, state.settings.enableRomajiToKatakanaConversion))
-                                        // ▲▲▲ ここまで変更 ▲▲▲
-                                        .join('/');
-                                }
-                                if (normalizationMap.size > 0) {
-                                    // ▼▼▼ ここを変更 ▼▼▼
-                                    nameWithoutExt = normalizeName(nameWithoutExt, normalizationMap, state.settings.enableRomajiToKatakanaConversion);
-                                    // ▲▲▲ ここまで変更 ▲▲▲
-                                }
-
-                                // 3c. 最終的なファイル名を組み立て
-                                if (extension && !extension.startsWith('.')) {
-                                    extension = '.' + extension;
-                                }
-
-                                const cleanedFilename = (nameWithoutExt + extension).toLowerCase();
-
-                                const cleanedPathname = (pathPart ? pathPart + '/' : '/') + cleanedFilename;
-                                const newUrl = urlObject.origin + cleanedPathname.replace(/\/{2,}/g, '/');
-
-                                console.log("Final Pathname:", cleanedPathname);
-                                console.log("Final URL:", newUrl);
-                                console.groupEnd();
-                                // ▲▲▲ ここまで変更 ▲▲▲
-
-                                return `![${altText}](${newUrl})`;
-                            } catch (e) {
-                                console.error(`[Markdown Img] Error processing URL: ${url}`, e);
-                                console.groupEnd();
-                                return match;
                             }
-                        });
-                    }
-                } else {
-                    console.log('[Markdown Img] No Base URL available (neither chat-specific nor global). Skipping replacement.');
+
+                            nameWithoutExt = nameWithoutExt.replace(/[\s　.-]/g, '');
+                            extension = extension.replace(/[\s　.-]/g, '');
+
+                            console.log("Cleaned Path for normalization:", pathPart);
+                            console.log("Cleaned Filename (no ext) for normalization:", nameWithoutExt);
+
+                            // 3b. クリーニング後の文字列を固有名詞リストと照合して正規化
+                            if (pathPart && normalizationMap.size > 0) {
+                                pathPart = pathPart.split('/')
+                                    // ▼▼▼ ここを変更 ▼▼▼
+                                    .map(segment => normalizeName(segment, normalizationMap, state.settings.enableRomajiToKatakanaConversion))
+                                    // ▲▲▲ ここまで変更 ▲▲▲
+                                    .join('/');
+                            }
+                            if (normalizationMap.size > 0) {
+                                // ▼▼▼ ここを変更 ▼▼▼
+                                nameWithoutExt = normalizeName(nameWithoutExt, normalizationMap, state.settings.enableRomajiToKatakanaConversion);
+                                // ▲▲▲ ここまで変更 ▲▲▲
+                            }
+
+                            // 3c. 最終的なファイル名を組み立て
+                            if (extension && !extension.startsWith('.')) {
+                                extension = '.' + extension;
+                            }
+
+                            const cleanedFilename = (nameWithoutExt + extension).toLowerCase();
+
+                            const cleanedPathname = (pathPart ? pathPart + '/' : '/') + cleanedFilename;
+                            const newUrl = urlObject.origin + cleanedPathname.replace(/\/{2,}/g, '/');
+
+                            console.log("Final Pathname:", cleanedPathname);
+                            console.log("Final URL:", newUrl);
+                            console.groupEnd();
+                            // ▲▲▲ ここまで変更 ▲▲▲
+
+                            return `![${altText}](${newUrl})`;
+                        } catch (e) {
+                            console.error(`[Markdown Img] Error processing URL: ${url}`, e);
+                            console.groupEnd();
+                            return match;
+                        }
+                    });
                 }
+
                 if (typeof DOMPurify === 'undefined') {
                     const div = document.createElement('div');
                     div.textContent = content || '';
@@ -10746,7 +10735,7 @@
              */
             updateChatBaseUrl(messages) {
                 // 新機能のチェックボックスがOFFの場合は何もしない
-                if (!state.settings.enableAutoBaseUrlDetection) {
+                if (!state.settings.enableAutoBase - url - detection) {
                     state.currentChatBaseUrl = null;
                     console.log('[updateChatBaseUrl] Auto-detection is disabled. Base URL cleared.');
                     return;
@@ -10766,19 +10755,19 @@
 
                 console.log('  > Analyzing first user message:', `"${firstUserMessage.content.substring(0, 100)}..."`);
 
-                const urlRegex = /(https?:\/\/[^\s\n　「」『』（）]+)/;
-                const match = firstUserMessage.content.match(urlRegex);
+                // ▼▼▼ ここから変更 ▼▼▼
+                // URLの origin (https://hostname:port) を抽出するための正規表現
+                const urlOriginRegex = /(https?:\/\/[a-zA-Z0-9.-]+(?::\d+)?)/;
+                const match = firstUserMessage.content.match(urlOriginRegex);
 
                 if (match && match[0]) {
                     try {
-                        // ▼▼▼ ここから変更 ▼▼▼
+                        // マッチした部分が有効なURLのオリジンであることを確認
                         const url = new URL(match[0]);
-                        // パスやクエリパラメータを含まない、オリジン部分のみをベースURLとして採用する
-                        const baseUrl = url.origin;
+                        const baseUrl = url.origin; // .origin を使って "https://hostname:port" の部分だけを取得
 
                         state.currentChatBaseUrl = baseUrl;
                         console.log(`  > Base URL detected and set: "${state.currentChatBaseUrl}"`);
-                        // ▲▲▲ ここまで変更 ▲▲▲
 
                     } catch (e) {
                         state.currentChatBaseUrl = null;
@@ -10788,6 +10777,7 @@
                     state.currentChatBaseUrl = null;
                     console.log('  > No valid URL found in the first message. Base URL set to null.');
                 }
+                // ▲▲▲ ここまで変更 ▲▲▲
 
                 console.groupEnd();
             },
