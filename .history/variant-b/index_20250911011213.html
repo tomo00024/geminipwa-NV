@@ -6767,7 +6767,8 @@
                 // ▼ここから追加▼
                 enableImageUrlReplacement: false, // デフォルトは無効
                 imageUrlReplacementBase: '',      // ベースURLは空
-                characterNamesList: 'まゆみ,れな,みのり,葛城,日影,モガドール,メイ,アン,グレア,アストルフォ,ノーデ,レグナ,エルナ,ミネット,アキラ,グートルーネ,ハヅキ,イスタロト,フィー,ダルク,ヤン,ロイス,グライアス,ズィーグス,サンドラ,ジェシカ,アンナ,フェイ,ロディ,ジェイ,エマ,クリス,体操服,スクール水着,水着,初期衣装,マイクロビキニ,制服,全裸,私服,ビキニ,下着,部屋着,ドヤ顔,怪訝,大泣き,恐怖する,驚き,苦痛に耐える,泣く,嫌悪,困る,照れ笑い,にしし,真顔,退屈,挑発する,通常,怒る,発情,微笑,ウィンク,とろ顔,恍惚,快感,睡眠,キス顔,拗ねる,きょとん,悲しみ,眠い,恥じらう,はにかむ,涙ぐむ,嬉し泣き,笑う,てへぺろ,はわわ,悔しい,怯える,上目遣い,満面の笑み,考える,混乱,疲れてる,表情通常,表情微笑,表情哀,表情笑顔,表情怒,表情発情,表情軽い絶頂,表情深い絶頂,表情恐怖,表情驚き,表情照れ,ダンジョンを探索,攻撃,山を探索,宿に宿泊,森を探索,昼の町,町で食事,町で買い物,洞窟を探索,夜の町,昼野営,夜野営,冒険者ギルド,野外で食事,仕事中,水浴び,うろたえる,ニヤリ,むっとする,怪訝な顔,驚く,嫌悪する,号泣する,最高の笑顔,深い絶頂,真剣,赤面して耐える,赤面快感,赤面恐怖,赤面絶望,赤面涙目,赤面蠱惑的な笑み,絶頂する,絶望する,退屈する,恥ずかしがる,通常時,悲しむ,目を閉じる,落ち込む,ゲルヒルデ,リコリス,マルレーネ',                 // ▲ここまで追加▲
+                characterNamesList: '',           // 登場人物リスト (デフォルトは空)
+                // ▲ここまで追加▲
                 deepSeekApiKey: '',
                 deepSeekModelName: DEFAULT_DEEPSEEK_MODEL,
                 deepSeekAdditionalModels: '',
@@ -7716,7 +7717,7 @@
         }
 
         /**
-          * 入力文字列を正規化し、マップに存在すれば対応する固有名詞を返す
+         * 入力文字列を正規化し、マップに存在すれば対応する固有名詞を返す
          * @param {string} input - チェック対象の文字列 (パスのセグメントなど)
          * @param {Map<string, string>} normalizationMap - getNormalizationMapで作成したマップ
          * @returns {string} マッチした固有名詞、または元の入力文字列
@@ -7724,38 +7725,35 @@
         function normalizeName(input, normalizationMap) {
             if (!input || normalizationMap.size === 0) return input;
 
-            console.log(`[normalizeName] Input: "${input}"`);
+            // ▼▼▼ ここから変更 ▼▼▼
+            console.groupCollapsed(`normalizeName: "${input}"`);
 
             // 1. NFKC正規化
             let normalized = input.normalize('NFKC');
-            if (normalized !== input) {
-                console.log(`  > Step 1 (NFKC): "${normalized}"`);
-            }
+            console.log(`1. NFKC正規化:`, normalized);
 
             // 2. ローマ字 -> カタカナ
-            let katakana = romajiToKatakana(normalized);
-            if (katakana !== normalized) {
-                console.log(`  > Step 2 (Romaji to Katakana): "${katakana}"`);
-            }
+            normalized = romajiToKatakana(normalized);
+            console.log(`2. ローマ字→カナ:`, normalized);
 
             // 3. カタカナ -> ひらがな
-            let hiragana = katakanaToHiragana(katakana);
-            if (hiragana !== katakana) {
-                console.log(`  > Step 3 (Katakana to Hiragana): "${hiragana}"`);
-            }
+            normalized = katakanaToHiragana(normalized);
+            console.log(`3. カナ→ひらがな:`, normalized);
 
             // 4. 小文字化して比較
-            const lowercased = hiragana.toLowerCase();
-            console.log(`  > Step 4 (Lookup Key): "${lowercased}"`);
+            const lowercased = normalized.toLowerCase();
+            console.log(`4. 小文字化 (比較用):`, lowercased);
 
             if (normalizationMap.has(lowercased)) {
-                const result = normalizationMap.get(lowercased);
-                console.log(`  > Match found! Replacing with: "${result}"`);
-                return result;
+                const finalName = normalizationMap.get(lowercased);
+                console.log(`✅ マップに一致あり。 "${input}" → "${finalName}"`);
+                console.groupEnd();
+                return finalName;
             }
 
-            console.log(`  > No match found. Returning original cleaned value.`);
-            return input; // マッチしなかった場合は、クリーニング済みの元々の入力を返す
+            console.log(`❌ マップに一致なし。`);
+            console.groupEnd();
+            return input; // マッチしなかった場合は元々の入力を返す
         }
         // ▲▲▲ ここまで追加 ▲▲▲
         const uiUtils = {
@@ -7804,25 +7802,28 @@
 
                     // --- ステップ3: Markdownを対象に、パスをクリーニング ---
                     content = content.replace(/!\[(.*?)\]\((.*?)(?:\s+"(.*?)")?\)/g, (match, altText, url, title) => {
-                        // ▼▼▼ ここから変更 ▼▼▼
-                        console.groupCollapsed(`[Markdown Img] Processing URL: ${url}`);
                         try {
+                            // ▼▼▼ ここから変更 ▼▼▼
+                            console.groupCollapsed(`画像パスの正規化処理: ${url}`);
                             const characterNames = state.settings.characterNamesList;
                             const normalizationMap = getNormalizationMap(characterNames);
-
-                            const urlObject = new URL(url);
-                            // パス名を取得した直後にデコードする
-                            let pathname = decodeURIComponent(urlObject.pathname);
+                            console.log('使用する固有名詞リスト:', characterNames);
                             // ▲▲▲ ここまで変更 ▲▲▲
-
+                            const urlObject = new URL(url);
+                            let pathname = urlObject.pathname;
+                            // ▼▼▼ ここから変更 ▼▼▼
+                            console.log('元のPathname:', pathname);
+                            // ▲▲▲ ここまで変更 ▲▲▲
                             const lastSlashIndex = pathname.lastIndexOf('/');
                             let pathPart = (lastSlashIndex > 0) ? pathname.substring(0, lastSlashIndex) : '';
                             let filenamePart = (lastSlashIndex !== -1) ? pathname.substring(lastSlashIndex + 1) : pathname;
-
-                            console.log("Original Path:", pathPart);
-                            console.log("Original Filename:", filenamePart);
-
-                            // 3a. まずパスとファイル名から不要な記号をクリーニング
+                            // ▼▼▼ ここから変更 ▼▼▼
+                            if (pathPart && normalizationMap.size > 0) {
+                                pathPart = pathPart.split('/')
+                                    .map(segment => normalizeName(segment, normalizationMap))
+                                    .join('/');
+                            }
+                            // ▲▲▲ ここまで変更 ▲▲▲
                             pathPart = pathPart
                                 .replace(/[\s　.-]/g, '')
                                 .replace(/\/{2,}/g, '/')
@@ -7844,49 +7845,44 @@
                                     }
                                 }
                                 if (foundExt) {
-                                    nameWithoutExt = filenamePart.slice(0, -foundExt.length);
+                                    const extLength = foundExt.length - 1;
+                                    nameWithoutExt = filenamePart.slice(0, -extLength);
                                     extension = foundExt;
                                 } else {
                                     nameWithoutExt = filenamePart;
                                     extension = '.avif';
                                 }
                             }
-
-                            nameWithoutExt = nameWithoutExt.replace(/[\s　.-]/g, '');
-                            extension = extension.replace(/[\s　.-]/g, '');
-
-                            console.log("Cleaned Path for normalization:", pathPart);
-                            console.log("Cleaned Filename (no ext) for normalization:", nameWithoutExt);
-
-                            // 3b. クリーニング後の文字列を固有名詞リストと照合して正規化
-                            if (pathPart && normalizationMap.size > 0) {
-                                pathPart = pathPart.split('/')
-                                    .map(segment => normalizeName(segment, normalizationMap))
-                                    .join('/');
-                            }
+                            // ▼▼▼ ここから変更 ▼▼▼
                             if (normalizationMap.size > 0) {
                                 nameWithoutExt = normalizeName(nameWithoutExt, normalizationMap);
                             }
+                            // ▲▲▲ ここまで変更 ▲▲▲
+                            // ▼▼▼ ここから変更 ▼▼▼
+                            // 3c. ファイル名本体と拡張子から不要な記号をクリーニング
+                            nameWithoutExt = nameWithoutExt.replace(/[\s　.-]+$/g, ''); // 末尾の不要記号を除去
+                            extension = extension.replace(/[\s　.-]/g, ''); // 拡張子内の不要記号を全て除去
 
-                            // 3c. 最終的なファイル名を組み立て
+                            // 拡張子の前にドットがなければ補完
                             if (extension && !extension.startsWith('.')) {
                                 extension = '.' + extension;
                             }
 
                             const cleanedFilename = (nameWithoutExt + extension).toLowerCase();
+                            // ▲▲▲ ここまで変更 ▲▲▲
 
                             const cleanedPathname = (pathPart ? pathPart + '/' : '/') + cleanedFilename;
                             const newUrl = urlObject.origin + cleanedPathname.replace(/\/{2,}/g, '/');
-
-                            console.log("Final Pathname:", cleanedPathname);
-                            console.log("Final URL:", newUrl);
+                            // ▼▼▼ ここから変更 ▼▼▼
+                            console.log('正規化後のPathname:', cleanedPathname);
                             console.groupEnd();
                             // ▲▲▲ ここまで変更 ▲▲▲
-
                             return `![${altText}](${newUrl})`;
                         } catch (e) {
-                            console.error(`[Markdown Img] Error processing URL: ${url}`, e);
-                            console.groupEnd();
+                            // ▼▼▼ ここから変更 ▼▼▼
+                            console.warn(`画像パスの処理中にエラーが発生しました: ${e.message}`, { originalMatch: match });
+                            console.groupEnd(); // エラー時もグループを閉じる
+                            // ▲▲▲ ここまで変更 ▲▲▲
                             return match;
                         }
                     });

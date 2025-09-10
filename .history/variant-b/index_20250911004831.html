@@ -6767,7 +6767,8 @@
                 // ▼ここから追加▼
                 enableImageUrlReplacement: false, // デフォルトは無効
                 imageUrlReplacementBase: '',      // ベースURLは空
-                characterNamesList: 'まゆみ,れな,みのり,葛城,日影,モガドール,メイ,アン,グレア,アストルフォ,ノーデ,レグナ,エルナ,ミネット,アキラ,グートルーネ,ハヅキ,イスタロト,フィー,ダルク,ヤン,ロイス,グライアス,ズィーグス,サンドラ,ジェシカ,アンナ,フェイ,ロディ,ジェイ,エマ,クリス,体操服,スクール水着,水着,初期衣装,マイクロビキニ,制服,全裸,私服,ビキニ,下着,部屋着,ドヤ顔,怪訝,大泣き,恐怖する,驚き,苦痛に耐える,泣く,嫌悪,困る,照れ笑い,にしし,真顔,退屈,挑発する,通常,怒る,発情,微笑,ウィンク,とろ顔,恍惚,快感,睡眠,キス顔,拗ねる,きょとん,悲しみ,眠い,恥じらう,はにかむ,涙ぐむ,嬉し泣き,笑う,てへぺろ,はわわ,悔しい,怯える,上目遣い,満面の笑み,考える,混乱,疲れてる,表情通常,表情微笑,表情哀,表情笑顔,表情怒,表情発情,表情軽い絶頂,表情深い絶頂,表情恐怖,表情驚き,表情照れ,ダンジョンを探索,攻撃,山を探索,宿に宿泊,森を探索,昼の町,町で食事,町で買い物,洞窟を探索,夜の町,昼野営,夜野営,冒険者ギルド,野外で食事,仕事中,水浴び,うろたえる,ニヤリ,むっとする,怪訝な顔,驚く,嫌悪する,号泣する,最高の笑顔,深い絶頂,真剣,赤面して耐える,赤面快感,赤面恐怖,赤面絶望,赤面涙目,赤面蠱惑的な笑み,絶頂する,絶望する,退屈する,恥ずかしがる,通常時,悲しむ,目を閉じる,落ち込む,ゲルヒルデ,リコリス,マルレーネ',                 // ▲ここまで追加▲
+                characterNamesList: '',           // 登場人物リスト (デフォルトは空)
+                // ▲ここまで追加▲
                 deepSeekApiKey: '',
                 deepSeekModelName: DEFAULT_DEEPSEEK_MODEL,
                 deepSeekAdditionalModels: '',
@@ -7629,26 +7630,36 @@
                 });
             }
         };
-        // ▼▼▼ ここから追加 ▼▼▼
+        // ▼▼▼ ここから文字表記揺れ補正用のヘルパー関数群を追加 ▼▼▼
+
         /**
-         * カタカナをひらがなに変換する
-         * @param {string} str - 変換元の文字列
+         * ひらがなをカタカナに変換する
+         * @param {string} str 変換する文字列
          * @returns {string} 変換後の文字列
          */
-        function katakanaToHiragana(str) {
-            if (typeof str !== 'string') return '';
-            return str.replace(/[\u30a1-\u30f6]/g, function (match) {
-                return String.fromCharCode(match.charCodeAt(0) - 0x60);
-            });
+        function hiraganaToKatakana(str) {
+            return str.replace(/[\u3041-\u3096]/g, match =>
+                String.fromCharCode(match.charCodeAt(0) + 0x60)
+            );
         }
 
         /**
-         * ローマ字をカタカナに変換する（簡易版）
-         * @param {string} str - 変換元の文字列
+         * カタカナをひらがなに変換する
+         * @param {string} str 変換する文字列
          * @returns {string} 変換後の文字列
          */
+        function katakanaToHiragana(str) {
+            return str.replace(/[\u30a1-\u30f6]/g, match =>
+                String.fromCharCode(match.charCodeAt(0) - 0x60)
+            );
+        }
+
+        /**
+         * 簡易的なローマ字からカタカナへの変換
+         * @param {string} str 変換するローマ字文字列
+         * @returns {string} 変換後のカタカナ文字列
+         */
         function romajiToKatakana(str) {
-            if (typeof str !== 'string') return '';
             const romajiMap = {
                 'a': 'ア', 'i': 'イ', 'u': 'ウ', 'e': 'エ', 'o': 'オ',
                 'ka': 'カ', 'ki': 'キ', 'ku': 'ク', 'ke': 'ケ', 'ko': 'コ',
@@ -7678,86 +7689,39 @@
                 'pya': 'ピャ', 'pyu': 'ピュ', 'pyo': 'ピョ',
                 '-': 'ー'
             };
-            let result = str;
-            // 3文字、2文字、1文字の順で置換
-            for (let len = 3; len >= 1; len--) {
-                for (let i = 0; i <= result.length - len; i++) {
-                    const sub = result.substring(i, i + len);
-                    if (romajiMap[sub]) {
-                        result = result.substring(0, i) + romajiMap[sub] + result.substring(i + len);
+
+            let result = '';
+            let i = 0;
+            str = str.toLowerCase();
+
+            while (i < str.length) {
+                let found = false;
+                for (let len = 3; len >= 1; len--) {
+                    if (i + len <= str.length) {
+                        const sub = str.substring(i, i + len);
+                        if (romajiMap[sub]) {
+                            result += romajiMap[sub];
+                            i += len;
+                            found = true;
+                            break;
+                        }
                     }
                 }
+                if (!found) {
+                    // 促音 (っ) の処理
+                    if (i + 1 < str.length && str[i] !== 'n' && str[i] === str[i + 1]) {
+                        result += 'ッ';
+                        i++;
+                    } else {
+                        result += str[i];
+                    }
+                    i++;
+                }
             }
-            // 促音の処理 (簡易版: 子音の連続)
-            result = result.replace(/([bcdfghjklmpqrstvwxyz])\1/gi, 'ッ$1');
             return result;
         }
 
-        /**
-         * 固有名詞リストから正規化マップを作成する
-         * @param {string} namesList - カンマ区切りの固有名詞リスト
-         * @returns {Map<string, string>} 正規化された名前をキー、元の名前を値とするマップ
-         */
-        function getNormalizationMap(namesList) {
-            const map = new Map();
-            if (!namesList) return map;
-            const names = namesList.split(',').map(n => n.trim()).filter(Boolean);
-
-            for (const originalName of names) {
-                const nfkcName = originalName.normalize('NFKC');
-                const hiraganaName = katakanaToHiragana(nfkcName);
-
-                // 元の名前、NFKC正規化、ひらがな化したものをキーとして登録
-                map.set(originalName.toLowerCase(), originalName);
-                map.set(nfkcName.toLowerCase(), originalName);
-                map.set(hiraganaName.toLowerCase(), originalName);
-            }
-            return map;
-        }
-
-        /**
-          * 入力文字列を正規化し、マップに存在すれば対応する固有名詞を返す
-         * @param {string} input - チェック対象の文字列 (パスのセグメントなど)
-         * @param {Map<string, string>} normalizationMap - getNormalizationMapで作成したマップ
-         * @returns {string} マッチした固有名詞、または元の入力文字列
-         */
-        function normalizeName(input, normalizationMap) {
-            if (!input || normalizationMap.size === 0) return input;
-
-            console.log(`[normalizeName] Input: "${input}"`);
-
-            // 1. NFKC正規化
-            let normalized = input.normalize('NFKC');
-            if (normalized !== input) {
-                console.log(`  > Step 1 (NFKC): "${normalized}"`);
-            }
-
-            // 2. ローマ字 -> カタカナ
-            let katakana = romajiToKatakana(normalized);
-            if (katakana !== normalized) {
-                console.log(`  > Step 2 (Romaji to Katakana): "${katakana}"`);
-            }
-
-            // 3. カタカナ -> ひらがな
-            let hiragana = katakanaToHiragana(katakana);
-            if (hiragana !== katakana) {
-                console.log(`  > Step 3 (Katakana to Hiragana): "${hiragana}"`);
-            }
-
-            // 4. 小文字化して比較
-            const lowercased = hiragana.toLowerCase();
-            console.log(`  > Step 4 (Lookup Key): "${lowercased}"`);
-
-            if (normalizationMap.has(lowercased)) {
-                const result = normalizationMap.get(lowercased);
-                console.log(`  > Match found! Replacing with: "${result}"`);
-                return result;
-            }
-
-            console.log(`  > No match found. Returning original cleaned value.`);
-            return input; // マッチしなかった場合は、クリーニング済みの元々の入力を返す
-        }
-        // ▲▲▲ ここまで追加 ▲▲▲
+        // ▲▲▲ ここまで文字表記揺れ補正用のヘルパー関数群を追加 ▲▲▲
         const uiUtils = {
             _sanitizeAndParseMarkdown(content) {
                 if (typeof content === 'string' && state.settings.enableImageUrlReplacement && state.settings.imageUrlReplacementBase) {
@@ -7804,25 +7768,14 @@
 
                     // --- ステップ3: Markdownを対象に、パスをクリーニング ---
                     content = content.replace(/!\[(.*?)\]\((.*?)(?:\s+"(.*?)")?\)/g, (match, altText, url, title) => {
-                        // ▼▼▼ ここから変更 ▼▼▼
-                        console.groupCollapsed(`[Markdown Img] Processing URL: ${url}`);
                         try {
-                            const characterNames = state.settings.characterNamesList;
-                            const normalizationMap = getNormalizationMap(characterNames);
-
                             const urlObject = new URL(url);
-                            // パス名を取得した直後にデコードする
-                            let pathname = decodeURIComponent(urlObject.pathname);
-                            // ▲▲▲ ここまで変更 ▲▲▲
+                            let pathname = urlObject.pathname;
 
                             const lastSlashIndex = pathname.lastIndexOf('/');
                             let pathPart = (lastSlashIndex > 0) ? pathname.substring(0, lastSlashIndex) : '';
                             let filenamePart = (lastSlashIndex !== -1) ? pathname.substring(lastSlashIndex + 1) : pathname;
 
-                            console.log("Original Path:", pathPart);
-                            console.log("Original Filename:", filenamePart);
-
-                            // 3a. まずパスとファイル名から不要な記号をクリーニング
                             pathPart = pathPart
                                 .replace(/[\s　.-]/g, '')
                                 .replace(/\/{2,}/g, '/')
@@ -7844,7 +7797,8 @@
                                     }
                                 }
                                 if (foundExt) {
-                                    nameWithoutExt = filenamePart.slice(0, -foundExt.length);
+                                    const extLength = foundExt.length - 1;
+                                    nameWithoutExt = filenamePart.slice(0, -extLength);
                                     extension = foundExt;
                                 } else {
                                     nameWithoutExt = filenamePart;
@@ -7852,41 +7806,24 @@
                                 }
                             }
 
-                            nameWithoutExt = nameWithoutExt.replace(/[\s　.-]/g, '');
-                            extension = extension.replace(/[\s　.-]/g, '');
+                            // ▼▼▼ ここから変更 ▼▼▼
+                            // 3c. ファイル名本体と拡張子から不要な記号をクリーニング
+                            nameWithoutExt = nameWithoutExt.replace(/[\s　.-]+$/g, ''); // 末尾の不要記号を除去
+                            extension = extension.replace(/[\s　.-]/g, ''); // 拡張子内の不要記号を全て除去
 
-                            console.log("Cleaned Path for normalization:", pathPart);
-                            console.log("Cleaned Filename (no ext) for normalization:", nameWithoutExt);
-
-                            // 3b. クリーニング後の文字列を固有名詞リストと照合して正規化
-                            if (pathPart && normalizationMap.size > 0) {
-                                pathPart = pathPart.split('/')
-                                    .map(segment => normalizeName(segment, normalizationMap))
-                                    .join('/');
-                            }
-                            if (normalizationMap.size > 0) {
-                                nameWithoutExt = normalizeName(nameWithoutExt, normalizationMap);
-                            }
-
-                            // 3c. 最終的なファイル名を組み立て
+                            // 拡張子の前にドットがなければ補完
                             if (extension && !extension.startsWith('.')) {
                                 extension = '.' + extension;
                             }
 
                             const cleanedFilename = (nameWithoutExt + extension).toLowerCase();
+                            // ▲▲▲ ここまで変更 ▲▲▲
 
                             const cleanedPathname = (pathPart ? pathPart + '/' : '/') + cleanedFilename;
                             const newUrl = urlObject.origin + cleanedPathname.replace(/\/{2,}/g, '/');
 
-                            console.log("Final Pathname:", cleanedPathname);
-                            console.log("Final URL:", newUrl);
-                            console.groupEnd();
-                            // ▲▲▲ ここまで変更 ▲▲▲
-
                             return `![${altText}](${newUrl})`;
                         } catch (e) {
-                            console.error(`[Markdown Img] Error processing URL: ${url}`, e);
-                            console.groupEnd();
                             return match;
                         }
                     });
