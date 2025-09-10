@@ -7630,33 +7630,11 @@
                     content = content.replace(/(\!\[.*?\])\s*[-_.,:;*]?\s*(\(.*?\))/g, '$1$2');
 
                     // --- ステップ1: AIが生成したフルURLをプレースホルダー形式に強制変換 ---
-                    content = content.replace(/!\[(.*?)\]\((https?)([:.\/s　]*)(.*?)\)/gi, (match, altText, protocol, separator, restOfUrl) => {
-                        // separator には ":", "://", ".//", "s" など、プロトコルとホスト名の間のあらゆる文字が入る
-                        // restOfUrl には "example.com/image.png" のような、ホスト名以降の部分が入る
-
-                        let cleanRestOfUrl = restOfUrl;
-
-                        // 先頭にある可能性のある不要なスラッシュや文字を削除
-                        // 例: "//example.com" -> "example.com"
-                        cleanRestOfUrl = cleanRestOfUrl.replace(/^[\/.\s　]+/, '');
-
-                        // ホスト名以降のパス部分を取得
-                        const slashIndex = cleanRestOfUrl.indexOf('/');
-                        const pathWithQuery = (slashIndex !== -1) ? cleanRestOfUrl.substring(slashIndex) : '/' + cleanRestOfUrl;
-
-                        // AIがホスト名を省略した場合の対策（例: /れな/部屋着/通常.avif）
-                        if (pathWithQuery.startsWith('/') && !cleanRestOfUrl.includes('.')) {
-                            return `![${altText}]({{img}}${pathWithQuery})`;
-                        }
-
-                        // 通常のホスト名を含む場合の処理
-                        if (slashIndex !== -1) {
-                            return `![${altText}]({{img}}${pathWithQuery})`;
-                        } else {
-                            // パスがなくファイル名だけの場合 (例: example.com) -> これをパスと見なす
-                            return `![${altText}]({{img}}/${cleanRestOfUrl})`;
-                        }
+                    content = content.replace(/!\[(.*?)\]\((https?):\/\/(.*?)\)/gi, (match, altText, scheme, restOfUrl) => {
+                        const pathWithQuery = restOfUrl.substring(restOfUrl.indexOf('/'));
+                        return `![${altText}]({{img}}${pathWithQuery})`;
                     });
+
                     // --- ステップ2: プレースホルダーを正しいベースURLに置換 ---
                     content = content.replace(/\{\{(img|画像|asset|image)\}\}/gi, baseUrl);
 
