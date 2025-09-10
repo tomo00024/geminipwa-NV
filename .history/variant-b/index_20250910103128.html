@@ -7639,17 +7639,19 @@
                     content = content.replace(/\{\{(img|画像|asset|image)\}\}/gi, baseUrl);
 
                     // --- ステップ3: Markdownを対象に、パスをクリーニング ---
-                    content = content.replace(/!\[(.*?)\]\((.*?)(?:\s+"(.*?)")?\)/g, (match, altText, url, title) => {
+                    content = content.replace(/!\[(.*?)\]\((.*?)\s*(?:"(.*?)")?\)/g, (match, altText, url, title) => {
                         try {
-                            const urlObject = new URL(url);
+                            // URLの末尾に不要な空白があれば除去
+                            const cleanedUrl = url.trim();
+                            const urlObject = new URL(cleanedUrl);
                             let pathname = urlObject.pathname;
 
                             const lastSlashIndex = pathname.lastIndexOf('/');
                             let pathPart = (lastSlashIndex > 0) ? pathname.substring(0, lastSlashIndex) : '';
                             let filenamePart = (lastSlashIndex !== -1) ? pathname.substring(lastSlashIndex + 1) : pathname;
 
+                            // パス部分のクリーニング（連続したスラッシュや全角スラッシュの置換）
                             pathPart = pathPart
-                                .replace(/[\s　.-]/g, '')
                                 .replace(/\/{2,}/g, '/')
                                 .replace(/／/g, '/');
 
@@ -7660,42 +7662,43 @@
                                 nameWithoutExt = filenamePart.substring(0, lastDotIndex);
                                 extension = filenamePart.substring(lastDotIndex);
                             } else {
+                                // 拡張子がない場合のフォールバック（ここは元のままで良いでしょう）
                                 const knownExtensions = ['.avif', '.webp', '.png', '.jpg', '.jpeg', '.gif'];
                                 let foundExt = '';
                                 for (const ext of knownExtensions) {
-                                    if (filenamePart.toLowerCase().endsWith(ext.substring(1))) {
+                                    if (filenamePart.toLowerCase().endsWith(ext)) { // .avif のような拡張子自体でチェック
                                         foundExt = ext;
                                         break;
                                     }
                                 }
                                 if (foundExt) {
-                                    const extLength = foundExt.length - 1;
-                                    nameWithoutExt = filenamePart.slice(0, -extLength);
+                                    nameWithoutExt = filenamePart.slice(0, -foundExt.length);
                                     extension = foundExt;
                                 } else {
                                     nameWithoutExt = filenamePart;
-                                    extension = '.avif';
+                                    extension = '.avif'; // デフォルト
                                 }
                             }
 
-                            // ▼▼▼ ここから変更 ▼▼▼
-                            // 3c. ファイル名本体と拡張子から不要な記号をクリーニング
+                            // ファイル名本体と拡張子から不要な記号をクリーニング
                             nameWithoutExt = nameWithoutExt.replace(/[\s　.-]+$/g, ''); // 末尾の不要記号を除去
                             extension = extension.replace(/[\s　.-]/g, ''); // 拡張子内の不要記号を全て除去
 
-                            // 拡張子の前にドットがなければ補完
                             if (extension && !extension.startsWith('.')) {
                                 extension = '.' + extension;
                             }
 
-                            const cleanedFilename = (nameWithoutExt + extension).toLowerCase();
-                            // ▲▲▲ ここまで変更 ▲▲▲
+                            const cleanedFilename = (nameWithoutExt + extension); // toLowerCase()を除去して大文字/小文字を維持
 
                             const cleanedPathname = (pathPart ? pathPart + '/' : '/') + cleanedFilename;
                             const newUrl = urlObject.origin + cleanedPathname.replace(/\/{2,}/g, '/');
 
-                            return `![${altText}](${newUrl})`;
+                            // title属性を再構築
+                            const titleAttr = title ? ` "${title.replace(/"/g, '&quot;')}"` : '';
+
+                            return `![${altText}](${newUrl}${titleAttr})`;
                         } catch (e) {
+                            // URLのパースに失敗した場合は、元のマッチ文字列をそのまま返す
                             return match;
                         }
                     });

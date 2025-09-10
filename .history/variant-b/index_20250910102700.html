@@ -7639,7 +7639,7 @@
                     content = content.replace(/\{\{(img|画像|asset|image)\}\}/gi, baseUrl);
 
                     // --- ステップ3: Markdownを対象に、パスをクリーニング ---
-                    content = content.replace(/!\[(.*?)\]\((.*?)(?:\s+"(.*?)")?\)/g, (match, altText, url, title) => {
+                    content = content.replace(/!\[(.*?)\]\((.*?)\)/g, (match, altText, url) => {
                         try {
                             const urlObject = new URL(url);
                             let pathname = urlObject.pathname;

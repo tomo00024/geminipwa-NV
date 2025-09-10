@@ -1,6 +1,6 @@
 // sw.js
 
-const CACHE_NAME = 'gemini-pwa-cache-v0.20'; // キャッシュ名を変更すると強制的に更新がかかる場合がある
+const CACHE_NAME = 'gemini-pwa-cache-v0.19'; // キャッシュ名を変更すると強制的に更新がかかる場合がある
 const urlsToCache = [
   './', // ルートパス (index.html を指すことが多い)
   './index.html',

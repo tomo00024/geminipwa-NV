@@ -7640,18 +7640,42 @@
 
                     // --- ステップ3: Markdownを対象に、パスをクリーニング ---
                     content = content.replace(/!\[(.*?)\]\((.*?)(?:\s+"(.*?)")?\)/g, (match, altText, url, title) => {
+                        // ▼▼▼ ここからデバッグログを追加 ▼▼▼
+                        console.groupCollapsed(`[画像URL変換デバッグ] マッチしたMarkdown: ${match}`);
+                        console.log("元のマッチ全体:", match);
+                        console.log("キャプチャ1 (altText):", altText);
+                        console.log("キャプチャ2 (url):", url);
+                        // ▲▲▲ ここまでデバッグログを追加 ▲▲▲
+
                         try {
+                            // ▼▼▼ ここからデバッグログを追加 ▼▼▼
+                            console.log("new URL() に渡す前のurl:", url);
                             const urlObject = new URL(url);
+                            console.log("URLオブジェクトの生成成功:", urlObject);
+                            console.log("  - urlObject.pathname:", urlObject.pathname);
+                            console.log("  - urlObject.origin:", urlObject.origin);
+                            // ▲▲▲ ここまでデバッグログを追加 ▲▲▲
+
                             let pathname = urlObject.pathname;
 
                             const lastSlashIndex = pathname.lastIndexOf('/');
                             let pathPart = (lastSlashIndex > 0) ? pathname.substring(0, lastSlashIndex) : '';
                             let filenamePart = (lastSlashIndex !== -1) ? pathname.substring(lastSlashIndex + 1) : pathname;
 
+                            // ▼▼▼ ここからデバッグログを追加 ▼▼▼
+                            console.log("パスの分割結果:");
+                            console.log("  - pathPart:", pathPart);
+                            console.log("  - filenamePart:", filenamePart);
+                            // ▲▲▲ ここまでデバッグログを追加 ▲▲▲
+
                             pathPart = pathPart
                                 .replace(/[\s　.-]/g, '')
                                 .replace(/\/{2,}/g, '/')
                                 .replace(/／/g, '/');
+
+                            // ▼▼▼ ここからデバッグログを追加 ▼▼▼
+                            console.log("クリーニング後のpathPart:", pathPart);
+                            // ▲▲▲ ここまでデバッグログを追加 ▲▲▲
 
                             let nameWithoutExt, extension;
                             const lastDotIndex = filenamePart.lastIndexOf('.');
@@ -7660,23 +7684,17 @@
                                 nameWithoutExt = filenamePart.substring(0, lastDotIndex);
                                 extension = filenamePart.substring(lastDotIndex);
                             } else {
-                                const knownExtensions = ['.avif', '.webp', '.png', '.jpg', '.jpeg', '.gif'];
-                                let foundExt = '';
-                                for (const ext of knownExtensions) {
-                                    if (filenamePart.toLowerCase().endsWith(ext.substring(1))) {
-                                        foundExt = ext;
-                                        break;
-                                    }
-                                }
-                                if (foundExt) {
-                                    const extLength = foundExt.length - 1;
-                                    nameWithoutExt = filenamePart.slice(0, -extLength);
-                                    extension = foundExt;
-                                } else {
-                                    nameWithoutExt = filenamePart;
-                                    extension = '.avif';
-                                }
+                                // (省略: 拡張子がない場合の処理)
+                                // ...
+                                nameWithoutExt = filenamePart;
+                                extension = '.avif'; // 暫定
                             }
+
+                            // ▼▼▼ ここからデバッグログを追加 ▼▼▼
+                            console.log("ファイル名の分割結果:");
+                            console.log("  - nameWithoutExt:", nameWithoutExt);
+                            console.log("  - extension:", extension);
+                            // ▲▲▲ ここまでデバッグログを追加 ▲▲▲
 
                             // ▼▼▼ ここから変更 ▼▼▼
                             // 3c. ファイル名本体と拡張子から不要な記号をクリーニング
@@ -7691,11 +7709,30 @@
                             const cleanedFilename = (nameWithoutExt + extension).toLowerCase();
                             // ▲▲▲ ここまで変更 ▲▲▲
 
+                            // ▼▼▼ ここからデバッグログを追加 ▼▼▼
+                            console.log("クリーニング後のファイル名要素:");
+                            console.log("  - nameWithoutExt:", nameWithoutExt);
+                            console.log("  - extension:", extension);
+                            console.log("  - cleanedFilename:", cleanedFilename);
+                            // ▲▲▲ ここまでデバッグログを追加 ▲▲▲
+
                             const cleanedPathname = (pathPart ? pathPart + '/' : '/') + cleanedFilename;
                             const newUrl = urlObject.origin + cleanedPathname.replace(/\/{2,}/g, '/');
 
+                            // ▼▼▼ ここからデバッグログを追加 ▼▼▼
+                            console.log("最終的なURL:");
+                            console.log("  - cleanedPathname:", cleanedPathname);
+                            console.log("  - newUrl:", newUrl);
+                            console.groupEnd();
+                            // ▲▲▲ ここまでデバッグログを追加 ▲▲▲
+
                             return `![${altText}](${newUrl})`;
                         } catch (e) {
+                            // ▼▼▼ ここからデバッグログを追加 ▼▼▼
+                            console.error("[画像URL変換デバッグ] URL処理中にエラーが発生しました:", e);
+                            console.log("エラーが発生したため、元のマッチを返します:", match);
+                            console.groupEnd();
+                            // ▲▲▲ ここまでデバッグログを追加 ▲▲▲
                             return match;
                         }
                     });

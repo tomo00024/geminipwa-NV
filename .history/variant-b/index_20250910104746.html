@@ -7639,7 +7639,7 @@
                     content = content.replace(/\{\{(img|画像|asset|image)\}\}/gi, baseUrl);
 
                     // --- ステップ3: Markdownを対象に、パスをクリーニング ---
-                    content = content.replace(/!\[(.*?)\]\((.*?)(?:\s+"(.*?)")?\)/g, (match, altText, url, title) => {
+                    content = content.replace(/!\[(.*?)\]\(\s*([^ "')]+)(?:\s+["'](.*?)["'])?\s*\)/g, (match, altText, url, title) => {
                         try {
                             const urlObject = new URL(url);
                             let pathname = urlObject.pathname;
@@ -7693,7 +7693,8 @@
 
                             const cleanedPathname = (pathPart ? pathPart + '/' : '/') + cleanedFilename;
                             const newUrl = urlObject.origin + cleanedPathname.replace(/\/{2,}/g, '/');
-
+                            // titleが存在する場合は、それを復元する
+                            const titleAttr = title ? ` "${title.replace(/"/g, '&quot;')}"` : '';
                             return `![${altText}](${newUrl})`;
                         } catch (e) {
                             return match;

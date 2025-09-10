@@ -7680,7 +7680,8 @@
 
                             // ▼▼▼ ここから変更 ▼▼▼
                             // 3c. ファイル名本体と拡張子から不要な記号をクリーニング
-                            nameWithoutExt = nameWithoutExt.replace(/[\s　.-]+$/g, ''); // 末尾の不要記号を除去
+                            // 【修正】ファイル名本体からも不要な記号をすべて除去する
+                            nameWithoutExt = nameWithoutExt.replace(/[\s　.-]/g, '');
                             extension = extension.replace(/[\s　.-]/g, ''); // 拡張子内の不要記号を全て除去
 
                             // 拡張子の前にドットがなければ補完

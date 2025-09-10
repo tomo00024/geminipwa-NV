@@ -7626,23 +7626,34 @@
                     const baseUrl = state.settings.imageUrlReplacementBase;
 
                     // --- ステップ0: Markdown構文の軽微なエラーを修正 ---
-                    // ![alt text]-(...) のような、角括弧と丸括弧の間の不要な文字を除去する
                     content = content.replace(/(\!\[.*?\])\s*[-_.,:;*]?\s*(\(.*?\))/g, '$1$2');
 
-                    // --- ステップ1: AIが生成したフルURLをプレースホルダー形式に強制変換 ---
+                    // --- ステップ1: (削除) ---
+                    // 以下のブロックをコメントアウトまたは削除します。
+                    /*
                     content = content.replace(/!\[(.*?)\]\((https?:\/\/)(.*?)\)/gi, (match, altText, protocol, restOfUrl) => {
                         const pathWithQuery = restOfUrl.substring(restOfUrl.indexOf('/'));
                         return `![${altText}]({{img}}${pathWithQuery})`;
                     });
+                    */
 
                     // --- ステップ2: プレースホルダーを正しいベースURLに置換 ---
+                    // この処理はそのまま維持します。
                     content = content.replace(/\{\{(img|画像|asset|image)\}\}/gi, baseUrl);
 
-                    // --- ステップ3: Markdownを対象に、パスをクリーニング ---
-                    content = content.replace(/!\[(.*?)\]\((.*?)(?:\s+"(.*?)")?\)/g, (match, altText, url, title) => {
+                    // --- ステップ3: Markdownを対象に、パスをクリーニングし、ドメインを強制置換 ---
+                    content = content.replace(/!\[(.*?)\]\(\s*([^ "')]+)(?:\s+["'](.*?)["'])?\s*\)/g, (match, altText, url, title) => {
                         try {
-                            const urlObject = new URL(url);
-                            let pathname = urlObject.pathname;
+                            // ここからが修正箇所
+                            const urlFromAI = new URL(url);
+                            const baseUrlObject = new URL(baseUrl);
+
+                            // AIが生成したURLのドメインを、設定されたベースURLのドメインに強制的に上書きする
+                            urlFromAI.protocol = baseUrlObject.protocol;
+                            urlFromAI.host = baseUrlObject.host;
+                            // ここまでが修正箇所
+
+                            let pathname = urlFromAI.pathname;
 
                             const lastSlashIndex = pathname.lastIndexOf('/');
                             let pathPart = (lastSlashIndex > 0) ? pathname.substring(0, lastSlashIndex) : '';
@@ -7663,14 +7674,13 @@
                                 const knownExtensions = ['.avif', '.webp', '.png', '.jpg', '.jpeg', '.gif'];
                                 let foundExt = '';
                                 for (const ext of knownExtensions) {
-                                    if (filenamePart.toLowerCase().endsWith(ext.substring(1))) {
+                                    if (filenamePart.toLowerCase().endsWith(ext)) { // .avif のようにドットを含めてチェック
                                         foundExt = ext;
                                         break;
                                     }
                                 }
                                 if (foundExt) {
-                                    const extLength = foundExt.length - 1;
-                                    nameWithoutExt = filenamePart.slice(0, -extLength);
+                                    nameWithoutExt = filenamePart.slice(0, -foundExt.length);
                                     extension = foundExt;
                                 } else {
                                     nameWithoutExt = filenamePart;
@@ -7678,23 +7688,22 @@
                                 }
                             }
 
-                            // ▼▼▼ ここから変更 ▼▼▼
-                            // 3c. ファイル名本体と拡張子から不要な記号をクリーニング
-                            nameWithoutExt = nameWithoutExt.replace(/[\s　.-]+$/g, ''); // 末尾の不要記号を除去
-                            extension = extension.replace(/[\s　.-]/g, ''); // 拡張子内の不要記号を全て除去
+                            nameWithoutExt = nameWithoutExt.replace(/[\s　.-]+$/g, '');
+                            extension = extension.replace(/[\s　.-]/g, '');
 
-                            // 拡張子の前にドットがなければ補完
                             if (extension && !extension.startsWith('.')) {
                                 extension = '.' + extension;
                             }
 
                             const cleanedFilename = (nameWithoutExt + extension).toLowerCase();
-                            // ▲▲▲ ここまで変更 ▲▲▲
-
                             const cleanedPathname = (pathPart ? pathPart + '/' : '/') + cleanedFilename;
-                            const newUrl = urlObject.origin + cleanedPathname.replace(/\/{2,}/g, '/');
 
-                            return `![${altText}](${newUrl})`;
+                            // 修正後のURLオブジェクトから最終的なURLを生成
+                            const finalUrlObject = new URL(cleanedPathname.replace(/\/{2,}/g, '/'), urlFromAI.origin);
+
+                            const titleAttr = title ? ` "${title.replace(/"/g, '&quot;')}"` : '';
+
+                            return `![${altText}](${finalUrlObject.href}${titleAttr})`;
                         } catch (e) {
                             return match;
                         }
