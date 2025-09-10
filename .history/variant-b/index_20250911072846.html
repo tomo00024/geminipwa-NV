@@ -5290,6 +5290,7 @@
                                     ※ `rena` → `れな` のように、固有名詞のローマ字表記揺れを吸収します。意図しない変換が行われる場合はOFFにしてください。
                                 </p>
                             </div>
+                            <!-- ▲▲▲ ここまでが新しいチェックボックスです ▲▲▲ -->
                         </div>
                         <div style="margin-top:15px;">
                             <label for="character-names-list">登場人物・固有名詞リスト (カンマ区切り):</label>
@@ -6690,7 +6691,6 @@
             imageUrlReplacementOptionsDiv: document.getElementById('image-url-replacement-options'),
             imageUrlReplacementBaseInput: document.getElementById('image-url-replacement-base'),
             characterNamesListTextarea: document.getElementById('character-names-list'), // この行を追加
-            enableRomajiToKatakanaConversionCheckbox: document.getElementById('enable-romaji-to-katakana-conversion'),
 
             geminiThoughtsParam: document.getElementById('gemini-thoughts-param'),
             geminiPseudoStreamingParam: document.getElementById('gemini-pseudo-streaming-param'),
@@ -6779,7 +6779,6 @@
                 enableImageUrlReplacement: false, // デフォルトは無効
                 imageUrlReplacementBase: '',      // ベースURLは空
                 characterNamesList: 'まゆみ,れな,みのり,葛城,日影,モガドール,メイ,アン,グレア,アストルフォ,ノーデ,レグナ,エルナ,ミネット,アキラ,グートルーネ,ハヅキ,イスタロト,フィー,ダルク,ヤン,ロイス,グライアス,ズィーグス,サンドラ,ジェシカ,アンナ,フェイ,ロディ,ジェイ,エマ,クリス,体操服,スクール水着,水着,初期衣装,マイクロビキニ,制服,全裸,私服,ビキニ,下着,部屋着,ドヤ顔,怪訝,大泣き,恐怖する,驚き,苦痛に耐える,泣く,嫌悪,困る,照れ笑い,にしし,真顔,退屈,挑発する,通常,怒る,発情,微笑,ウィンク,とろ顔,恍惚,快感,睡眠,キス顔,拗ねる,きょとん,悲しみ,眠い,恥じらう,はにかむ,涙ぐむ,嬉し泣き,笑う,てへぺろ,はわわ,悔しい,怯える,上目遣い,満面の笑み,考える,混乱,疲れてる,表情通常,表情微笑,表情哀,表情笑顔,表情怒,表情発情,表情軽い絶頂,表情深い絶頂,表情恐怖,表情驚き,表情照れ,ダンジョンを探索,攻撃,山を探索,宿に宿泊,森を探索,昼の町,町で食事,町で買い物,洞窟を探索,夜の町,昼野営,夜野営,冒険者ギルド,野外で食事,仕事中,水浴び,うろたえる,ニヤリ,むっとする,怪訝な顔,驚く,嫌悪する,号泣する,最高の笑顔,深い絶頂,真剣,赤面して耐える,赤面快感,赤面恐怖,赤面絶望,赤面涙目,赤面蠱惑的な笑み,絶頂する,絶望する,退屈する,恥ずかしがる,通常時,悲しむ,目を閉じる,落ち込む,ゲルヒルデ,リコリス,マルレーネ',                 // ▲ここまで追加▲
-                enableRomajiToKatakanaConversion: false,
                 deepSeekApiKey: '',
                 deepSeekModelName: DEFAULT_DEEPSEEK_MODEL,
                 deepSeekAdditionalModels: '',
@@ -7731,13 +7730,12 @@
         }
 
         /**
-         * 入力文字列を正規化し、マップに存在すれば対応する固有名詞を返す
-         * @param {string} input - チェック対象の文字列
-         * @param {Map<string, string>} normalizationMap - 正規化マップ
-         * @param {boolean} performRomajiConversion - ローマ字変換を行うかどうかのフラグ
-         * @returns {string} 処理後の文字列
+          * 入力文字列を正規化し、マップに存在すれば対応する固有名詞を返す
+         * @param {string} input - チェック対象の文字列 (パスのセグメントなど)
+         * @param {Map<string, string>} normalizationMap - getNormalizationMapで作成したマップ
+         * @returns {string} マッチした固有名詞、または元の入力文字列
          */
-        function normalizeName(input, normalizationMap, performRomajiConversion) { // 引数を追加
+        function normalizeName(input, normalizationMap) {
             if (!input || normalizationMap.size === 0) return input;
 
             console.log(`[normalizeName] Input: "${input}"`);
@@ -7748,15 +7746,10 @@
                 console.log(`  > Step 1 (NFKC): "${normalized}"`);
             }
 
-            // 2. ローマ字 -> カタカナ (条件付き)
-            let katakana = normalized;
-            if (performRomajiConversion) { // ★★★ チェックボックスの状態に応じて分岐 ★★★
-                katakana = romajiToKatakana(normalized);
-                if (katakana !== normalized) {
-                    console.log(`  > Step 2 (Romaji to Katakana): "${katakana}"`);
-                }
-            } else {
-                console.log(`  > Step 2 (Romaji to Katakana): Skipped`);
+            // 2. ローマ字 -> カタカナ
+            let katakana = romajiToKatakana(normalized);
+            if (katakana !== normalized) {
+                console.log(`  > Step 2 (Romaji to Katakana): "${katakana}"`);
             }
 
             // 3. カタカナ -> ひらがな
@@ -7882,15 +7875,11 @@
                             // 3b. クリーニング後の文字列を固有名詞リストと照合して正規化
                             if (pathPart && normalizationMap.size > 0) {
                                 pathPart = pathPart.split('/')
-                                    // ▼▼▼ ここを変更 ▼▼▼
-                                    .map(segment => normalizeName(segment, normalizationMap, state.settings.enableRomajiToKatakanaConversion))
-                                    // ▲▲▲ ここまで変更 ▲▲▲
+                                    .map(segment => normalizeName(segment, normalizationMap))
                                     .join('/');
                             }
                             if (normalizationMap.size > 0) {
-                                // ▼▼▼ ここを変更 ▼▼▼
-                                nameWithoutExt = normalizeName(nameWithoutExt, normalizationMap, state.settings.enableRomajiToKatakanaConversion);
-                                // ▲▲▲ ここまで変更 ▲▲▲
+                                nameWithoutExt = normalizeName(nameWithoutExt, normalizationMap);
                             }
 
                             // 3c. 最終的なファイル名を組み立て
@@ -9407,7 +9396,6 @@
                 elements.imageUrlReplacementBaseInput.value = state.settings.imageUrlReplacementBase || '';
                 elements.imageUrlReplacementOptionsDiv.classList.toggle('hidden', !state.settings.enableImageUrlReplacement);
                 elements.characterNamesListTextarea.value = state.settings.characterNamesList || '';
-                elements.enableRomajiToKatakanaConversionCheckbox.checked = state.settings.enableRomajiToKatakanaConversion;
 
                 elements.deepSeekSystemPromptDefaultTextarea.value = state.settings.deepSeekSystemPrompt || '';
                 elements.deepSeekEnableSystemPromptDefaultCheckbox.checked = state.settings.deepSeekEnableSystemPromptDefault;
@@ -14336,7 +14324,6 @@
                 newSettings.enableImageUrlReplacement = elements.enableImageUrlReplacementCheckbox.checked;
                 newSettings.imageUrlReplacementBase = elements.imageUrlReplacementBaseInput.value.trim();
                 newSettings.characterNamesList = elements.characterNamesListTextarea.value.trim();
-                newSettings.enableRomajiToKatakanaConversion = elements.enableRomajiToKatakanaConversionCheckbox.checked;
 
                 newSettings.deepSeekSystemPrompt = elements.deepSeekSystemPromptDefaultTextarea.value.trim();
                 newSettings.deepSeekEnableSystemPromptDefault = elements.deepSeekEnableSystemPromptDefaultCheckbox.checked;

@@ -5275,860 +5275,828 @@
                             style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
                             ※ 有効にすると、AIが `{{img}}` という文字列を出力した場合に、下記で指定したベースURLに自動で置き換えます。
                         </p>
-                        <div id="image-url-replacement-options" class="hidden">
-                            <label for="image-url-replacement-base">ベースURL:</label>
-                            <input type="text" id="image-url-replacement-base"
-                                placeholder="例: https://dashing-fenglisu-4c8446.netlify.app"
-                                aria-label="画像URL変換用のベースURL">
-                            <div style="margin-top:15px;">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" id="enable-romaji-to-katakana-conversion">
-                                    URL内のローマ字をカタカナに変換して補正する
-                                </label>
-                                <p
-                                    style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                                    ※ `rena` → `れな` のように、固有名詞のローマ字表記揺れを吸収します。意図しない変換が行われる場合はOFFにしてください。
-                                </p>
-                            </div>
-                        </div>
                         <div style="margin-top:15px;">
-                            <label for="character-names-list">登場人物・固有名詞リスト (カンマ区切り):</label>
-                            <textarea id="character-names-list" placeholder="例: れな, ゆず, カイン, 茅森月歌, 和泉ユキ"
-                                aria-label="登場人物・固有名詞リスト" rows="3"></textarea>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="enable-romaji-to-katakana-conversion">
+                                URL内のローマ字をカタカナに変換して補正する
+                            </label>
                             <p
                                 style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                                ※ ここに登録した名前がAIの応答に含まれる場合、表記揺れ（例: ゆｽﾞ→ゆず）を自動で補正します。
+                                ※ `rena` → `れな` のように、固有名詞のローマ字表記揺れを吸収します。意図しない変換が行われる場合はOFFにしてください。
                             </p>
                         </div>
+                        <!-- ▲▲▲ ここまでが新しいチェックボックスです ▲▲▲ -->
                     </div>
-                </details>
-                <!-- ▲▲▲ ここまで追加 ▲▲▲ -->
-                <div class="settings-group" id="settings-group-image">
-                    <h3>イメージ画像</h3>
-                    <label>チャット画面の背景画像:</label>
-                    <div class="image-upload-controls">
-                        <input type="file" id="background-image-input"
-                            accept="image/jpeg, image/png, image/gif, image/webp" class="hidden">
-                        <button id="upload-background-btn" class="settings-action-button"
-                            type="button">画像を選択...</button>
-                        <img id="background-thumbnail" src="" alt="背景画像プレビュー" class="background-thumbnail hidden">
-                        <button id="delete-background-btn" class="settings-delete-button hidden"
-                            type="button">画像を削除</button>
-                    </div>
-                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: 8px;">
-                        ※ 画像はブラウザ内のデータベースに保存されます。gifも可<br>
-                        ※ 可読性のため画像の上に半透明のレイヤーを表示。
-                    </p>
-                </div>
-
-                <details class="settings-group" id="settings-group-icons">
-                    <summary
-                        style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">
-                        チャットアイコン設定</summary>
                     <div style="margin-top:15px;">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="show-user-icon-toggle">
-                            ユーザーアイコンを表示する
-                        </label>
-                        <div class="image-upload-controls" style="margin-bottom: 5px;">
-                            <input type="file" id="user-icon-input"
-                                accept="image/jpeg, image/png, image/gif, image/webp" class="hidden">
-                            <button id="upload-user-icon-btn" class="settings-action-button"
-                                type="button">ユーザーアイコン選択...</button>
-                            <img id="user-icon-thumbnail" src="" alt="ユーザーアイコンプレビュー" class="icon-thumbnail hidden">
-                            <button id="delete-user-icon-btn" class="settings-delete-button hidden"
-                                type="button">削除</button>
-                        </div>
-                        <label class="checkbox-label" style="margin-top: 5px;">
-                            <input type="checkbox" id="show-user-name-toggle">
-                            ユーザー名を表示する
-                        </label>
-                        <label for="user-name-input">表示するユーザー名:</label>
-                        <input type="text" id="user-name-input" placeholder="例: あなた" aria-label="表示するユーザー名">
-
-                        <label class="checkbox-label" style="margin-top: 20px;">
-                            <input type="checkbox" id="show-ai-icon-toggle">
-                            AIアイコンを表示する
-                        </label>
-                        <div class="image-upload-controls" style="margin-bottom: 5px;">
-                            <input type="file" id="ai-icon-input" accept="image/jpeg, image/png, image/gif, image/webp"
-                                class="hidden">
-                            <button id="upload-ai-icon-btn" class="settings-action-button"
-                                type="button">AIアイコン選択...</button>
-                            <img id="ai-icon-thumbnail" src="" alt="AIアイコンプレビュー" class="icon-thumbnail hidden">
-                            <button id="delete-ai-icon-btn" class="settings-delete-button hidden"
-                                type="button">削除</button>
-                        </div>
-                        <label class="checkbox-label" style="margin-top: 5px;">
-                            <input type="checkbox" id="show-ai-name-toggle">
-                            AI名を表示する
-                        </label>
-                        <label for="ai-name-input">表示するAI名:</label>
-                        <input type="text" id="ai-name-input" placeholder="例: Gemini" aria-label="表示するAI名">
-
-                        <details id="settings-group-icon-details">
-                            <summary
-                                style="cursor: pointer; font-weight: normal; font-size: 14px; color: var(--text-link); list-style: revert;">
-                                アイコン表示調整</summary>
-                            <div style="padding-left: 15px; margin-top: 10px;">
-                                <div style="margin-top: 10px;">
-                                    <label for="icon-name-font-size">アイコン下の名前の文字サイズ (px):</label>
-                                    <input type="number" id="icon-name-font-size" min="1" max="46" step="1"
-                                        placeholder="例: 10" aria-label="アイコン下の名前の文字サイズ（上限あり）">
-                                </div>
-                                <div style="margin-top: 10px;">
-                                    <label for="icon-name-offset-y">名前の垂直オフセット (px, 上が正):</label>
-                                    <input type="number" id="icon-name-offset-y" step="1" placeholder="例: 10"
-                                        aria-label="名前の垂直オフセット（上限あり）">
-                                </div>
-                                <div style="margin-top: 20px;">
-                                    <label for="message-icon-size">アイコン表示サイズ (px):</label>
-                                    <input type="number" id="message-icon-size" min="1" max="300" step="1"
-                                        placeholder="例: 28" aria-label="アイコン表示サイズ（上限あり）">
-                                </div>
-                                <div style="margin-top: 15px;">
-                                    <label for="message-icon-offset-y">アイコン垂直オフセット (px, 上が正):</label>
-                                    <input type="number" id="message-icon-offset-y" step="1" placeholder="例: 0 (上下に調整)"
-                                        aria-label="アイコン垂直オフセット（上限あり）">
-                                </div>
-                                <hr style="margin: 20px 0;">
-                                <h4>ユーザー名の背景バブル</h4>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" id="user-name-bubble-toggle">
-                                    バブルを表示する
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" id="user-name-bubble-use-theme-color-toggle">
-                                    テーマのメッセージ色に合わせる
-                                </label>
-                                <div id="user-name-bubble-custom-color-settings">
-                                    <label for="user-name-bubble-color">背景色 (上記OFF時):</label>
-                                    <input type="text" id="user-name-bubble-color" placeholder="#FFFFFF">
-                                </div>
-                                <label for="user-name-bubble-opacity">透過度 (0.0-1.0):</label>
-                                <input type="number" id="user-name-bubble-opacity" min="0" max="1" step="0.1"
-                                    placeholder="0.8">
-
-                                <h4 style="margin-top: 15px;">AI名の背景バブル</h4>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" id="ai-name-bubble-toggle">
-                                    バブルを表示する
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" id="ai-name-bubble-use-theme-color-toggle">
-                                    テーマのメッセージ色に合わせる
-                                </label>
-                                <div id="ai-name-bubble-custom-color-settings">
-                                    <label for="ai-name-bubble-color">背景色 (上記OFF時):</label>
-                                    <input type="text" id="ai-name-bubble-color" placeholder="#FFFFFF">
-                                </div>
-                                <label for="ai-name-bubble-opacity">透過度 (0.0-1.0):</label>
-                                <input type="number" id="ai-name-bubble-opacity" min="0" max="1" step="0.1"
-                                    placeholder="0.8">
-                            </div>
-                        </details>
-                        <p style="font-size: 11px; color: var(--text-secondary); margin-top: 15px;">
-                            ※ アイコン画像はブラウザ内のデータベースに保存されます。<br>
-                            ※ 表示時は円形に切り取られます。gifも可、デフォルトサイズ: 28px。
-                        </p>
-                    </div>
-                </details>
-
-                <div class="settings-group" id="settings-group-other">
-                    <details open id="settings-group-other-details">
-                        <summary
-                            style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">
-                            その他設定</summary>
-                        <div style="margin-top:10px;">
-                            <p style="height:10px"></p>
-                            <label for="theme-select">表示テーマ:</label>
-                            <select id="theme-select" aria-label="表示テーマ">
-                                <option value="light">ライトモード</option>
-                                <option value="dark">ダークモード</option>
-                                <option value="pastel-pink">パステルモード🩷</option>
-                                <option value="pastel-blue">パステルモード🩵</option>
-                                <option value="pastel-yellow">パステルモード🟡</option>
-                                <option value="pastel-purple">パステルモード🟣</option>
-                                <option value="pastel-rainbow">パステルモード🌈</option>
-                            </select>
-                            <p style="height:10px"></p>
-                            <details id="settings-group-behavior-adjustment" open>
-                                <summary
-                                    style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">
-                                    アプリの挙動を調整</summary>
-                                <div style="padding-left: 15px; margin-top: 10px;">
-
-                                    <!-- ファクター: 操作の変更 -->
-                                    <details id="settings-group-factor-operation-changes">
-                                        <summary
-                                            style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
-                                            ファクター: 操作の変更</summary>
-                                        <div
-                                            style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="enter-to-send">
-                                                Enterキーで送信する
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="auto-scroll-on-new-message">
-                                                メッセージ送受信時に自動スクロールする
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="auto-scroll-on-thought">
-                                                思考プロセス受信時に自動スクロールする
-                                            </label>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="swipe-navigation-toggle">
-                                                チャット画面から左右スワイプで画面移動
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="prevent-zoom-toggle">
-                                                ズームを禁止する (テキスト入力時の自動ズーム防止)
-                                            </label>
-                                            <p
-                                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                                                ※ スマホ等でテキスト入力時に意図せずズームするのを防ぎます。
-                                            </p>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label for="history-sort-order"
-                                                style="display: block; margin-bottom: 5px;">履歴のソート順:</label>
-                                            <select id="history-sort-order" aria-label="履歴のソート順"
-                                                style="margin-bottom: 10px;">
-                                                <option value="updatedAt">更新日時 (新しい順)</option>
-                                                <option value="createdAt">作成日時 (新しい順)</option>
-                                            </select>
-                                        </div>
-                                    </details>
-
-                                    <!-- ファクター: 様式の変更 -->
-                                    <details id="settings-group-factor-style-changes">
-                                        <summary
-                                            style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
-                                            ファクター: 様式の変更</summary>
-                                        <div
-                                            style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="minimize-header-footer-toggle">
-                                                ヘッダー/フッターの縦幅を最小化する
-                                            </label>
-                                            <p
-                                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                                                ※ 表示領域を最大化します。画面が小型の端末向け。
-                                            </p>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="extend-ai-bubble-width-toggle">
-                                                AI応答バブルの横幅を拡張する
-                                            </label>
-                                            <p
-                                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                                                ※ AIの応答メッセージの最大幅を広げ、画面をより広く使います。
-                                            </p>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="extend-user-bubble-width-toggle">
-                                                ユーザーメッセージの横幅を拡張する
-                                            </label>
-                                            <p
-                                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                                                ※ ユーザーのメッセージの最大幅を広げ、画面をより広く使います。
-                                            </p>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="reduce-message-spacing-toggle">
-                                                メッセージ間の余白を縮小する
-                                            </label>
-                                            <p
-                                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                                                ※ チャット画面のメッセージ間の縦の空白を切り詰めます。
-                                            </p>
-                                        </div>
-                                    </details>
-
-                                    <!-- ファクター: 確認ダイアログのスキップ -->
-                                    <details id="settings-group-factor-skip-dialogs">
-                                        <summary
-                                            style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
-                                            ファクター: 確認ダイアログのスキップ</summary>
-                                        <div
-                                            style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="disable-retry-confirmation-toggle">
-                                                リトライ時の確認を無効にする
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="disable-delete-message-confirmation-toggle">
-                                                メッセージ削除時の確認を無効にする
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="disable-attachment-confirmation-toggle">
-                                                添付ファイル削除時の確認を無効にする
-                                            </label>
-                                        </div>
-                                    </details>
-
-                                    <!-- ファクター: 上級ユーザー向けオプション -->
-                                    <details id="settings-group-factor-advanced-options">
-                                        <summary
-                                            style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
-                                            ファクター: 上級ユーザー向けオプション</summary>
-                                        <div
-                                            style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="add-prefix-on-import-toggle">
-                                                履歴インポート時にタイトルへ接頭辞を付与する
-                                            </label>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="enable-webhook-notification-toggle">
-                                                AIの応答内容を指定URLに転送する
-                                            </label>
-                                            <div id="webhook-settings-container" class="hidden">
-                                                <div id="webhooks-list" class="api-keys-list"
-                                                    style="margin-bottom: 15px;">
-                                                </div>
-                                                <button type="button" id="add-webhook-btn"
-                                                    class="add-api-key-btn">新しいWebhookを追加</button>
-                                                <p
-                                                    style="font-size: 11px; color: var(--text-secondary); margin-top: 15px;">
-                                                    ※ AIの応答完了時に、有効化されたすべてのURLへPOSTリクエストを自動転送します。
-                                                </p>
-                                            </div>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-multi-api-keys-toggle">
-                                                複数APIキー管理機能を使用する
-                                            </label>
-                                            <p
-                                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                                                ※ 複数のAPIキーを使い分けたい場合に使用。
-                                            </p>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-proofreading-settings-toggle">
-                                                校正機能を使用する
-                                            </label>
-                                            <p
-                                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                                                ※ 応答生成後に別のモデルで文章を校正する機能に関する設定項目を表示します。
-                                            </p>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-twin-engine-settings-toggle">
-                                                Twin-engine（自動要約）を使用する
-                                            </label>
-                                            <p
-                                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                                                ※ 会話履歴の自動要約機能に関する設定項目を表示します。
-                                            </p>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-session-linking-settings-toggle">
-                                                AI間会話モード（セッション間リンク）設定を表示する
-                                            </label>
-                                            <p
-                                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                                                ※ 履歴画面から2つのチャットを連携させ、AI同士を会話させることができます。
-                                            </p>
-                                        </div>
-                                    </details>
-                                </div>
-                            </details>
-                            <hr
-                                style="margin: 15px 0 15px 0; border: none; border-top: 1px solid var(--border-secondary);">
-
-                            <details id="settings-group-header-footer-buttons">
-                                <summary
-                                    style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">
-                                    ボタン類の表示/非表示切替</summary>
-                                <div style="padding-left: 15px; margin-top: 10px;">
-
-                                    <!-- ファクター: 履歴画面のボタン -->
-                                    <details open id="settings-group-factor-history-buttons">
-                                        <summary
-                                            style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
-                                            ファクター: 履歴画面のボタン</summary>
-                                        <div
-                                            style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-bulk-history-actions-toggle">
-                                                履歴画面に「全出力」「全取込」ボタンを表示する
-                                            </label>
-                                        </div>
-                                    </details>
-
-                                    <!-- ファクター: ヘッダーのボタン -->
-                                    <details open id="settings-group-factor-header-buttons">
-                                        <summary
-                                            style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
-                                            ファクター: ヘッダーのボタン</summary>
-                                        <div
-                                            style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-chat-title-toggle">
-                                                チャットタイトルを表示する
-                                            </label>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-new-chat-button-toggle">
-                                                「新規」ボタンを表示する（「新」ボタン）
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-delete-session-button-toggle">
-                                                「全削除」ボタンを表示する（「削」ボタン）
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-copy-session-button-toggle">
-                                                「全コピー」ボタンを表示する（「コ」ボタン）
-                                            </label>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-api-provider-toggle-header">
-                                                ヘッダーにAPI切替ボタンを表示する
-                                            </label>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-scroll-to-top-button-toggle">
-                                                「最上部へ(🔼)」ボタンを表示する
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-scroll-to-bottom-button-toggle">
-                                                「最下部へ(🔽)」ボタンを表示する
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-toggle-all-content-button-toggle">
-                                                「全表示/非表示(🖼️)」ボタンを表示する
-                                            </label>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-memo-button-toggle">
-                                                メモボタン(📝)を表示する
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-clipboard-stack-button-toggle">
-                                                クリップボードスタックボタン(🗒️)を表示する
-                                            </label>
-                                            <div id="memo-stack-height-settings">
-                                                <div>
-                                                    <label for="memo-height">メモ・スタックの縦の幅 (例: 200px, 30vh):</label>
-                                                    <input type="text" id="memo-height" placeholder="例: 200px, 30vh"
-                                                        aria-label="メモ・スタックの縦の幅">
-                                                </div>
-                                                <p
-                                                    style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom:10px;">
-                                                    ※ 各エリアは縦方向にリサイズ可能です。
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </details>
-
-                                    <!-- ファクター: フッターのボタン -->
-                                    <details open id="settings-group-factor-footer-buttons">
-                                        <summary
-                                            style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
-                                            ファクター: フッターのボタン</summary>
-                                        <div
-                                            style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-api-provider-toggle-footer">
-                                                フッターにAPI切替ボタンを表示する
-                                            </label>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-paste-button-in-footer-toggle">
-                                                「貼付け」ボタンを表示する
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-dice-button-toggle">
-                                                ダイスボタン(🎲)を表示する
-                                            </label>
-                                            <div id="dice-value-settings" class="hidden" style="margin-top:5px;">
-                                                <div class="param-grid">
-                                                    <div>
-                                                        <label for="dice-min-value">ダイス最小値:</label>
-                                                        <input type="number" id="dice-min-value" min="0" step="1"
-                                                            placeholder="例: 1">
-                                                    </div>
-                                                    <div>
-                                                        <label for="dice-max-value">ダイス最大値:</label>
-                                                        <input type="number" id="dice-max-value" min="0" step="1"
-                                                            placeholder="例: 100">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </details>
-
-                                    <!-- ファクター: メッセージ要素のボタン -->
-                                    <details open id="settings-group-factor-message-buttons">
-                                        <summary
-                                            style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
-                                            ファクター: メッセージ要素のボタン</summary>
-                                        <div
-                                            style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-paste-button-in-edit-toggle">
-                                                メッセージ編集ツールバーに「貼付け」ボタンを表示する
-                                            </label>
-                                            <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-top-collapse-button-toggle">
-                                                メッセージ右上に折りたたみボタンを表示する
-                                            </label>
-                                            <label class="checkbox-label">
-                                                <input type="checkbox" id="show-bottom-collapse-button-toggle">
-                                                メッセージツールバーに折りたたみボタンを表示する
-                                            </label>
-                                            <details id="settings-group-collapse-button-details"
-                                                style="margin-bottom: 15px;">
-                                                <summary
-                                                    style="cursor: pointer; font-weight: normal; font-size: 14px; color: var(--text-link); list-style: revert;">
-                                                    折りたたみボタン詳細設定</summary>
-                                                <div style="padding-left: 15px; margin-top: 10px;">
-                                                    <label class="checkbox-label"
-                                                        style="margin-top: 10px; margin-bottom: 15px;">
-                                                        <input type="checkbox" id="persist-message-collapse-state">
-                                                        メッセージの折り畳み状態を記憶する
-                                                    </label>
-                                                    <hr style="margin-bottom: 15px;">
-                                                    <label for="toggle-button-top-width">右上ボタン 横幅 (px):</label>
-                                                    <input type="number" id="toggle-button-top-width" min="1" max="100"
-                                                        step="1" placeholder="例: 6">
-                                                    <label for="toggle-button-top-height">右上ボタン 縦幅 (px):</label>
-                                                    <input type="number" id="toggle-button-top-height" min="1" max="100"
-                                                        step="1" placeholder="例: 40">
-                                                    <label for="toggle-button-top-font-size">右上ボタン フォントサイズ (px):</label>
-                                                    <input type="number" id="toggle-button-top-font-size" min="1"
-                                                        max="50" step="1" placeholder="例: 12">
-                                                    <label for="toggle-button-top-text-collapse">右上ボタン
-                                                        折りたたみ時テキスト:</label>
-                                                    <input type="text" id="toggle-button-top-text-collapse"
-                                                        placeholder="例: -">
-                                                    <label for="toggle-button-top-text-expand">右上ボタン 展開時テキスト:</label>
-                                                    <input type="text" id="toggle-button-top-text-expand"
-                                                        placeholder="例: □">
-
-                                                    <hr style="margin: 15px 0;">
-
-                                                    <label for="toggle-button-bottom-font-size">下部ボタン フォントサイズ
-                                                        (px):</label>
-                                                    <input type="number" id="toggle-button-bottom-font-size" min="1"
-                                                        max="34" step="1" placeholder="例: 14">
-                                                    <label for="toggle-button-bottom-text-collapse">下部ボタン
-                                                        折りたたみ時テキスト:</label>
-                                                    <input type="text" id="toggle-button-bottom-text-collapse"
-                                                        placeholder="例: 非表示">
-                                                    <label for="toggle-button-bottom-text-expand">下部ボタン 展開時テキスト:</label>
-                                                    <input type="text" id="toggle-button-bottom-text-expand"
-                                                        placeholder="例: 表示">
-                                                </div>
-                                            </details>
-                                        </div>
-                                    </details>
-                                </div>
-                            </details>
-
-                            <details id="settings-group-font">
-                                <summary
-                                    style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">
-                                    フォント設定</summary>
-                                <div style="padding-left: 15px; margin-top: 10px;">
-                                    <label for="font-family-input">アプリのフォント:</label>
-                                    <input type="text" id="font-family-input" placeholder="例: 'Meiryo', sans-serif"
-                                        aria-label="アプリ全体のフォント">
-                                    <p
-                                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 5px;">
-                                        ※ 端末またはPCにインストールされているフォント名を指定。
-                                    </p>
-                                    <label for="message-body-font-size-input">メッセージ本文のフォントサイズ (px):</label>
-                                    <input type="number" id="message-body-font-size-input" min="1" max="100" step="1"
-                                        placeholder="例: 14 (デフォルト)" aria-label="メッセージ本文のフォントサイズ">
-                                    <p
-                                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                                        ※ 空欄でデフォルト(14px)。1～100pxの範囲で指定可。
-                                    </p>
-                                    <label for="code-block-font-size-input">コードブロックのフォントサイズ (px):</label>
-                                    <input type="number" id="code-block-font-size-input" min="1" max="100" step="1"
-                                        placeholder="例: 13 (デフォルト)" aria-label="コードブロックのフォントサイズ">
-                                    <p
-                                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                                        ※ 空欄でデフォルト(13px)。1～100pxの範囲で指定可。
-                                    </p>
-                                    <label for="thought-summary-font-size">思考プロセス フォントサイズ (px):</label>
-                                    <input type="number" id="thought-summary-font-size" min="1" max="100" step="1"
-                                        placeholder="例: 13 (デフォルト)" aria-label="思考プロセス フォントサイズ">
-                                    <p
-                                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                                        ※ 空欄でデフォルト(13px)。1～100pxの範囲で指定可。
-                                    </p>
-                                </div>
-                            </details>
-                            <details id="settings-group-opacity">
-                                <summary
-                                    style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">
-                                    各種透明度設定</summary>
-                                <div style="padding-left: 15px; margin-top: 10px;">
-                                    <label for="message-bubble-opacity">メッセージバブルの透明度 (0.0-1.0):</label>
-                                    <input type="number" id="message-bubble-opacity" min="0" max="1" step="0.05"
-                                        placeholder="例: 0.8" aria-label="メッセージバブルの透明度">
-                                    <label for="message-actions-background-opacity">メッセージツールバーの透明度（除ボタン）
-                                        (0.0-1.0):</label>
-                                    <input type="number" id="message-actions-background-opacity" min="0" max="1"
-                                        step="0.05" placeholder="例: 0.8" aria-label="メッセージツールバーの透明度（除ボタン）">
-                                    <label for="chat-overlay-opacity">チャット背景オーバーレイの透明度 (0.0-1.0):</label>
-                                    <input type="number" id="chat-overlay-opacity" min="0" max="1" step="0.05"
-                                        placeholder="例: 0.6" aria-label="チャット背景オーバーレイの透明度">
-                                    <label for="header-footer-opacity">ヘッダー/フッターの透明度 (0.0-1.0):</label>
-                                    <input type="number" id="header-footer-opacity" min="0" max="1" step="0.05"
-                                        placeholder="例: 0.9" aria-label="ヘッダー/フッターの透明度">
-                                    <label for="toggle-button-top-opacity">右上折りたたみボタンの透明度 (0.0-1.0):</label>
-                                    <input type="number" id="toggle-button-top-opacity" min="0" max="1" step="0.05"
-                                        placeholder="例: 0.6" aria-label="右上折りたたみボタンの透明度">
-                                    <label for="thought-summary-opacity" style="margin-top:10px;">思考プロセス背景の透明度
-                                        (0.0-1.0):</label>
-                                    <input type="number" id="thought-summary-opacity" min="0" max="1" step="0.05"
-                                        placeholder="例: 0.85" aria-label="思考プロセス背景の透明度">
-                                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px;">
-                                        ※ 0.0で完全透明、1.0で不透明。
-                                    </p>
-                                </div>
-                            </details>
-                        </div>
-                    </details>
-                </div>
-                <details class="settings-group" id="settings-group-proofreading">
-                    <summary
-                        style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">
-                        校正機能</summary>
-                    <div style="margin-top:10px;">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="enable-proofreading">
-                            生成後に別のモデルで文章を校正する
-                        </label>
-                        <p
-                            style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                            ※チェック時、最初の応答生成に成功した後、下記で選択された設定で校正処理が実行されます。<br>
-                            ※校正処理にもAPIコストが発生します。
-                        </p>
-                        <div id="proofreading-options" class="hidden" style="margin-top: 15px;">
-                            <details open>
-                                <summary
-                                    style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">
-                                    校正用 API設定</summary>
-                                <div style="padding-left: 15px; margin-top: 10px;">
-                                    <div id="proofreading-api-configs-list" class="api-keys-list"
-                                        style="margin-top:10px; margin-bottom: 15px;">
-                                    </div>
-                                    <button type="button" id="add-proofreading-api-config-btn"
-                                        class="add-api-key-btn">新しい校正設定を追加</button>
-                                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: 15px;">
-                                        ※ 応答生成後に、ここで「使用中」となっている設定を用いて文章の校正を行います。<br>
-                                        ※ 各設定の詳細パラメータ（温度設定など）も校正時に適用されます。
-                                    </p>
-                                </div>
-                            </details>
-                        </div>
-                    </div>
-                </details>
-                <details class="settings-group" id="settings-group-twin-engine">
-                    <summary
-                        style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">
-                        Twin-engine (experimental)</summary>
-                    <div style="margin-top:10px;">
-                        <label class="checkbox-label" style="margin-bottom: 5px;">
-                            <input type="checkbox" id="show-twin-engine-summary-button-toggle">
-                            ヘッダーに「要約セッション履歴」ボタンを表示する（⚗️ボタン）
-                        </label>
+                        <label for="character-names-list">登場人物・固有名詞リスト (カンマ区切り):</label>
+                        <textarea id="character-names-list" placeholder="例: れな, ゆず, カイン, 茅森月歌, 和泉ユキ"
+                            aria-label="登場人物・固有名詞リスト" rows="3"></textarea>
                         <p
                             style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                            ※ Twin-engineで生成された要約履歴を表示・編集するためのパネルを開閉します。
-                        </p>
-                        <div id="twin-engine-full-auto-setting-container" class="hidden" style="padding-left: 20px;">
-                            <label class="checkbox-label" style="margin-bottom: 5px;">
-                                <input type="checkbox" id="twin-engine-enable-full-auto-toggle">
-                                バックグラウンドでの全自動要約を有効にする
-                            </label>
-                            <p
-                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                                ※ 有効にすると、AIの応答完了後に自動的に会話履歴の要約が生成されます。無効時は手動での要約実行（セミオート）のみ可能です。
-                            </p>
-                        </div>
-                        <div style="padding-left: 20px; margin-top: 5px;">
-                            <label class="checkbox-label" style="margin-bottom: 5px;">
-                                <input type="checkbox" id="show-footer-twin-engine-toggle-button-toggle">
-                                フッターにTwin-engineモード切替ボタンを表示する
-                            </label>
-                            <p
-                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                                ※ Twin-engineが有効な場合にのみ、フッターに自動/手動モードを切り替えるボタンを表示します。
-                            </p>
-                        </div>
-                        <div style="padding-left: 20px; margin-top: 5px;">
-                            <label class="checkbox-label" style="margin-bottom: 5px;">
-                                <input type="checkbox" id="show-footer-resummarize-button-toggle">
-                                フッターに「要約実行(♻️)」ボタンを表示する
-                            </label>
-                            <p
-                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                                ※ Twin-engineが有効な場合にのみ、フッターに手動で要約を実行するボタンを表示します。
-                            </p>
-                        </div>
-                        <div id="twin-engine-inclusion-settings"
-                            style="margin-top: 15px; border: 1px solid var(--border-tertiary); padding: 10px; border-radius: 5px;">
-                            <h4
-                                style="font-size: 13px; color: var(--text-secondary); margin-top: 0; margin-bottom: 10px;">
-                                要約送信時に含める会話履歴</h4>
-
-                            <label for="twin-engine-summarize-after-turns" style="margin-top: 15px;">要約開始ターン数:</label>
-                            <input type="number" id="twin-engine-summarize-after-turns" min="0" step="1"
-                                placeholder="例: 5 (0で即時要約)">
-                            <p
-                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                                ※ ユーザーの送信がここで指定した回数を超えた後、Twin-engineによる要約が開始されます。<br>
-                                ※ それまでは、要約ではなく全ての会話履歴をAIに送信します。<br>
-                                ※ 0を指定すると、最初の応答から要約を開始します。
-                            </p>
-                        </div>
-
-                        <div id="twin-engine-inclusion-settings"
-                            style="margin-top: 15px; border: 1px solid var(--border-tertiary); padding: 10px; border-radius: 5px;">
-                            <h4
-                                style="font-size: 13px; color: var(--text-secondary); margin-top: 0; margin-bottom: 10px;">
-                                要約送信時に含める会話履歴</h4>
-
-                            <label for="twin-engine-initial-turns-to-include">要約に含めるセッション初期のユーザーメッセージ数:</label>
-                            <input type="number" id="twin-engine-initial-turns-to-include" min="0" step="1"
-                                placeholder="例: 1 (0で含めない)">
-                            <p
-                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 0;">
-                                ※ 要約とともに、セッションの最初からここで指定した数のユーザーメッセージ（とAIの応答）を送信します。<br>
-                                ※ これにより、会話の初期の重要なコンテキストをAIに保持させることができます。
-                            </p>
-                        </div>
-
-                        <label for="twin-engine-summary-prompt" style="margin-top:15px;">Twin-engine 要約用プロンプト:</label>
-                        <textarea id="twin-engine-summary-prompt" placeholder="例: 以下の会話履歴を、重要なポイントを箇条書きで簡潔に要約してください。"
-                            aria-label="Twin-engine 要約用プロンプト"></textarea>
-                        <p
-                            style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                            ※ ここに入力した内容が、会話履歴とともにTwin-engine用AIへの指示として送信されます。
-                        </p>
-                        <hr style="margin: 20px 0;">
-                        <details open>
-                            <summary
-                                style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">
-                                Twin-engine用 API設定</summary>
-                            <div style="padding-left: 15px; margin-top: 10px;">
-                                <div id="twin-engine-api-configs-list" class="api-keys-list"
-                                    style="margin-top:10px; margin-bottom: 15px;">
-                                </div>
-                                <button type="button" id="add-twin-engine-api-config-btn"
-                                    class="add-api-key-btn">新しいAPI設定を追加</button>
-
-                                <p style="font-size: 11px; color: var(--text-secondary); margin-top: 15px;">
-                                    ※「セッションの過去の会話 → ある程度セッションが進んだ時点で別の AI で要約 → システムプロンプトとその要約だけを現在の AI
-                                    に渡して続きの対話を開始する」というワークフローを行う機能。<br>
-                                    ※要約内容がまだ存在しない（空の）場合は、要約機能を一時的にスキップし、セッションの全履歴をAIに送信
-                                </p>
-                            </div>
-                        </details>
-                        <hr style="margin: 20px 0;">
-                        <h4 style="font-size: 14px; color: var(--text-link); margin-bottom: 10px;">アドバンスド (Twin-engine)
-                        </h4>
-
-                        <label for="twin-engine-dummy-user">ダミー User プロンプト (要約時のみ追加):</label>
-                        <textarea id="twin-engine-dummy-user" placeholder="API送信直前に user ロールとして履歴末尾に追加されます"
-                            aria-label="Twin-engine ダミー User プロンプト"></textarea>
-                        <label class="checkbox-label" style="margin-top: -5px; margin-bottom: 15px;">
-                            <input type="checkbox" id="twin-engine-enable-dummy-user">
-                            このダミーUserプロンプトを有効にする
-                        </label>
-
-                        <label for="twin-engine-dummy-model">ダミー Model プロンプト (要約時のみ追加):</label>
-                        <textarea id="twin-engine-dummy-model" placeholder="API送信直前に model ロールとして履歴最末尾に追加されます"
-                            aria-label="Twin-engine ダミー Model プロンプト"></textarea>
-                        <label class="checkbox-label" style="margin-top: -5px;">
-                            <input type="checkbox" id="twin-engine-enable-dummy-model">
-                            このダミーModelプロンプトを有効にする
-                        </label>
-                        <label class="checkbox-label" style="margin-top: -5px; margin-bottom: 15px;">
-                            <input type="checkbox" id="twin-engine-concat-dummy-model">
-                            ダミーモデルと要約結果を連結
-                        </label>
-                        <p
-                            style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                            ※チェック時、要約結果の先頭に上記ダミーModelの内容を付与。
+                            ※ ここに登録した名前がAIの応答に含まれる場合、表記揺れ（例: ゆｽﾞ→ゆず）を自動で補正します。
                         </p>
                     </div>
-                </details>
-                <details class="settings-group" id="settings-group-session-linking">
-                    <summary
-                        style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">
-                        AI間会話モード（セッション間リンク）</summary>
-                    <div style="margin-top:10px;">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="enable-session-linking">
-                            セッション間リンク機能を有効にする
-                        </label>
-                        <p
-                            style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                            ※ 有効にすると、履歴画面で2つのセッションをリンクし、AI同士の会話をステップ実行できます。（👥ボタンを用いた入出力のみ。）<br>
-                            ※ Max Tokensが足りないと失敗します。
-                        </p>
-                        <p style="height:10px"></p>
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="disable-load-chat-confirmation-while-sending-toggle">
-                            メッセージ送信中に別チャットを読み込む際の確認ダイアログを表示しない (非推奨)
-                        </label>
-                    </div>
-                </details>
-
-                <div class="danger-zone">
-
-                    <p style="text-align: center; color: var(--text-secondary); font-size: 12px; margin-bottom: 10px;">
-                        バージョン: <span id="app-version"></span>
-                    </p>
-                    <button id="update-app-btn">アプリを更新 (キャッシュクリア)</button>
-                    <p
-                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px; text-align:center;">
-                        ※ サーバー側のhtmlファイルなどはブラウザにキャッシュされるため、<BR>
-                        このボタンで明示的にサーバーから再取得しない限り更新されない。
-                    </p>
-                    <details id="settings-group-danger-zone-details">
-                        <summary
-                            style="cursor: pointer; font-weight: normal; font-size: 14px; color: var(--text-link); margin-bottom: 10px; display: block; text-align: center;">
-                            ※取り扱い注意項目※</summary>
-                        <label class="checkbox-label" style="margin-top: 10px; margin-bottom: 5px;">
-                            <input type="checkbox" id="disable-save-settings-confirmation-toggle">
-                            「設定を保存しました」通知を無効にする
-                        </label>
-                        <p
-                            style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                            ※ 設定保存時の確認ダイアログを表示しません。
-                        </p>
-                        <label class="checkbox-label" style="margin-top: 10px; margin-bottom: 5px;">
-                            <input type="checkbox" id="auto-save-settings-toggle">
-                            設定を即時反映する
-                        </label>
-                        <p
-                            style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                            ※ 「設定を保存」ボタンを押さずとも、設定の変更が直ちに適用されます。
-                        </p>
-                        <hr style="margin: 15px 0;">
-                        <button id="force-recovery-btn" class="orange-button">🔄 強制復旧 (キャッシュクリア&リロード)</button>
-                        <p style="font-size: 11px; color: var(--text-secondary); margin-top:5px; margin-bottom: 10px;">
-                            ※
-                            アプリが不安定な場合に使用。全キャッシュをクリアして強制的に再起動します。「アプリを更新」の処理に加えて、ブラウザが保持しているこの「GeminiPWA」アプリに関連する他の種類のキャッシュも可能な限り削除します。<br>
-                            ※ ユーザーデータ（チャット履歴・設定）は保持されます。
-                        </p>
-                        <button id="clear-history-btn" class="orange-button">全履歴削除</button>
-                        <p style="font-size: 11px; color: var(--text-secondary); margin-top:5px; margin-bottom: 10px;">
-                            ※ ブラウザに保存されているチャット履歴を全て削除します。設定は保持されます。<BR>
-                        </p>
-                        <button id="clear-data-btn">⚠⚠⚠全データクリア (履歴と設定)⚠⚠⚠</button>
-                        <p style="font-size: 11px; color: var(--text-secondary); margin-top:5px; margin-bottom: 10px;">
-                            ※ ブラウザに保存されている設定や履歴を全て削除。<BR>
-                            ！！間違えて押そうとしていないか注意！！
-                        </p>
-                    </details>
-                </div>
-            </main>
         </div>
+        </details>
+        <!-- ▲▲▲ ここまで追加 ▲▲▲ -->
+        <div class="settings-group" id="settings-group-image">
+            <h3>イメージ画像</h3>
+            <label>チャット画面の背景画像:</label>
+            <div class="image-upload-controls">
+                <input type="file" id="background-image-input" accept="image/jpeg, image/png, image/gif, image/webp"
+                    class="hidden">
+                <button id="upload-background-btn" class="settings-action-button" type="button">画像を選択...</button>
+                <img id="background-thumbnail" src="" alt="背景画像プレビュー" class="background-thumbnail hidden">
+                <button id="delete-background-btn" class="settings-delete-button hidden" type="button">画像を削除</button>
+            </div>
+            <p style="font-size: 11px; color: var(--text-secondary); margin-top: 8px;">
+                ※ 画像はブラウザ内のデータベースに保存されます。gifも可<br>
+                ※ 可読性のため画像の上に半透明のレイヤーを表示。
+            </p>
+        </div>
+
+        <details class="settings-group" id="settings-group-icons">
+            <summary
+                style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">
+                チャットアイコン設定</summary>
+            <div style="margin-top:15px;">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="show-user-icon-toggle">
+                    ユーザーアイコンを表示する
+                </label>
+                <div class="image-upload-controls" style="margin-bottom: 5px;">
+                    <input type="file" id="user-icon-input" accept="image/jpeg, image/png, image/gif, image/webp"
+                        class="hidden">
+                    <button id="upload-user-icon-btn" class="settings-action-button"
+                        type="button">ユーザーアイコン選択...</button>
+                    <img id="user-icon-thumbnail" src="" alt="ユーザーアイコンプレビュー" class="icon-thumbnail hidden">
+                    <button id="delete-user-icon-btn" class="settings-delete-button hidden" type="button">削除</button>
+                </div>
+                <label class="checkbox-label" style="margin-top: 5px;">
+                    <input type="checkbox" id="show-user-name-toggle">
+                    ユーザー名を表示する
+                </label>
+                <label for="user-name-input">表示するユーザー名:</label>
+                <input type="text" id="user-name-input" placeholder="例: あなた" aria-label="表示するユーザー名">
+
+                <label class="checkbox-label" style="margin-top: 20px;">
+                    <input type="checkbox" id="show-ai-icon-toggle">
+                    AIアイコンを表示する
+                </label>
+                <div class="image-upload-controls" style="margin-bottom: 5px;">
+                    <input type="file" id="ai-icon-input" accept="image/jpeg, image/png, image/gif, image/webp"
+                        class="hidden">
+                    <button id="upload-ai-icon-btn" class="settings-action-button" type="button">AIアイコン選択...</button>
+                    <img id="ai-icon-thumbnail" src="" alt="AIアイコンプレビュー" class="icon-thumbnail hidden">
+                    <button id="delete-ai-icon-btn" class="settings-delete-button hidden" type="button">削除</button>
+                </div>
+                <label class="checkbox-label" style="margin-top: 5px;">
+                    <input type="checkbox" id="show-ai-name-toggle">
+                    AI名を表示する
+                </label>
+                <label for="ai-name-input">表示するAI名:</label>
+                <input type="text" id="ai-name-input" placeholder="例: Gemini" aria-label="表示するAI名">
+
+                <details id="settings-group-icon-details">
+                    <summary
+                        style="cursor: pointer; font-weight: normal; font-size: 14px; color: var(--text-link); list-style: revert;">
+                        アイコン表示調整</summary>
+                    <div style="padding-left: 15px; margin-top: 10px;">
+                        <div style="margin-top: 10px;">
+                            <label for="icon-name-font-size">アイコン下の名前の文字サイズ (px):</label>
+                            <input type="number" id="icon-name-font-size" min="1" max="46" step="1" placeholder="例: 10"
+                                aria-label="アイコン下の名前の文字サイズ（上限あり）">
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <label for="icon-name-offset-y">名前の垂直オフセット (px, 上が正):</label>
+                            <input type="number" id="icon-name-offset-y" step="1" placeholder="例: 10"
+                                aria-label="名前の垂直オフセット（上限あり）">
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <label for="message-icon-size">アイコン表示サイズ (px):</label>
+                            <input type="number" id="message-icon-size" min="1" max="300" step="1" placeholder="例: 28"
+                                aria-label="アイコン表示サイズ（上限あり）">
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <label for="message-icon-offset-y">アイコン垂直オフセット (px, 上が正):</label>
+                            <input type="number" id="message-icon-offset-y" step="1" placeholder="例: 0 (上下に調整)"
+                                aria-label="アイコン垂直オフセット（上限あり）">
+                        </div>
+                        <hr style="margin: 20px 0;">
+                        <h4>ユーザー名の背景バブル</h4>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="user-name-bubble-toggle">
+                            バブルを表示する
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="user-name-bubble-use-theme-color-toggle">
+                            テーマのメッセージ色に合わせる
+                        </label>
+                        <div id="user-name-bubble-custom-color-settings">
+                            <label for="user-name-bubble-color">背景色 (上記OFF時):</label>
+                            <input type="text" id="user-name-bubble-color" placeholder="#FFFFFF">
+                        </div>
+                        <label for="user-name-bubble-opacity">透過度 (0.0-1.0):</label>
+                        <input type="number" id="user-name-bubble-opacity" min="0" max="1" step="0.1" placeholder="0.8">
+
+                        <h4 style="margin-top: 15px;">AI名の背景バブル</h4>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="ai-name-bubble-toggle">
+                            バブルを表示する
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="ai-name-bubble-use-theme-color-toggle">
+                            テーマのメッセージ色に合わせる
+                        </label>
+                        <div id="ai-name-bubble-custom-color-settings">
+                            <label for="ai-name-bubble-color">背景色 (上記OFF時):</label>
+                            <input type="text" id="ai-name-bubble-color" placeholder="#FFFFFF">
+                        </div>
+                        <label for="ai-name-bubble-opacity">透過度 (0.0-1.0):</label>
+                        <input type="number" id="ai-name-bubble-opacity" min="0" max="1" step="0.1" placeholder="0.8">
+                    </div>
+                </details>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top: 15px;">
+                    ※ アイコン画像はブラウザ内のデータベースに保存されます。<br>
+                    ※ 表示時は円形に切り取られます。gifも可、デフォルトサイズ: 28px。
+                </p>
+            </div>
+        </details>
+
+        <div class="settings-group" id="settings-group-other">
+            <details open id="settings-group-other-details">
+                <summary
+                    style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">
+                    その他設定</summary>
+                <div style="margin-top:10px;">
+                    <p style="height:10px"></p>
+                    <label for="theme-select">表示テーマ:</label>
+                    <select id="theme-select" aria-label="表示テーマ">
+                        <option value="light">ライトモード</option>
+                        <option value="dark">ダークモード</option>
+                        <option value="pastel-pink">パステルモード🩷</option>
+                        <option value="pastel-blue">パステルモード🩵</option>
+                        <option value="pastel-yellow">パステルモード🟡</option>
+                        <option value="pastel-purple">パステルモード🟣</option>
+                        <option value="pastel-rainbow">パステルモード🌈</option>
+                    </select>
+                    <p style="height:10px"></p>
+                    <details id="settings-group-behavior-adjustment" open>
+                        <summary
+                            style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">
+                            アプリの挙動を調整</summary>
+                        <div style="padding-left: 15px; margin-top: 10px;">
+
+                            <!-- ファクター: 操作の変更 -->
+                            <details id="settings-group-factor-operation-changes">
+                                <summary
+                                    style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
+                                    ファクター: 操作の変更</summary>
+                                <div
+                                    style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="enter-to-send">
+                                        Enterキーで送信する
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="auto-scroll-on-new-message">
+                                        メッセージ送受信時に自動スクロールする
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="auto-scroll-on-thought">
+                                        思考プロセス受信時に自動スクロールする
+                                    </label>
+                                    <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="swipe-navigation-toggle">
+                                        チャット画面から左右スワイプで画面移動
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="prevent-zoom-toggle">
+                                        ズームを禁止する (テキスト入力時の自動ズーム防止)
+                                    </label>
+                                    <p
+                                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                                        ※ スマホ等でテキスト入力時に意図せずズームするのを防ぎます。
+                                    </p>
+                                    <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
+                                    <label for="history-sort-order"
+                                        style="display: block; margin-bottom: 5px;">履歴のソート順:</label>
+                                    <select id="history-sort-order" aria-label="履歴のソート順" style="margin-bottom: 10px;">
+                                        <option value="updatedAt">更新日時 (新しい順)</option>
+                                        <option value="createdAt">作成日時 (新しい順)</option>
+                                    </select>
+                                </div>
+                            </details>
+
+                            <!-- ファクター: 様式の変更 -->
+                            <details id="settings-group-factor-style-changes">
+                                <summary
+                                    style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
+                                    ファクター: 様式の変更</summary>
+                                <div
+                                    style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="minimize-header-footer-toggle">
+                                        ヘッダー/フッターの縦幅を最小化する
+                                    </label>
+                                    <p
+                                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                                        ※ 表示領域を最大化します。画面が小型の端末向け。
+                                    </p>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="extend-ai-bubble-width-toggle">
+                                        AI応答バブルの横幅を拡張する
+                                    </label>
+                                    <p
+                                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                                        ※ AIの応答メッセージの最大幅を広げ、画面をより広く使います。
+                                    </p>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="extend-user-bubble-width-toggle">
+                                        ユーザーメッセージの横幅を拡張する
+                                    </label>
+                                    <p
+                                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                                        ※ ユーザーのメッセージの最大幅を広げ、画面をより広く使います。
+                                    </p>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="reduce-message-spacing-toggle">
+                                        メッセージ間の余白を縮小する
+                                    </label>
+                                    <p
+                                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                                        ※ チャット画面のメッセージ間の縦の空白を切り詰めます。
+                                    </p>
+                                </div>
+                            </details>
+
+                            <!-- ファクター: 確認ダイアログのスキップ -->
+                            <details id="settings-group-factor-skip-dialogs">
+                                <summary
+                                    style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
+                                    ファクター: 確認ダイアログのスキップ</summary>
+                                <div
+                                    style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="disable-retry-confirmation-toggle">
+                                        リトライ時の確認を無効にする
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="disable-delete-message-confirmation-toggle">
+                                        メッセージ削除時の確認を無効にする
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="disable-attachment-confirmation-toggle">
+                                        添付ファイル削除時の確認を無効にする
+                                    </label>
+                                </div>
+                            </details>
+
+                            <!-- ファクター: 上級ユーザー向けオプション -->
+                            <details id="settings-group-factor-advanced-options">
+                                <summary
+                                    style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
+                                    ファクター: 上級ユーザー向けオプション</summary>
+                                <div
+                                    style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="add-prefix-on-import-toggle">
+                                        履歴インポート時にタイトルへ接頭辞を付与する
+                                    </label>
+                                    <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="enable-webhook-notification-toggle">
+                                        AIの応答内容を指定URLに転送する
+                                    </label>
+                                    <div id="webhook-settings-container" class="hidden">
+                                        <div id="webhooks-list" class="api-keys-list" style="margin-bottom: 15px;">
+                                        </div>
+                                        <button type="button" id="add-webhook-btn"
+                                            class="add-api-key-btn">新しいWebhookを追加</button>
+                                        <p style="font-size: 11px; color: var(--text-secondary); margin-top: 15px;">
+                                            ※ AIの応答完了時に、有効化されたすべてのURLへPOSTリクエストを自動転送します。
+                                        </p>
+                                    </div>
+                                    <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-multi-api-keys-toggle">
+                                        複数APIキー管理機能を使用する
+                                    </label>
+                                    <p
+                                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                                        ※ 複数のAPIキーを使い分けたい場合に使用。
+                                    </p>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-proofreading-settings-toggle">
+                                        校正機能を使用する
+                                    </label>
+                                    <p
+                                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                                        ※ 応答生成後に別のモデルで文章を校正する機能に関する設定項目を表示します。
+                                    </p>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-twin-engine-settings-toggle">
+                                        Twin-engine（自動要約）を使用する
+                                    </label>
+                                    <p
+                                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                                        ※ 会話履歴の自動要約機能に関する設定項目を表示します。
+                                    </p>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-session-linking-settings-toggle">
+                                        AI間会話モード（セッション間リンク）設定を表示する
+                                    </label>
+                                    <p
+                                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                                        ※ 履歴画面から2つのチャットを連携させ、AI同士を会話させることができます。
+                                    </p>
+                                </div>
+                            </details>
+                        </div>
+                    </details>
+                    <hr style="margin: 15px 0 15px 0; border: none; border-top: 1px solid var(--border-secondary);">
+
+                    <details id="settings-group-header-footer-buttons">
+                        <summary
+                            style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">
+                            ボタン類の表示/非表示切替</summary>
+                        <div style="padding-left: 15px; margin-top: 10px;">
+
+                            <!-- ファクター: 履歴画面のボタン -->
+                            <details open id="settings-group-factor-history-buttons">
+                                <summary
+                                    style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
+                                    ファクター: 履歴画面のボタン</summary>
+                                <div
+                                    style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-bulk-history-actions-toggle">
+                                        履歴画面に「全出力」「全取込」ボタンを表示する
+                                    </label>
+                                </div>
+                            </details>
+
+                            <!-- ファクター: ヘッダーのボタン -->
+                            <details open id="settings-group-factor-header-buttons">
+                                <summary
+                                    style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
+                                    ファクター: ヘッダーのボタン</summary>
+                                <div
+                                    style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-chat-title-toggle">
+                                        チャットタイトルを表示する
+                                    </label>
+                                    <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-new-chat-button-toggle">
+                                        「新規」ボタンを表示する（「新」ボタン）
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-delete-session-button-toggle">
+                                        「全削除」ボタンを表示する（「削」ボタン）
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-copy-session-button-toggle">
+                                        「全コピー」ボタンを表示する（「コ」ボタン）
+                                    </label>
+                                    <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-api-provider-toggle-header">
+                                        ヘッダーにAPI切替ボタンを表示する
+                                    </label>
+                                    <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-scroll-to-top-button-toggle">
+                                        「最上部へ(🔼)」ボタンを表示する
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-scroll-to-bottom-button-toggle">
+                                        「最下部へ(🔽)」ボタンを表示する
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-toggle-all-content-button-toggle">
+                                        「全表示/非表示(🖼️)」ボタンを表示する
+                                    </label>
+                                    <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-memo-button-toggle">
+                                        メモボタン(📝)を表示する
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-clipboard-stack-button-toggle">
+                                        クリップボードスタックボタン(🗒️)を表示する
+                                    </label>
+                                    <div id="memo-stack-height-settings">
+                                        <div>
+                                            <label for="memo-height">メモ・スタックの縦の幅 (例: 200px, 30vh):</label>
+                                            <input type="text" id="memo-height" placeholder="例: 200px, 30vh"
+                                                aria-label="メモ・スタックの縦の幅">
+                                        </div>
+                                        <p
+                                            style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom:10px;">
+                                            ※ 各エリアは縦方向にリサイズ可能です。
+                                        </p>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- ファクター: フッターのボタン -->
+                            <details open id="settings-group-factor-footer-buttons">
+                                <summary
+                                    style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
+                                    ファクター: フッターのボタン</summary>
+                                <div
+                                    style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-api-provider-toggle-footer">
+                                        フッターにAPI切替ボタンを表示する
+                                    </label>
+                                    <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-paste-button-in-footer-toggle">
+                                        「貼付け」ボタンを表示する
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-dice-button-toggle">
+                                        ダイスボタン(🎲)を表示する
+                                    </label>
+                                    <div id="dice-value-settings" class="hidden" style="margin-top:5px;">
+                                        <div class="param-grid">
+                                            <div>
+                                                <label for="dice-min-value">ダイス最小値:</label>
+                                                <input type="number" id="dice-min-value" min="0" step="1"
+                                                    placeholder="例: 1">
+                                            </div>
+                                            <div>
+                                                <label for="dice-max-value">ダイス最大値:</label>
+                                                <input type="number" id="dice-max-value" min="0" step="1"
+                                                    placeholder="例: 100">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- ファクター: メッセージ要素のボタン -->
+                            <details open id="settings-group-factor-message-buttons">
+                                <summary
+                                    style="font-size: 13px; color: var(--text-secondary); cursor: pointer; font-weight: bold; margin-top: 15px; list-style: revert;">
+                                    ファクター: メッセージ要素のボタン</summary>
+                                <div
+                                    style="padding-left: 15px; margin-top: 10px; border-left: 1px solid var(--border-secondary); padding-top: 5px;">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-paste-button-in-edit-toggle">
+                                        メッセージ編集ツールバーに「貼付け」ボタンを表示する
+                                    </label>
+                                    <hr style="margin: 10px 0; border-top: 1px solid var(--border-tertiary);">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-top-collapse-button-toggle">
+                                        メッセージ右上に折りたたみボタンを表示する
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="show-bottom-collapse-button-toggle">
+                                        メッセージツールバーに折りたたみボタンを表示する
+                                    </label>
+                                    <details id="settings-group-collapse-button-details" style="margin-bottom: 15px;">
+                                        <summary
+                                            style="cursor: pointer; font-weight: normal; font-size: 14px; color: var(--text-link); list-style: revert;">
+                                            折りたたみボタン詳細設定</summary>
+                                        <div style="padding-left: 15px; margin-top: 10px;">
+                                            <label class="checkbox-label"
+                                                style="margin-top: 10px; margin-bottom: 15px;">
+                                                <input type="checkbox" id="persist-message-collapse-state">
+                                                メッセージの折り畳み状態を記憶する
+                                            </label>
+                                            <hr style="margin-bottom: 15px;">
+                                            <label for="toggle-button-top-width">右上ボタン 横幅 (px):</label>
+                                            <input type="number" id="toggle-button-top-width" min="1" max="100" step="1"
+                                                placeholder="例: 6">
+                                            <label for="toggle-button-top-height">右上ボタン 縦幅 (px):</label>
+                                            <input type="number" id="toggle-button-top-height" min="1" max="100"
+                                                step="1" placeholder="例: 40">
+                                            <label for="toggle-button-top-font-size">右上ボタン フォントサイズ (px):</label>
+                                            <input type="number" id="toggle-button-top-font-size" min="1" max="50"
+                                                step="1" placeholder="例: 12">
+                                            <label for="toggle-button-top-text-collapse">右上ボタン
+                                                折りたたみ時テキスト:</label>
+                                            <input type="text" id="toggle-button-top-text-collapse" placeholder="例: -">
+                                            <label for="toggle-button-top-text-expand">右上ボタン 展開時テキスト:</label>
+                                            <input type="text" id="toggle-button-top-text-expand" placeholder="例: □">
+
+                                            <hr style="margin: 15px 0;">
+
+                                            <label for="toggle-button-bottom-font-size">下部ボタン フォントサイズ
+                                                (px):</label>
+                                            <input type="number" id="toggle-button-bottom-font-size" min="1" max="34"
+                                                step="1" placeholder="例: 14">
+                                            <label for="toggle-button-bottom-text-collapse">下部ボタン
+                                                折りたたみ時テキスト:</label>
+                                            <input type="text" id="toggle-button-bottom-text-collapse"
+                                                placeholder="例: 非表示">
+                                            <label for="toggle-button-bottom-text-expand">下部ボタン 展開時テキスト:</label>
+                                            <input type="text" id="toggle-button-bottom-text-expand"
+                                                placeholder="例: 表示">
+                                        </div>
+                                    </details>
+                                </div>
+                            </details>
+                        </div>
+                    </details>
+
+                    <details id="settings-group-font">
+                        <summary
+                            style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">
+                            フォント設定</summary>
+                        <div style="padding-left: 15px; margin-top: 10px;">
+                            <label for="font-family-input">アプリのフォント:</label>
+                            <input type="text" id="font-family-input" placeholder="例: 'Meiryo', sans-serif"
+                                aria-label="アプリ全体のフォント">
+                            <p
+                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 5px;">
+                                ※ 端末またはPCにインストールされているフォント名を指定。
+                            </p>
+                            <label for="message-body-font-size-input">メッセージ本文のフォントサイズ (px):</label>
+                            <input type="number" id="message-body-font-size-input" min="1" max="100" step="1"
+                                placeholder="例: 14 (デフォルト)" aria-label="メッセージ本文のフォントサイズ">
+                            <p
+                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                                ※ 空欄でデフォルト(14px)。1～100pxの範囲で指定可。
+                            </p>
+                            <label for="code-block-font-size-input">コードブロックのフォントサイズ (px):</label>
+                            <input type="number" id="code-block-font-size-input" min="1" max="100" step="1"
+                                placeholder="例: 13 (デフォルト)" aria-label="コードブロックのフォントサイズ">
+                            <p
+                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                                ※ 空欄でデフォルト(13px)。1～100pxの範囲で指定可。
+                            </p>
+                            <label for="thought-summary-font-size">思考プロセス フォントサイズ (px):</label>
+                            <input type="number" id="thought-summary-font-size" min="1" max="100" step="1"
+                                placeholder="例: 13 (デフォルト)" aria-label="思考プロセス フォントサイズ">
+                            <p
+                                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                                ※ 空欄でデフォルト(13px)。1～100pxの範囲で指定可。
+                            </p>
+                        </div>
+                    </details>
+                    <details id="settings-group-opacity">
+                        <summary
+                            style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">
+                            各種透明度設定</summary>
+                        <div style="padding-left: 15px; margin-top: 10px;">
+                            <label for="message-bubble-opacity">メッセージバブルの透明度 (0.0-1.0):</label>
+                            <input type="number" id="message-bubble-opacity" min="0" max="1" step="0.05"
+                                placeholder="例: 0.8" aria-label="メッセージバブルの透明度">
+                            <label for="message-actions-background-opacity">メッセージツールバーの透明度（除ボタン）
+                                (0.0-1.0):</label>
+                            <input type="number" id="message-actions-background-opacity" min="0" max="1" step="0.05"
+                                placeholder="例: 0.8" aria-label="メッセージツールバーの透明度（除ボタン）">
+                            <label for="chat-overlay-opacity">チャット背景オーバーレイの透明度 (0.0-1.0):</label>
+                            <input type="number" id="chat-overlay-opacity" min="0" max="1" step="0.05"
+                                placeholder="例: 0.6" aria-label="チャット背景オーバーレイの透明度">
+                            <label for="header-footer-opacity">ヘッダー/フッターの透明度 (0.0-1.0):</label>
+                            <input type="number" id="header-footer-opacity" min="0" max="1" step="0.05"
+                                placeholder="例: 0.9" aria-label="ヘッダー/フッターの透明度">
+                            <label for="toggle-button-top-opacity">右上折りたたみボタンの透明度 (0.0-1.0):</label>
+                            <input type="number" id="toggle-button-top-opacity" min="0" max="1" step="0.05"
+                                placeholder="例: 0.6" aria-label="右上折りたたみボタンの透明度">
+                            <label for="thought-summary-opacity" style="margin-top:10px;">思考プロセス背景の透明度
+                                (0.0-1.0):</label>
+                            <input type="number" id="thought-summary-opacity" min="0" max="1" step="0.05"
+                                placeholder="例: 0.85" aria-label="思考プロセス背景の透明度">
+                            <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px;">
+                                ※ 0.0で完全透明、1.0で不透明。
+                            </p>
+                        </div>
+                    </details>
+                </div>
+            </details>
+        </div>
+        <details class="settings-group" id="settings-group-proofreading">
+            <summary
+                style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">
+                校正機能</summary>
+            <div style="margin-top:10px;">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="enable-proofreading">
+                    生成後に別のモデルで文章を校正する
+                </label>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                    ※チェック時、最初の応答生成に成功した後、下記で選択された設定で校正処理が実行されます。<br>
+                    ※校正処理にもAPIコストが発生します。
+                </p>
+                <div id="proofreading-options" class="hidden" style="margin-top: 15px;">
+                    <details open>
+                        <summary
+                            style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">
+                            校正用 API設定</summary>
+                        <div style="padding-left: 15px; margin-top: 10px;">
+                            <div id="proofreading-api-configs-list" class="api-keys-list"
+                                style="margin-top:10px; margin-bottom: 15px;">
+                            </div>
+                            <button type="button" id="add-proofreading-api-config-btn"
+                                class="add-api-key-btn">新しい校正設定を追加</button>
+                            <p style="font-size: 11px; color: var(--text-secondary); margin-top: 15px;">
+                                ※ 応答生成後に、ここで「使用中」となっている設定を用いて文章の校正を行います。<br>
+                                ※ 各設定の詳細パラメータ（温度設定など）も校正時に適用されます。
+                            </p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </details>
+        <details class="settings-group" id="settings-group-twin-engine">
+            <summary
+                style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">
+                Twin-engine (experimental)</summary>
+            <div style="margin-top:10px;">
+                <label class="checkbox-label" style="margin-bottom: 5px;">
+                    <input type="checkbox" id="show-twin-engine-summary-button-toggle">
+                    ヘッダーに「要約セッション履歴」ボタンを表示する（⚗️ボタン）
+                </label>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                    ※ Twin-engineで生成された要約履歴を表示・編集するためのパネルを開閉します。
+                </p>
+                <div id="twin-engine-full-auto-setting-container" class="hidden" style="padding-left: 20px;">
+                    <label class="checkbox-label" style="margin-bottom: 5px;">
+                        <input type="checkbox" id="twin-engine-enable-full-auto-toggle">
+                        バックグラウンドでの全自動要約を有効にする
+                    </label>
+                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                        ※ 有効にすると、AIの応答完了後に自動的に会話履歴の要約が生成されます。無効時は手動での要約実行（セミオート）のみ可能です。
+                    </p>
+                </div>
+                <div style="padding-left: 20px; margin-top: 5px;">
+                    <label class="checkbox-label" style="margin-bottom: 5px;">
+                        <input type="checkbox" id="show-footer-twin-engine-toggle-button-toggle">
+                        フッターにTwin-engineモード切替ボタンを表示する
+                    </label>
+                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                        ※ Twin-engineが有効な場合にのみ、フッターに自動/手動モードを切り替えるボタンを表示します。
+                    </p>
+                </div>
+                <div style="padding-left: 20px; margin-top: 5px;">
+                    <label class="checkbox-label" style="margin-bottom: 5px;">
+                        <input type="checkbox" id="show-footer-resummarize-button-toggle">
+                        フッターに「要約実行(♻️)」ボタンを表示する
+                    </label>
+                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                        ※ Twin-engineが有効な場合にのみ、フッターに手動で要約を実行するボタンを表示します。
+                    </p>
+                </div>
+                <div id="twin-engine-inclusion-settings"
+                    style="margin-top: 15px; border: 1px solid var(--border-tertiary); padding: 10px; border-radius: 5px;">
+                    <h4 style="font-size: 13px; color: var(--text-secondary); margin-top: 0; margin-bottom: 10px;">
+                        要約送信時に含める会話履歴</h4>
+
+                    <label for="twin-engine-summarize-after-turns" style="margin-top: 15px;">要約開始ターン数:</label>
+                    <input type="number" id="twin-engine-summarize-after-turns" min="0" step="1"
+                        placeholder="例: 5 (0で即時要約)">
+                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                        ※ ユーザーの送信がここで指定した回数を超えた後、Twin-engineによる要約が開始されます。<br>
+                        ※ それまでは、要約ではなく全ての会話履歴をAIに送信します。<br>
+                        ※ 0を指定すると、最初の応答から要約を開始します。
+                    </p>
+                </div>
+
+                <div id="twin-engine-inclusion-settings"
+                    style="margin-top: 15px; border: 1px solid var(--border-tertiary); padding: 10px; border-radius: 5px;">
+                    <h4 style="font-size: 13px; color: var(--text-secondary); margin-top: 0; margin-bottom: 10px;">
+                        要約送信時に含める会話履歴</h4>
+
+                    <label for="twin-engine-initial-turns-to-include">要約に含めるセッション初期のユーザーメッセージ数:</label>
+                    <input type="number" id="twin-engine-initial-turns-to-include" min="0" step="1"
+                        placeholder="例: 1 (0で含めない)">
+                    <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 0;">
+                        ※ 要約とともに、セッションの最初からここで指定した数のユーザーメッセージ（とAIの応答）を送信します。<br>
+                        ※ これにより、会話の初期の重要なコンテキストをAIに保持させることができます。
+                    </p>
+                </div>
+
+                <label for="twin-engine-summary-prompt" style="margin-top:15px;">Twin-engine 要約用プロンプト:</label>
+                <textarea id="twin-engine-summary-prompt" placeholder="例: 以下の会話履歴を、重要なポイントを箇条書きで簡潔に要約してください。"
+                    aria-label="Twin-engine 要約用プロンプト"></textarea>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                    ※ ここに入力した内容が、会話履歴とともにTwin-engine用AIへの指示として送信されます。
+                </p>
+                <hr style="margin: 20px 0;">
+                <details open>
+                    <summary
+                        style="font-size: 14px; color: var(--text-link); padding-bottom: 5px; margin-bottom: 10px; display: list-item; list-style: revert; cursor:pointer; font-weight: normal;">
+                        Twin-engine用 API設定</summary>
+                    <div style="padding-left: 15px; margin-top: 10px;">
+                        <div id="twin-engine-api-configs-list" class="api-keys-list"
+                            style="margin-top:10px; margin-bottom: 15px;">
+                        </div>
+                        <button type="button" id="add-twin-engine-api-config-btn"
+                            class="add-api-key-btn">新しいAPI設定を追加</button>
+
+                        <p style="font-size: 11px; color: var(--text-secondary); margin-top: 15px;">
+                            ※「セッションの過去の会話 → ある程度セッションが進んだ時点で別の AI で要約 → システムプロンプトとその要約だけを現在の AI
+                            に渡して続きの対話を開始する」というワークフローを行う機能。<br>
+                            ※要約内容がまだ存在しない（空の）場合は、要約機能を一時的にスキップし、セッションの全履歴をAIに送信
+                        </p>
+                    </div>
+                </details>
+                <hr style="margin: 20px 0;">
+                <h4 style="font-size: 14px; color: var(--text-link); margin-bottom: 10px;">アドバンスド (Twin-engine)
+                </h4>
+
+                <label for="twin-engine-dummy-user">ダミー User プロンプト (要約時のみ追加):</label>
+                <textarea id="twin-engine-dummy-user" placeholder="API送信直前に user ロールとして履歴末尾に追加されます"
+                    aria-label="Twin-engine ダミー User プロンプト"></textarea>
+                <label class="checkbox-label" style="margin-top: -5px; margin-bottom: 15px;">
+                    <input type="checkbox" id="twin-engine-enable-dummy-user">
+                    このダミーUserプロンプトを有効にする
+                </label>
+
+                <label for="twin-engine-dummy-model">ダミー Model プロンプト (要約時のみ追加):</label>
+                <textarea id="twin-engine-dummy-model" placeholder="API送信直前に model ロールとして履歴最末尾に追加されます"
+                    aria-label="Twin-engine ダミー Model プロンプト"></textarea>
+                <label class="checkbox-label" style="margin-top: -5px;">
+                    <input type="checkbox" id="twin-engine-enable-dummy-model">
+                    このダミーModelプロンプトを有効にする
+                </label>
+                <label class="checkbox-label" style="margin-top: -5px; margin-bottom: 15px;">
+                    <input type="checkbox" id="twin-engine-concat-dummy-model">
+                    ダミーモデルと要約結果を連結
+                </label>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                    ※チェック時、要約結果の先頭に上記ダミーModelの内容を付与。
+                </p>
+            </div>
+        </details>
+        <details class="settings-group" id="settings-group-session-linking">
+            <summary
+                style="font-size: 16px; color: var(--text-link); border-bottom: 1px solid var(--border-tertiary); padding-bottom: 5px; margin-bottom: 15px; display: list-item; list-style: revert; cursor:pointer; font-weight: bold;">
+                AI間会話モード（セッション間リンク）</summary>
+            <div style="margin-top:10px;">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="enable-session-linking">
+                    セッション間リンク機能を有効にする
+                </label>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
+                    ※ 有効にすると、履歴画面で2つのセッションをリンクし、AI同士の会話をステップ実行できます。（👥ボタンを用いた入出力のみ。）<br>
+                    ※ Max Tokensが足りないと失敗します。
+                </p>
+                <p style="height:10px"></p>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="disable-load-chat-confirmation-while-sending-toggle">
+                    メッセージ送信中に別チャットを読み込む際の確認ダイアログを表示しない (非推奨)
+                </label>
+            </div>
+        </details>
+
+        <div class="danger-zone">
+
+            <p style="text-align: center; color: var(--text-secondary); font-size: 12px; margin-bottom: 10px;">
+                バージョン: <span id="app-version"></span>
+            </p>
+            <button id="update-app-btn">アプリを更新 (キャッシュクリア)</button>
+            <p
+                style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px; text-align:center;">
+                ※ サーバー側のhtmlファイルなどはブラウザにキャッシュされるため、<BR>
+                このボタンで明示的にサーバーから再取得しない限り更新されない。
+            </p>
+            <details id="settings-group-danger-zone-details">
+                <summary
+                    style="cursor: pointer; font-weight: normal; font-size: 14px; color: var(--text-link); margin-bottom: 10px; display: block; text-align: center;">
+                    ※取り扱い注意項目※</summary>
+                <label class="checkbox-label" style="margin-top: 10px; margin-bottom: 5px;">
+                    <input type="checkbox" id="disable-save-settings-confirmation-toggle">
+                    「設定を保存しました」通知を無効にする
+                </label>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                    ※ 設定保存時の確認ダイアログを表示しません。
+                </p>
+                <label class="checkbox-label" style="margin-top: 10px; margin-bottom: 5px;">
+                    <input type="checkbox" id="auto-save-settings-toggle">
+                    設定を即時反映する
+                </label>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
+                    ※ 「設定を保存」ボタンを押さずとも、設定の変更が直ちに適用されます。
+                </p>
+                <hr style="margin: 15px 0;">
+                <button id="force-recovery-btn" class="orange-button">🔄 強制復旧 (キャッシュクリア&リロード)</button>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top:5px; margin-bottom: 10px;">
+                    ※
+                    アプリが不安定な場合に使用。全キャッシュをクリアして強制的に再起動します。「アプリを更新」の処理に加えて、ブラウザが保持しているこの「GeminiPWA」アプリに関連する他の種類のキャッシュも可能な限り削除します。<br>
+                    ※ ユーザーデータ（チャット履歴・設定）は保持されます。
+                </p>
+                <button id="clear-history-btn" class="orange-button">全履歴削除</button>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top:5px; margin-bottom: 10px;">
+                    ※ ブラウザに保存されているチャット履歴を全て削除します。設定は保持されます。<BR>
+                </p>
+                <button id="clear-data-btn">⚠⚠⚠全データクリア (履歴と設定)⚠⚠⚠</button>
+                <p style="font-size: 11px; color: var(--text-secondary); margin-top:5px; margin-bottom: 10px;">
+                    ※ ブラウザに保存されている設定や履歴を全て削除。<BR>
+                    ！！間違えて押そうとしていないか注意！！
+                </p>
+            </details>
+        </div>
+        </main>
+    </div>
     </div>
 
     <dialog id="alertDialog" class="custom-dialog">
@@ -6690,7 +6658,6 @@
             imageUrlReplacementOptionsDiv: document.getElementById('image-url-replacement-options'),
             imageUrlReplacementBaseInput: document.getElementById('image-url-replacement-base'),
             characterNamesListTextarea: document.getElementById('character-names-list'), // この行を追加
-            enableRomajiToKatakanaConversionCheckbox: document.getElementById('enable-romaji-to-katakana-conversion'),
 
             geminiThoughtsParam: document.getElementById('gemini-thoughts-param'),
             geminiPseudoStreamingParam: document.getElementById('gemini-pseudo-streaming-param'),
@@ -6779,7 +6746,6 @@
                 enableImageUrlReplacement: false, // デフォルトは無効
                 imageUrlReplacementBase: '',      // ベースURLは空
                 characterNamesList: 'まゆみ,れな,みのり,葛城,日影,モガドール,メイ,アン,グレア,アストルフォ,ノーデ,レグナ,エルナ,ミネット,アキラ,グートルーネ,ハヅキ,イスタロト,フィー,ダルク,ヤン,ロイス,グライアス,ズィーグス,サンドラ,ジェシカ,アンナ,フェイ,ロディ,ジェイ,エマ,クリス,体操服,スクール水着,水着,初期衣装,マイクロビキニ,制服,全裸,私服,ビキニ,下着,部屋着,ドヤ顔,怪訝,大泣き,恐怖する,驚き,苦痛に耐える,泣く,嫌悪,困る,照れ笑い,にしし,真顔,退屈,挑発する,通常,怒る,発情,微笑,ウィンク,とろ顔,恍惚,快感,睡眠,キス顔,拗ねる,きょとん,悲しみ,眠い,恥じらう,はにかむ,涙ぐむ,嬉し泣き,笑う,てへぺろ,はわわ,悔しい,怯える,上目遣い,満面の笑み,考える,混乱,疲れてる,表情通常,表情微笑,表情哀,表情笑顔,表情怒,表情発情,表情軽い絶頂,表情深い絶頂,表情恐怖,表情驚き,表情照れ,ダンジョンを探索,攻撃,山を探索,宿に宿泊,森を探索,昼の町,町で食事,町で買い物,洞窟を探索,夜の町,昼野営,夜野営,冒険者ギルド,野外で食事,仕事中,水浴び,うろたえる,ニヤリ,むっとする,怪訝な顔,驚く,嫌悪する,号泣する,最高の笑顔,深い絶頂,真剣,赤面して耐える,赤面快感,赤面恐怖,赤面絶望,赤面涙目,赤面蠱惑的な笑み,絶頂する,絶望する,退屈する,恥ずかしがる,通常時,悲しむ,目を閉じる,落ち込む,ゲルヒルデ,リコリス,マルレーネ',                 // ▲ここまで追加▲
-                enableRomajiToKatakanaConversion: false,
                 deepSeekApiKey: '',
                 deepSeekModelName: DEFAULT_DEEPSEEK_MODEL,
                 deepSeekAdditionalModels: '',
@@ -7731,13 +7697,12 @@
         }
 
         /**
-         * 入力文字列を正規化し、マップに存在すれば対応する固有名詞を返す
-         * @param {string} input - チェック対象の文字列
-         * @param {Map<string, string>} normalizationMap - 正規化マップ
-         * @param {boolean} performRomajiConversion - ローマ字変換を行うかどうかのフラグ
-         * @returns {string} 処理後の文字列
+          * 入力文字列を正規化し、マップに存在すれば対応する固有名詞を返す
+         * @param {string} input - チェック対象の文字列 (パスのセグメントなど)
+         * @param {Map<string, string>} normalizationMap - getNormalizationMapで作成したマップ
+         * @returns {string} マッチした固有名詞、または元の入力文字列
          */
-        function normalizeName(input, normalizationMap, performRomajiConversion) { // 引数を追加
+        function normalizeName(input, normalizationMap) {
             if (!input || normalizationMap.size === 0) return input;
 
             console.log(`[normalizeName] Input: "${input}"`);
@@ -7748,15 +7713,10 @@
                 console.log(`  > Step 1 (NFKC): "${normalized}"`);
             }
 
-            // 2. ローマ字 -> カタカナ (条件付き)
-            let katakana = normalized;
-            if (performRomajiConversion) { // ★★★ チェックボックスの状態に応じて分岐 ★★★
-                katakana = romajiToKatakana(normalized);
-                if (katakana !== normalized) {
-                    console.log(`  > Step 2 (Romaji to Katakana): "${katakana}"`);
-                }
-            } else {
-                console.log(`  > Step 2 (Romaji to Katakana): Skipped`);
+            // 2. ローマ字 -> カタカナ
+            let katakana = romajiToKatakana(normalized);
+            if (katakana !== normalized) {
+                console.log(`  > Step 2 (Romaji to Katakana): "${katakana}"`);
             }
 
             // 3. カタカナ -> ひらがな
@@ -7882,15 +7842,11 @@
                             // 3b. クリーニング後の文字列を固有名詞リストと照合して正規化
                             if (pathPart && normalizationMap.size > 0) {
                                 pathPart = pathPart.split('/')
-                                    // ▼▼▼ ここを変更 ▼▼▼
-                                    .map(segment => normalizeName(segment, normalizationMap, state.settings.enableRomajiToKatakanaConversion))
-                                    // ▲▲▲ ここまで変更 ▲▲▲
+                                    .map(segment => normalizeName(segment, normalizationMap))
                                     .join('/');
                             }
                             if (normalizationMap.size > 0) {
-                                // ▼▼▼ ここを変更 ▼▼▼
-                                nameWithoutExt = normalizeName(nameWithoutExt, normalizationMap, state.settings.enableRomajiToKatakanaConversion);
-                                // ▲▲▲ ここまで変更 ▲▲▲
+                                nameWithoutExt = normalizeName(nameWithoutExt, normalizationMap);
                             }
 
                             // 3c. 最終的なファイル名を組み立て
@@ -9407,7 +9363,6 @@
                 elements.imageUrlReplacementBaseInput.value = state.settings.imageUrlReplacementBase || '';
                 elements.imageUrlReplacementOptionsDiv.classList.toggle('hidden', !state.settings.enableImageUrlReplacement);
                 elements.characterNamesListTextarea.value = state.settings.characterNamesList || '';
-                elements.enableRomajiToKatakanaConversionCheckbox.checked = state.settings.enableRomajiToKatakanaConversion;
 
                 elements.deepSeekSystemPromptDefaultTextarea.value = state.settings.deepSeekSystemPrompt || '';
                 elements.deepSeekEnableSystemPromptDefaultCheckbox.checked = state.settings.deepSeekEnableSystemPromptDefault;
@@ -14336,7 +14291,6 @@
                 newSettings.enableImageUrlReplacement = elements.enableImageUrlReplacementCheckbox.checked;
                 newSettings.imageUrlReplacementBase = elements.imageUrlReplacementBaseInput.value.trim();
                 newSettings.characterNamesList = elements.characterNamesListTextarea.value.trim();
-                newSettings.enableRomajiToKatakanaConversion = elements.enableRomajiToKatakanaConversionCheckbox.checked;
 
                 newSettings.deepSeekSystemPrompt = elements.deepSeekSystemPromptDefaultTextarea.value.trim();
                 newSettings.deepSeekEnableSystemPromptDefault = elements.deepSeekEnableSystemPromptDefaultCheckbox.checked;
