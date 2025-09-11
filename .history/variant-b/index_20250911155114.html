@@ -5307,7 +5307,7 @@
                             <div style="margin-top:15px;">
                                 <label class="checkbox-label">
                                     <input type="checkbox" id="enable-fuzzy-search-normalization">
-                                    （試験的）Fuzzy Search（あいまい検索）で固有名詞を補正する
+                                    Fuzzy Search（あいまい検索）で固有名詞を補正する
                                 </label>
                                 <p
                                     style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
@@ -7771,48 +7771,16 @@
         }
 
         /**
-                 * 2つの文字列間のレーベンシュタイン距離を計算する
-                 * @param {string} a 比較する文字列1
-                 * @param {string} b 比較する文字列2
-                 * @returns {number} 編集距離 (整数)
-                 */
-        function levenshteinDistance(a, b) {
-            if (a.length === 0) return b.length;
-            if (b.length === 0) return a.length;
-
-            const matrix = Array(b.length + 1).fill(null).map(() => Array(a.length + 1).fill(null));
-
-            for (let i = 0; i <= a.length; i++) {
-                matrix[0][i] = i;
-            }
-            for (let j = 0; j <= b.length; j++) {
-                matrix[j][0] = j;
-            }
-
-            for (let j = 1; j <= b.length; j++) {
-                for (let i = 1; i <= a.length; i++) {
-                    const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-                    matrix[j][i] = Math.min(
-                        matrix[j][i - 1] + 1,      // 削除
-                        matrix[j - 1][i] + 1,      // 挿入
-                        matrix[j - 1][i - 1] + cost // 置換
-                    );
-                }
-            }
-            return matrix[b.length][a.length];
-        }
-
-        /**
-         * 入力文字列を正規化し、マップに存在すれば対応する固有名詞を返す (Fuzzy Search対応版)
+         * 入力文字列を正規化し、マップに存在すれば対応する固有名詞を返す
          * @param {string} input - チェック対象の文字列
          * @param {Map<string, string>} normalizationMap - 正規化マップ
          * @param {boolean} performRomajiConversion - ローマ字変換を行うかどうかのフラグ
          * @returns {string} 処理後の文字列
          */
-        function normalizeName(input, normalizationMap, performRomajiConversion) {
+        function normalizeName(input, normalizationMap, performRomajiConversion) { // 引数を追加
             if (!input || normalizationMap.size === 0) return input;
 
-            console.groupCollapsed(`[normalizeName] Input: "${input}"`);
+            console.log(`[normalizeName] Input: "${input}"`);
 
             // 1. NFKC正規化
             let normalized = input.normalize('NFKC');
@@ -7822,7 +7790,7 @@
 
             // 2. ローマ字 -> カタカナ (条件付き)
             let katakana = normalized;
-            if (performRomajiConversion) {
+            if (performRomajiConversion) { // ★★★ チェックボックスの状態に応じて分岐 ★★★
                 katakana = romajiToKatakana(normalized);
                 if (katakana !== normalized) {
                     console.log(`  > Step 2 (Romaji to Katakana): "${katakana}"`);
@@ -7841,46 +7809,14 @@
             const lowercased = hiragana.toLowerCase();
             console.log(`  > Step 4 (Lookup Key): "${lowercased}"`);
 
-            // 5. 完全一致のチェック
             if (normalizationMap.has(lowercased)) {
                 const result = normalizationMap.get(lowercased);
-                console.log(`  > Exact match found! Replacing with: "${result}"`);
-                console.groupEnd();
+                console.log(`  > Match found! Replacing with: "${result}"`);
                 return result;
             }
 
-            // ▼▼▼ ここからがFuzzy Searchのロジックです ▼▼▼
-            // 6. Fuzzy Searchのチェック (設定が有効な場合のみ)
-            if (state.settings.enableFuzzySearchNormalization) {
-                console.log('  > No exact match. Starting Fuzzy Search...');
-                const threshold = state.settings.fuzzySearchThreshold;
-                let bestMatch = null;
-                let minDistance = Infinity;
-
-                // 固有名詞リストの全候補に対して距離を計算
-                for (const [key, originalName] of normalizationMap.entries()) {
-                    const distance = levenshteinDistance(lowercased, key);
-
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        bestMatch = originalName;
-                    }
-                }
-
-                console.log(`  > Closest match: "${bestMatch}" with distance: ${minDistance}`);
-
-                // 閾値以下であれば、最も近い候補を採用
-                if (bestMatch && minDistance <= threshold) {
-                    console.log(`  > Fuzzy match found (distance <= threshold ${threshold})! Replacing with: "${bestMatch}"`);
-                    console.groupEnd();
-                    return bestMatch;
-                }
-            }
-            // ▲▲▲ ここまでがFuzzy Searchのロジックです ▲▲▲
-
             console.log(`  > No match found. Returning original cleaned value.`);
-            console.groupEnd();
-            return input; // 完全一致もFuzzy Searchもヒットしなかった場合は元の入力を返す
+            return input; // マッチしなかった場合は、クリーニング済みの元々の入力を返す
         }
         // ▲▲▲ ここまで追加 ▲▲▲
         const uiUtils = {
@@ -9525,9 +9461,6 @@
                 elements.characterNamesListTextarea.value = state.settings.characterNamesList || '';
                 elements.enableRomajiToKatakanaConversionCheckbox.checked = state.settings.enableRomajiToKatakanaConversion;
                 elements.enableAutoBaseUrlDetectionCheckbox.checked = state.settings.enableAutoBaseUrlDetection;
-                elements.enableFuzzySearchNormalizationCheckbox.checked = state.settings.enableFuzzySearchNormalization;
-                elements.fuzzySearchThresholdInput.value = state.settings.fuzzySearchThreshold;
-                elements.fuzzySearchOptionsDiv.classList.toggle('hidden', !state.settings.enableFuzzySearchNormalization);
 
                 elements.deepSeekSystemPromptDefaultTextarea.value = state.settings.deepSeekSystemPrompt || '';
                 elements.deepSeekEnableSystemPromptDefaultCheckbox.checked = state.settings.deepSeekEnableSystemPromptDefault;
@@ -11675,9 +11608,6 @@
                 });
                 elements.enableProofreadingCheckbox.addEventListener('change', () => {
                     elements.proofreadingOptionsDiv.classList.toggle('hidden', !elements.enableProofreadingCheckbox.checked);
-                });
-                elements.enableFuzzySearchNormalizationCheckbox.addEventListener('change', () => {
-                    elements.fuzzySearchOptionsDiv.classList.toggle('hidden', !elements.enableFuzzySearchNormalizationCheckbox.checked);
                 });
                 // ▼「elements.geminiEnableGroundingToggle.addEventListener(...)」の(もしあれば)下あたりに追加▼
                 elements.enableImageUrlReplacementCheckbox.addEventListener('change', () => {

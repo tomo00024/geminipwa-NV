@@ -5303,26 +5303,7 @@
                                     ※ `rena` → `れな` のように、固有名詞のローマ字表記揺れを吸収します。意図しない変換が行われる場合はOFFにしてください。
                                 </p>
                             </div>
-                            <hr style="margin: 15px 0;">
-                            <div style="margin-top:15px;">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" id="enable-fuzzy-search-normalization">
-                                    （試験的）Fuzzy Search（あいまい検索）で固有名詞を補正する
-                                </label>
-                                <p
-                                    style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 10px;">
-                                    ※ ONの場合、「れい→れな」のように部分的に一致する単語も固有名詞リストに基づき補正します。
-                                </p>
-                                <div id="fuzzy-search-options" class="hidden">
-                                    <label for="fuzzy-search-threshold">編集距離の閾値 (小さいほど厳密):</label>
-                                    <input type="number" id="fuzzy-search-threshold" min="0" step="1"
-                                        placeholder="例: 1 (推奨)">
-                                    <p
-                                        style="font-size: 11px; color: var(--text-secondary); margin-top: -5px; margin-bottom: 15px;">
-                                        ※ 2つの単語間の「違い」の数。0は完全一致のみ。1か2を推奨します。値を大きくしすぎると誤変換が増える可能性があります。
-                                    </p>
-                                </div>
-                            </div>
+                            <!-- ▲▲▲ ここまで追加 ▲▲▲ -->
 
                             <div style="margin-top:15px;">
                                 <label for="character-names-list">登場人物・固有名詞リスト (カンマ区切り):</label>
@@ -6724,9 +6705,6 @@
             characterNamesListTextarea: document.getElementById('character-names-list'), // この行を追加
             enableRomajiToKatakanaConversionCheckbox: document.getElementById('enable-romaji-to-katakana-conversion'),
             enableAutoBaseUrlDetectionCheckbox: document.getElementById('enable-auto-base-url-detection'),
-            enableFuzzySearchNormalizationCheckbox: document.getElementById('enable-fuzzy-search-normalization'),
-            fuzzySearchOptionsDiv: document.getElementById('fuzzy-search-options'),
-            fuzzySearchThresholdInput: document.getElementById('fuzzy-search-threshold'),
 
             geminiThoughtsParam: document.getElementById('gemini-thoughts-param'),
             geminiPseudoStreamingParam: document.getElementById('gemini-pseudo-streaming-param'),
@@ -6816,8 +6794,6 @@
                 enableImageUrlReplacement: false, // デフォルトは無効
                 imageUrlReplacementBase: '',      // ベースURLは空
                 enableAutoBaseUrlDetection: true, // デフォルトでON
-                enableFuzzySearchNormalization: false, // デフォルトでON
-                fuzzySearchThreshold: 1,              // デフォルト閾値は1
                 characterNamesList: 'まゆみ,れな,みのり,葛城,日影,モガドール,メイ,アン,グレア,アストルフォ,ノーデ,レグナ,エルナ,ミネット,アキラ,グートルーネ,ハヅキ,イスタロト,フィー,ダルク,ヤン,ロイス,グライアス,ズィーグス,サンドラ,ジェシカ,アンナ,フェイ,ロディ,ジェイ,エマ,クリス,体操服,スクール水着,水着,初期衣装,マイクロビキニ,制服,全裸,私服,ビキニ,下着,部屋着,ドヤ顔,怪訝,大泣き,恐怖する,驚き,苦痛に耐える,泣く,嫌悪,困る,照れ笑い,にしし,真顔,退屈,挑発する,通常,怒る,発情,微笑,ウィンク,とろ顔,恍惚,快感,睡眠,キス顔,拗ねる,きょとん,悲しみ,眠い,恥じらう,はにかむ,涙ぐむ,嬉し泣き,笑う,てへぺろ,はわわ,悔しい,怯える,上目遣い,満面の笑み,考える,混乱,疲れてる,表情通常,表情微笑,表情哀,表情笑顔,表情怒,表情発情,表情軽い絶頂,表情深い絶頂,表情恐怖,表情驚き,表情照れ,ダンジョンを探索,攻撃,山を探索,宿に宿泊,森を探索,昼の町,町で食事,町で買い物,洞窟を探索,夜の町,昼野営,夜野営,冒険者ギルド,野外で食事,仕事中,水浴び,うろたえる,ニヤリ,むっとする,怪訝な顔,驚く,嫌悪する,号泣する,最高の笑顔,深い絶頂,真剣,赤面して耐える,赤面快感,赤面恐怖,赤面絶望,赤面涙目,赤面蠱惑的な笑み,絶頂する,絶望する,退屈する,恥ずかしがる,通常時,悲しむ,目を閉じる,落ち込む,ゲルヒルデ,リコリス,マルレーネ',                 // ▲ここまで追加▲
                 enableRomajiToKatakanaConversion: true,
                 deepSeekApiKey: '',
@@ -7771,48 +7747,16 @@
         }
 
         /**
-                 * 2つの文字列間のレーベンシュタイン距離を計算する
-                 * @param {string} a 比較する文字列1
-                 * @param {string} b 比較する文字列2
-                 * @returns {number} 編集距離 (整数)
-                 */
-        function levenshteinDistance(a, b) {
-            if (a.length === 0) return b.length;
-            if (b.length === 0) return a.length;
-
-            const matrix = Array(b.length + 1).fill(null).map(() => Array(a.length + 1).fill(null));
-
-            for (let i = 0; i <= a.length; i++) {
-                matrix[0][i] = i;
-            }
-            for (let j = 0; j <= b.length; j++) {
-                matrix[j][0] = j;
-            }
-
-            for (let j = 1; j <= b.length; j++) {
-                for (let i = 1; i <= a.length; i++) {
-                    const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-                    matrix[j][i] = Math.min(
-                        matrix[j][i - 1] + 1,      // 削除
-                        matrix[j - 1][i] + 1,      // 挿入
-                        matrix[j - 1][i - 1] + cost // 置換
-                    );
-                }
-            }
-            return matrix[b.length][a.length];
-        }
-
-        /**
-         * 入力文字列を正規化し、マップに存在すれば対応する固有名詞を返す (Fuzzy Search対応版)
+         * 入力文字列を正規化し、マップに存在すれば対応する固有名詞を返す
          * @param {string} input - チェック対象の文字列
          * @param {Map<string, string>} normalizationMap - 正規化マップ
          * @param {boolean} performRomajiConversion - ローマ字変換を行うかどうかのフラグ
          * @returns {string} 処理後の文字列
          */
-        function normalizeName(input, normalizationMap, performRomajiConversion) {
+        function normalizeName(input, normalizationMap, performRomajiConversion) { // 引数を追加
             if (!input || normalizationMap.size === 0) return input;
 
-            console.groupCollapsed(`[normalizeName] Input: "${input}"`);
+            console.log(`[normalizeName] Input: "${input}"`);
 
             // 1. NFKC正規化
             let normalized = input.normalize('NFKC');
@@ -7822,7 +7766,7 @@
 
             // 2. ローマ字 -> カタカナ (条件付き)
             let katakana = normalized;
-            if (performRomajiConversion) {
+            if (performRomajiConversion) { // ★★★ チェックボックスの状態に応じて分岐 ★★★
                 katakana = romajiToKatakana(normalized);
                 if (katakana !== normalized) {
                     console.log(`  > Step 2 (Romaji to Katakana): "${katakana}"`);
@@ -7841,46 +7785,14 @@
             const lowercased = hiragana.toLowerCase();
             console.log(`  > Step 4 (Lookup Key): "${lowercased}"`);
 
-            // 5. 完全一致のチェック
             if (normalizationMap.has(lowercased)) {
                 const result = normalizationMap.get(lowercased);
-                console.log(`  > Exact match found! Replacing with: "${result}"`);
-                console.groupEnd();
+                console.log(`  > Match found! Replacing with: "${result}"`);
                 return result;
             }
 
-            // ▼▼▼ ここからがFuzzy Searchのロジックです ▼▼▼
-            // 6. Fuzzy Searchのチェック (設定が有効な場合のみ)
-            if (state.settings.enableFuzzySearchNormalization) {
-                console.log('  > No exact match. Starting Fuzzy Search...');
-                const threshold = state.settings.fuzzySearchThreshold;
-                let bestMatch = null;
-                let minDistance = Infinity;
-
-                // 固有名詞リストの全候補に対して距離を計算
-                for (const [key, originalName] of normalizationMap.entries()) {
-                    const distance = levenshteinDistance(lowercased, key);
-
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        bestMatch = originalName;
-                    }
-                }
-
-                console.log(`  > Closest match: "${bestMatch}" with distance: ${minDistance}`);
-
-                // 閾値以下であれば、最も近い候補を採用
-                if (bestMatch && minDistance <= threshold) {
-                    console.log(`  > Fuzzy match found (distance <= threshold ${threshold})! Replacing with: "${bestMatch}"`);
-                    console.groupEnd();
-                    return bestMatch;
-                }
-            }
-            // ▲▲▲ ここまでがFuzzy Searchのロジックです ▲▲▲
-
             console.log(`  > No match found. Returning original cleaned value.`);
-            console.groupEnd();
-            return input; // 完全一致もFuzzy Searchもヒットしなかった場合は元の入力を返す
+            return input; // マッチしなかった場合は、クリーニング済みの元々の入力を返す
         }
         // ▲▲▲ ここまで追加 ▲▲▲
         const uiUtils = {
@@ -7900,8 +7812,12 @@
                         // --- ステップ0: Markdown構文の軽微なエラーを修正 ---
                         // ![alt text]-(...) のような、角括弧と丸括弧の間の不要な文字を除去する
                         content = content.replace(/(\!\[.*?\])\s*[-_.,:;*]?\s*(\(.*?\))/g, '$1$2');
-                        // `![alt](https...` という正しい形式に強制的に修正する
-                        content = content.replace(/(\!\[[^\(\]\n]+).*?(https?:\/\/)/g, '$1]($2');
+                        // --- ステップ0.5: 閉じ角括弧抜けと不要な接頭辞を補完・除去 ---
+                        // ![alt(https... のような、閉じ角括弧が欠落しているパターンを修正
+                        content = content.replace(/(\!\[[^\(\]\n]+)(\(https?:\/\/)/g, '$1]$2');
+                        // ▼▼▼ ここから追加 ▼▼▼
+                        // ![](-https... のようにURLの前に不要な記号があるパターンを修正
+                        content = content.replace(/(\!\[.*?\]\()[\s_-]*?(https?:\/\/)/g, '$1$2');
                         // --- ステップ1: AIが生成したフルURLをプレースホルダー形式に強制変換 ---
                         // AIが生成する多様なURLの崩れに対応するための修正
                         content = content.replace(/!\[(.*?)\]\((https?)([:.\/\s　-]*)(.*?)\)/gi, (match, altText, protocol, separator, restOfUrl) => {
@@ -9525,9 +9441,6 @@
                 elements.characterNamesListTextarea.value = state.settings.characterNamesList || '';
                 elements.enableRomajiToKatakanaConversionCheckbox.checked = state.settings.enableRomajiToKatakanaConversion;
                 elements.enableAutoBaseUrlDetectionCheckbox.checked = state.settings.enableAutoBaseUrlDetection;
-                elements.enableFuzzySearchNormalizationCheckbox.checked = state.settings.enableFuzzySearchNormalization;
-                elements.fuzzySearchThresholdInput.value = state.settings.fuzzySearchThreshold;
-                elements.fuzzySearchOptionsDiv.classList.toggle('hidden', !state.settings.enableFuzzySearchNormalization);
 
                 elements.deepSeekSystemPromptDefaultTextarea.value = state.settings.deepSeekSystemPrompt || '';
                 elements.deepSeekEnableSystemPromptDefaultCheckbox.checked = state.settings.deepSeekEnableSystemPromptDefault;
@@ -11675,9 +11588,6 @@
                 });
                 elements.enableProofreadingCheckbox.addEventListener('change', () => {
                     elements.proofreadingOptionsDiv.classList.toggle('hidden', !elements.enableProofreadingCheckbox.checked);
-                });
-                elements.enableFuzzySearchNormalizationCheckbox.addEventListener('change', () => {
-                    elements.fuzzySearchOptionsDiv.classList.toggle('hidden', !elements.enableFuzzySearchNormalizationCheckbox.checked);
                 });
                 // ▼「elements.geminiEnableGroundingToggle.addEventListener(...)」の(もしあれば)下あたりに追加▼
                 elements.enableImageUrlReplacementCheckbox.addEventListener('change', () => {
@@ -14518,9 +14428,6 @@
                 newSettings.characterNamesList = elements.characterNamesListTextarea.value.trim();
                 newSettings.enableRomajiToKatakanaConversion = elements.enableRomajiToKatakanaConversionCheckbox.checked;
                 newSettings.enableAutoBaseUrlDetection = elements.enableAutoBaseUrlDetectionCheckbox.checked;
-                newSettings.enableFuzzySearchNormalization = elements.enableFuzzySearchNormalizationCheckbox.checked;
-                const threshold = parseInt(elements.fuzzySearchThresholdInput.value, 10);
-                newSettings.fuzzySearchThreshold = isNaN(threshold) || threshold < 0 ? 1 : threshold;
 
                 newSettings.deepSeekSystemPrompt = elements.deepSeekSystemPromptDefaultTextarea.value.trim();
                 newSettings.deepSeekEnableSystemPromptDefault = elements.deepSeekEnableSystemPromptDefaultCheckbox.checked;
